@@ -1,5 +1,5 @@
 {
-  "name": "@equitech/ui-library",
+  "name": "@equitech-dev/ui-library",
   "version": "1.0.0",
   "description": "Librairie de composants UI génériques pour Equitech",
   "main": "index.js",
@@ -31,10 +31,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/equitech/ui-library.git"
+    "url": "git+https://github.com/equitech-dev/ui-library.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   },
   "devDependencies": {
     "sass": "^1.90.0"
