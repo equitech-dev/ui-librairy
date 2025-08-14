@@ -1,0 +1,40 @@
+// ============================================================================
+// Point d'entrée SCSS unique de la librairie graphique
+// À importer dans tout projet pour bénéficier des variables, mixins et styles
+// universels des composants UI. Aucun style métier ici.
+// ============================================================================
+
+// Outils SCSS (variables, mixins, modèles)
+@use './tools/_sass_variables.scss' as v;
+@use './tools/_mixins.scss' as mx;
+@use './tools/_models.scss' as m;
+@use './tools/generic.scss' as *;
+@use './tools/variables.scss' as *;
+@use './tools/base.scss' as *;
+
+// Styles de base des composants universels
+@use './Button/Button.scss';
+@use './Card/Card.scss';
+@use './Checkbox/Checkbox.scss';
+@use './RadioButton/RadioButton.scss';
+@use './Grid/Grid.scss';
+@use './Section/Section.scss';
+@use './Footer/Footer.scss';
+@use './Header/Header.scss';
+@use './Separator/Separator.scss';
+
+// Nouveaux composants universels
+@use './Input/Input.scss';
+@use './Select/Select.scss';
+@use './Textarea/Textarea.scss';
+@use './Loader/Loader.scss';
+@use './Modal/Modal.scss';
+@use './Alert/Alert.scss';
+@use './Badge/Badge.scss';
+@use './Tooltip/Tooltip.scss';
+
+// Composants spécialisés
+@use './Carousel/Carousel.scss';
+@use './Gallery/Gallery.scss';
+@use './MapEmbed/MapEmbed.scss';
+@use './ParallaxSection/ParallaxSection.scss'; 

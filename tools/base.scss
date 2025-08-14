@@ -1,0 +1,39 @@
+@use './_sass_variables.scss' as v;
+
+// @font-face supprimé : la police Edo est spécifique au BDA, à déclarer dans le projet métier.
+// Les polices génériques ou open source peuvent être déclarées ici si besoin.
+
+body {
+  margin: 0;
+  padding: 0;
+  // font-family: 'Edo', sans-serif; // À définir dans le projet métier si besoin
+  font-weight: v.$txt_normal;
+  font-size: v.$size_txt_m;
+
+  main {
+    & > *{
+      padding: 0 20px;
+    }
+  }
+  h1,h2,h3 {margin:0;}
+  h1 {
+    font-size: v.$size_title_l;
+    font-weight: v.$txt_bold;
+  }
+  h2 {
+    font-size: v.$size_title_m;
+    font-weight: v.$txt_bold;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  h3 {
+    font-size: v.$size_title_s;
+    font-weight: v.$txt_bold;
+  }
+}
+
+@media screen and (425px <= width <= 1024px){
+}
+@media screen and (min-width:1025px) {
+} 

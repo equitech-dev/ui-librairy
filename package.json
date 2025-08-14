@@ -1,0 +1,42 @@
+{
+  "name": "@equitech-dev/ui-library",
+  "version": "1.0.1",
+  "description": "Librairie de composants UI génériques pour Equitech",
+  "main": "index.js",
+  "style": "index.css",
+  "files": [
+    "index.js",
+    "index.css",
+    "index.css.map",
+    "**/*.jsx"
+  ],
+  "scripts": {
+    "compile-sass": "sass index.scss:index.css",
+    "build": "npm run compile-sass",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "react",
+    "scss",
+    "design-system"
+  ],
+  "author": "Equitech",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/equitech-dev/ui-library.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "devDependencies": {
+    "sass": "^1.90.0"
+  }
+}
