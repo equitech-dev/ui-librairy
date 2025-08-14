@@ -1,0 +1,38 @@
+.ui-library-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s;
+  }
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  .carousel-arrow.left { left: 8px; }
+  .carousel-arrow.right { right: 8px; }
+  .carousel-dot-group {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    padding: 0;
+    &.active { background: #0070f3; }
+  }
+} 

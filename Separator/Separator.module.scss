@@ -1,0 +1,8 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background: v.$grey;
+  margin: v.$flex_gap 0;
+} 

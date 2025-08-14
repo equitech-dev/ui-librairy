@@ -1,0 +1,16 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.loader {
+  display: inline-block;
+  border: 3px solid v.$grey;
+  border-top: 3px solid v.$primary_color;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

@@ -1,5 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+<<<<<<< HEAD
+=======
+import './Carousel.module.scss';
+>>>>>>> 88b103b1a3a143a75fa63cbe205807c38b1f55ad
 
 /**
  * Carousel générique, sans dépendance externe.
