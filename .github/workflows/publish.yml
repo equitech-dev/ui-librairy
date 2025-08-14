@@ -30,18 +30,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Build la lib
-      - name: Build library
-        run: npm run build
-
-      # 5️⃣ Incrémenter la version automatiquement (patch)
+      # 4️⃣ Incrémenter la version automatiquement (patch)
       - name: Bump version
         id: bump
         run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           npm version patch -m "Bump version to %s [skip ci]"
           echo "NEW_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
-      # 6️⃣ Commit & tag (optionnel si tu veux versionner)
+      # 5️⃣ Commit & tag (optionnel)
       - name: Push version bump
         uses: EndBug/add-and-commit@v9
         with:
@@ -50,7 +48,7 @@ jobs:
           message: "Bump version ${{ env.NEW_VERSION }} [skip ci]"
           add: "package.json package-lock.json"
 
-      # 7️⃣ Publier sur GitHub Packages
+      # 6️⃣ Publier sur GitHub Packages (prépublishOnly déclenchera le build)
       - name: Publish package
         run: npm publish
         env:
