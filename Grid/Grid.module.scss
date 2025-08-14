@@ -1,7 +1,0 @@
-@use '../tools/_sass_variables.scss' as v;
-
-.grid_container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: v.$flex_gap;
-} 

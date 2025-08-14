@@ -1,9 +1,5 @@
 "use client";
 import React from "react";
-<<<<<<< HEAD
-=======
-import './Checkbox.module.scss';
->>>>>>> 88b103b1a3a143a75fa63cbe205807c38b1f55ad
 
 /**
  * Props :
