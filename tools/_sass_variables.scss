@@ -1,0 +1,54 @@
+//brand's colors
+$valid_color: #36A12D;
+$warning_color: #BF3232;
+$info_color: #5E8CB7;
+$error_color: #D32F2F;
+
+//brand's contrasts
+$white:#FCFFFF;
+$light_grey: #989898;
+$grey: #595959;
+$black: #242323;
+
+//brand's button dimensions
+$btn_width_s:150px;
+$btn_width_m:200px;
+$btn_width_l:250px;
+$btn_height:40px;
+
+//text related
+
+//font
+$txt_font: roboto, sans-serif;
+
+//sizes
+$size_txt_xs:0.75em; // size for smallest text as newsletter's checkbox
+$size_txt_s:0.9em;// size for small text as footer's link
+$size_txt_m:1em;// size for classic text as paragraphs
+$size_title_s:1.4em;// size for small title as h3
+$size_title_m:1.6em;// size for medium title as h2
+$size_title_l:1.8em;// size for main title as h1 (must be called once per page maximum)
+
+//weight
+$txt_normal:400;
+$txt_semibold:600;
+$txt_bold:800;
+
+//genericvalues
+
+//spacing
+$flex_gap_s:10px;
+$flex_gap:20px;
+$flex_gap_l:50px;
+
+$main_radius:0;
+
+$padding_s:5px;
+$radius_s: 4px;
+$font_size_m: $size_txt_m;
+$radius_m: 8px;
+
+$primary_color: #0070f3; // Couleur principale temporaire, à adapter à la charte
+$secondary_color: #242323; // Couleur secondaire temporaire, à adapter à la charte 
+$input_padding: 10px; 
+$light-grey: #989898;

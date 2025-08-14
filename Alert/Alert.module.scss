@@ -1,0 +1,27 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: v.$radius_s;
+  margin: 1rem 0;
+  font-size: v.$font_size_m;
+  font-weight: 500;
+  background: v.$light_grey;
+  color: v.$black;
+  &.info {
+    background: v.$info_color;
+    color: v.$white;
+  }
+  &.success {
+    background: v.$valid_color;
+    color: v.$white;
+  }
+  &.warning {
+    background: v.$warning_color;
+    color: v.$white;
+  }
+  &.error {
+    background: v.$error_color;
+    color: v.$white;
+  }
+} 

@@ -1,0 +1,13 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.checkbox_container {
+  display: flex;
+  align-items: center;
+  gap: v.$flex_gap_s;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: v.$valid_color;
+  }
+} 

@@ -1,0 +1,22 @@
+@use 'sass_variables' as v;
+
+%btn-model {
+  color: v.$white;
+  font-family: v.$txt_font;
+  font-size: v.$size_txt_m;
+  font-weight: v.$txt_semibold;
+  box-sizing: border-box;
+  text-decoration: none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:none;
+  border-radius: v.$main_radius;
+  cursor:pointer;
+  user-select:none;
+  transition: box-shadow .1s ease-in;
+}
+%btn-model:active {
+  background: none;
+  color: v.$black;
+} 

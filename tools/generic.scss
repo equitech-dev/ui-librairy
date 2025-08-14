@@ -1,0 +1,426 @@
+@use './_sass_variables.scss' as v;
+@use './_mixins.scss' as mx;
+
+
+/*  USEFUL CLASSES  */
+
+
+/*  BOXING RELATED  */
+.dis_block {
+  display: block;
+}
+
+.dis_flex {
+  display: flex;
+}
+
+.dis_grid {
+  display: grid !important;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dis_none {
+  display: none;
+}
+
+.pos_absolute {
+  position: absolute;
+}
+
+.pos_relative {
+  position: relative;
+}
+
+.pos_fixed {
+  position: fixed;
+}
+
+.top_0 {
+  top: 0;
+}
+
+.bot_0 {
+  bottom: 0;
+}
+
+.left_0 {
+  left: 0;
+}
+
+.right_0 {
+  right: 0;
+}
+
+.w_fit {
+  width: fit-content;
+}
+
+.h_fit {
+  height: fit-content;
+}
+
+.w_max {
+  width: max-content;
+}
+
+.h_max {
+  height: max-content;
+}
+
+.w_min {
+  width: min-content;
+}
+
+.h_min {
+  height: min-content;
+}
+
+.h_auto {
+  height: auto;
+}
+
+.size_box_bord {
+  box-sizing: border-box;
+}
+
+.ovfw_scroll {
+  overflow: scroll;
+}
+
+.ovfw_auto {
+  overflow: auto;
+}
+
+.ovfw_hide {
+  overflow: hidden;
+}
+
+.ovfw_x_scroll {
+  overflow-x: scroll;
+}
+
+.ovfw_x_auto {
+  overflow-x: auto;
+}
+
+.ovfw_x_hide {
+  overflow-x: hidden;
+}
+
+.ovfw_y_scroll {
+  overflow-y: scroll;
+}
+
+.ovfw_y_auto {
+  overflow-y: auto;
+}
+
+.ovfw_y_hide {
+  overflow-y: hidden;
+}
+
+/*  Flex related  */
+.main_flex_dir {
+  flex-direction: var(--main_flex_dir);
+}
+
+.scnd_flex_dir {
+  flex-direction: var(--scnd_flex_dir);
+}
+
+.main_flex_reverse{
+  flex-direction: var(--main_flex_reverse);
+}
+
+.scnd_flex_reverse{
+  flex-direction: var(--scnd_flex_reverse);
+}
+
+.flex_wrap {
+  flex-wrap: wrap;
+}
+
+.flex_gap_s {
+  gap: v.$flex_gap_s;
+}
+.flex_gap {
+  gap: v.$flex_gap;
+}
+.flex_gap_l {
+  gap: v.$flex_gap_l;
+}
+
+.flex_cln {
+  flex-direction: column;
+}
+
+/*  main axis childs position  */
+.p_center {
+  justify-content: center;
+}
+
+.p_end {
+  justify-content: end;
+}
+
+.p_btwn {
+  justify-content: space-between;
+}
+
+.p_arnd {
+  justify-content: space-around;
+}
+
+.p_evn {
+  justify-content: space-evenly;
+}
+
+.j_center {
+  justify-items: center;
+}
+
+/*  second axis childs position  */
+.s_center {
+  align-items: center;
+}
+
+.s_end {
+  align-items: end;
+}
+
+.s_btwn {
+  align-items: center;
+}
+
+.s_arnd {
+  align-items: center;
+}
+
+.s_evn {
+  align-items: center;
+}
+
+.s_start {
+  align-items: flex-start;
+}
+
+
+/*  VISUAL RELATED  */
+
+
+/* Box related */
+.rounded {
+  border-radius: 2000px;
+}
+
+.crop_angle {
+  border-radius: v.$main_radius;
+}
+
+.no_bord {
+  border: none;
+}
+
+.no_marg {
+  margin: 0;
+}
+
+.no_pad {
+  padding: 0;
+}
+
+.no_bot {
+  bottom: 0;
+}
+
+.pad_s {
+  padding: v.$padding_s;
+}
+
+.border_s {
+  border: 1px solid v.$grey;
+}
+
+.border_s_black {
+  border: 1px solid v.$black;
+}
+
+.border_top {
+  border-top: 1px solid v.$grey;
+}
+
+.border_top_black {
+  border-top: 1px solid v.$black;
+}
+
+.border_bottom {
+  border-bottom: 1px solid v.$grey;
+}
+
+.border_bottom_black {
+  border-bottom: 1px solid v.$black;
+}
+
+.border_left {
+  border-left: 1px solid v.$grey;
+}
+
+.border_left_black {
+  border-left: 1px solid v.$black;
+}
+
+.border_right {
+  border-right: 1px solid v.$grey;
+}
+
+.border_right_black {
+  border-right: 1px solid v.$black;
+}
+
+.shadow_box {
+  box-shadow: 0 10px 20px #0000000d;
+}
+
+.shadow_inset {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset
+}
+
+.bg_color_main {
+  background: v.$white;
+}
+
+.bg_color_scnd {
+  background: v.$black;
+}
+
+.bg_color_transparent {
+  background: transparent;
+}
+
+/* Text related */
+.txt_white {
+  color: v.$white;
+}
+
+.txt_color_main {
+  color: v.$black;
+}
+
+.txt_color_scnd {
+  color: v.$white;
+}
+
+.txt_semi_bold {
+  font-weight: 600;
+}
+
+.txt_bold {
+  font-weight: 800;
+}
+
+.txt_normal {
+  font-weight: 400;
+}
+
+.txt_center {
+  text-align: center;
+}
+
+.txt_left {
+  text-align: left;
+}
+
+.txt_end {
+  text-align: end;
+}
+
+.txt_justify {
+  text-align: justify;
+}
+
+.txt_shadow {
+  text-shadow: 0 0 white;
+}
+
+/* Others */
+
+.z_2 {
+  z-index: 2;
+}
+.z_3 {
+  z-index: 3;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.w_100 {
+  width: 100%;
+}
+
+.w_auto {
+  width: auto;
+}
+
+.opac_50 {
+  opacity: 50%;
+}
+
+.txt_xs {
+  font-size: v.$size_txt_xs
+}
+
+.txt_s {
+  font-size: v.$size_txt_s;
+}
+
+.txt_m {
+  font-size: v.$size_txt_m;
+}
+
+.title_s {
+  font-size: v.$size_title_s;
+}
+
+.title_m {
+  font-size: v.$size_title_m;
+}
+
+.title_l {
+  font-size: v.$size_title_l;
+}
+
+.link_no_style {
+  text-decoration: none;
+}
+
+.list_no_style {
+  list-style: none;
+}
+
+.top_50 {
+  top: 50%;
+}
+
+.left_50 {
+  left: 50%;
+}
+
+.transform_center {
+  transform: translate(-50%, -50%);
+}
+
+.hidden_input {
+  @include mx.setSize(1px, 1px);
+  position: absolute;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

@@ -1,0 +1,51 @@
+@use 'sass_variables' as v;
+@use 'models' as m;
+
+@mixin setSize($width:100%, $height:100%) {
+  width: $width;
+  height: $height
+}
+
+@mixin setColor($bg-color , $color) {
+  background-color:$bg-color;
+  color:$color;
+}
+
+@mixin setBtn($width:v.$btn_width_s,$height:v.$btn_height,$color:v.$white,$bg_color:v.$black,$shadow_color:v.$light_grey,$shadow_reverse:false) {
+  @extend %btn-model;
+  @include setSize($width,$height);
+  color:$color;
+  background:$bg_color;
+  border: 2px solid $bg_color;
+  box-shadow: 7px 7px 0 $shadow_color;
+  @if $shadow_reverse {
+    box-shadow: -7px 7px 0 $shadow_color;
+  }
+}
+
+@mixin setGrid($columns, $espacement) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  grid-gap: $espacement;
+}
+
+@mixin inputBase() {
+  font-family: v.$txt_font;
+  font-size: v.$size_txt_m;
+  border-radius: v.$radius_s;
+  border: 1px solid v.$grey;
+  background: v.$white;
+  color: v.$black;
+  padding: v.$padding_s;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: v.$primary_color;
+    outline: none;
+  }
+  &:disabled {
+    background: v.$light_grey;
+    color: v.$grey;
+    cursor: not-allowed;
+  }
+} 
