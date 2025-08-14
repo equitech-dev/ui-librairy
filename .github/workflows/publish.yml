@@ -30,14 +30,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Incrémenter la version automatiquement (patch) sans commit/tag git
+      # 4️⃣ Incrémenter la version automatiquement (patch) sans tag git
       - name: Bump version
         id: bump
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           npm version patch --no-git-tag-version
-          echo "NEW_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       # 5️⃣ Commit & push les fichiers package.json/package-lock.json modifiés
       - name: Push version bump
