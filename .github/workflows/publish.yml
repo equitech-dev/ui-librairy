@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write      # write nécessaire pour push
       packages: write
       id-token: write
 
@@ -48,6 +48,8 @@ jobs:
           author_email: github-actions@github.com
           message: "Bump version ${{ env.NEW_VERSION }} [skip ci]"
           add: "package.json package-lock.json"
+          push: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}   # ✅ Obligatoire pour push
 
       # 6️⃣ Publier sur GitHub Packages (prépublishOnly déclenchera le build)
       - name: Publish package
