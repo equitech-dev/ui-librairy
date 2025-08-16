@@ -1,28 +1,72 @@
-.ui-library-gallery {
-  &.gallery-grid {
+@use '../tools/_sass_variables.scss' as v;
+
+.ui-gallery {
+  &.ui-gallery-grid {
     display: grid;
-    gap: 16px;
-    // grid-template-columns à personnaliser via style ou classe utilitaire
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  &.gallery-scroll {
+  
+  &.ui-gallery-scroll {
     display: flex;
     overflow-x: auto;
-    gap: 16px;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: v.$light_grey;
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: v.$grey;
+      border-radius: 4px;
+      
+      &:hover {
+        background: v.$primary_color;
+      }
+    }
   }
-  &.gallery-bento {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    // Les tailles des items sont gérées par des classes enfants
+  
+  &.ui-gallery-bento {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    
+    .ui-gallery-item-large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    
+    .ui-gallery-item-wide {
+      grid-column: span 2;
+    }
+    
+    .ui-gallery-item-tall {
+      grid-row: span 2;
+    }
   }
-  .gallery-item {
-    border-radius: 8px;
+  
+  .ui-gallery-item {
+    border-radius: v.$radius_m;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: v.$radius_m;
     }
   }
 } 

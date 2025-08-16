@@ -1,16 +1,28 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.loader {
-  display: inline-block;
-  border: 3px solid v.$grey;
-  border-top: 3px solid v.$primary_color;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  animation: spin 1s linear infinite;
+.ui-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  .ui-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid v.$light_grey;
+    border-top: 2px solid v.$primary_color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner {
+    animation: none;
+    border-top-color: transparent;
+  }
 } 

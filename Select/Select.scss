@@ -1,23 +1,27 @@
 @use '../tools/_sass_variables.scss' as v;
 @use '../tools/_mixins.scss' as mx;
 
-.select {
-  @include mx.inputBase();
-  width: 100%;
-  padding: v.$input_padding;
-  border: 1px solid v.$grey;
-  border-radius: v.$radius_s;
-  font-size: v.$font_size_m;
+.ui-select {
+  padding: 0.75rem 1rem;
+  border: 2px solid v.$light_grey;
+  border-radius: v.$radius_m;
+  font-size: v.$size_txt_m;
   background: v.$white;
   color: v.$black;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  
   &:focus {
-    border-color: v.$primary_color;
     outline: none;
+    border-color: v.$primary_color;
+    box-shadow: 0 0 0 3px rgba(v.$primary_color, 0.1);
   }
+  
   &:disabled {
     background: v.$light_grey;
-    color: v.$grey;
+    border-color: v.$grey;
     cursor: not-allowed;
   }
 } 

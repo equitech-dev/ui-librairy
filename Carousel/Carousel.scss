@@ -1,38 +1,70 @@
-.ui-library-carousel {
+@use '../tools/_sass_variables.scss' as v;
+
+.ui-carousel {
   position: relative;
   width: 100%;
   overflow: hidden;
-  .carousel-track {
+  
+  .ui-carousel-track {
     display: flex;
-    transition: transform 0.5s;
+    transition: transform 0.5s ease;
   }
-  .carousel-arrow {
+  
+  .ui-carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
-    background: none;
+    background: rgba(255, 255, 255, 0.8);
     border: none;
-    font-size: 2rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    
+    &.ui-carousel-arrow-left { 
+      left: 8px; 
+    }
+    
+    &.ui-carousel-arrow-right { 
+      right: 8px; 
+    }
   }
-  .carousel-arrow.left { left: 8px; }
-  .carousel-arrow.right { right: 8px; }
-  .carousel-dot-group {
+  
+  .ui-carousel-dots {
     position: absolute;
-    bottom: 8px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
   }
-  .carousel-dot {
+  
+  .ui-carousel-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #ccc;
+    background: rgba(255, 255, 255, 0.5);
     border: none;
     padding: 0;
-    &.active { background: #0070f3; }
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    &.ui-carousel-dot-active { 
+      background: v.$primary_color; 
+    }
   }
 } 

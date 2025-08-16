@@ -1,0 +1,200 @@
+// AdvancedGrid Component Styles
+// Follows the ui- prefix convention for the UI library
+
+.ui-advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ui-grid-columns, 12), 1fr);
+  grid-auto-rows: var(--ui-grid-row-height, 100px);
+  gap: var(--ui-grid-gap, 10px);
+  padding: var(--ui-grid-gap, 10px);
+  user-select: none;
+  min-height: 100px;
+  
+  // Grid items
+  .ui-grid-item {
+    position: relative;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #4CAFEF, #3A83E0);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    cursor: grab;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    will-change: transform;
+    
+    // Grid positioning using CSS variables
+    grid-column: var(--ui-grid-item-col) / span var(--ui-grid-item-w);
+    grid-row: var(--ui-grid-item-row) / span var(--ui-grid-item-h);
+    
+    // Dragging state
+    &.ui-dragging {
+      transform: scale(1.05);
+      z-index: 10;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+      cursor: grabbing;
+    }
+    
+    // Locked state
+    &.ui-locked {
+      opacity: 0.7;
+      filter: grayscale(20%);
+      cursor: not-allowed;
+      
+      // Disable interactions when locked
+      &.ui-draggable {
+        cursor: not-allowed;
+      }
+      
+      &.ui-resizable .ui-resize-handle {
+        cursor: not-allowed;
+        opacity: 0.3;
+      }
+    }
+    
+    // Resize handle
+    .ui-resize-handle {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 18px;
+      height: 18px;
+      cursor: se-resize;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.28);
+      backdrop-filter: blur(2px);
+      transition: opacity 0.15s ease;
+      
+      // Handle icon using pseudo-elements
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(45deg, transparent 50%, rgba(0, 0, 0, 0.25) 50%) left/50% 100% no-repeat,
+          linear-gradient(45deg, rgba(0, 0, 0, 0.25) 50%, transparent 50%) right/50% 100% no-repeat;
+        border-radius: 6px;
+      }
+      
+      // Hover effect
+      &:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+      }
+    }
+    
+    // Disabled states
+    &:not(.ui-draggable) {
+      cursor: default;
+    }
+    
+    &:not(.ui-resizable) .ui-resize-handle {
+      display: none;
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    gap: calc(var(--ui-grid-gap, 10px) * 0.8);
+    padding: calc(var(--ui-grid-gap, 10px) * 0.8);
+    
+    .ui-grid-item {
+      font-size: 1rem;
+      border-radius: 8px;
+      
+      .ui-resize-handle {
+        width: 16px;
+        height: 16px;
+        right: 4px;
+        bottom: 4px;
+      }
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    .ui-grid-item {
+      border: 2px solid currentColor;
+      
+      .ui-resize-handle {
+        border: 1px solid currentColor;
+        background: currentColor;
+      }
+    }
+  }
+  
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .ui-grid-item {
+      transition: none;
+      
+      &.ui-dragging {
+        transform: none;
+      }
+    }
+    
+    .ui-resize-handle {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+// Grid item animations
+@keyframes ui-grid-item-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ui-grid-item {
+  animation: ui-grid-item-appear 0.2s ease-out;
+}
+
+// Drag preview styles
+.ui-grid-item.ui-dragging {
+  animation: none;
+}
+
+// Lock animation
+.ui-grid-item.ui-locked {
+  animation: none;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+// Focus styles for accessibility
+.ui-advanced-grid:focus-within .ui-grid-item:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+
+// Print styles
+@media print {
+  .ui-advanced-grid {
+    display: block;
+    
+    .ui-grid-item {
+      break-inside: avoid;
+      margin-bottom: 1em;
+      box-shadow: none;
+      border: 1px solid #ccc;
+      
+      .ui-resize-handle {
+        display: none;
+      }
+    }
+  }
+}
+
+

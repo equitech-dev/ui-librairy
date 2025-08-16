@@ -1,137 +1,121 @@
 @use '../tools/_sass_variables.scss' as v;
-@use '../tools/_mixins.scss' as mx;
-@use '../tools/_models.scss' as m;
+@use 'sass:color';
 
-.primary_button_s {
-  @include mx.setBtn();
-}
-.primary_button_m {
-  @include mx.setBtn($width:v.$btn_width_m);
-}
-.primary_button_l {
-  @include mx.setBtn($width:v.$btn_width_l);
-}
-.primary_button_s_reverse {
-  @include mx.setBtn($shadow_reverse:true);
-}
-.primary_button_m_reverse {
-  @include mx.setBtn($width:v.$btn_width_m, $shadow_reverse:true);
-}
-.primary_button_l_reverse {
-  @include mx.setBtn($width:v.$btn_width_l, $shadow_reverse:true);
-}
-
-.secondary_button_s {
-  @include mx.setBtn($width:v.$btn_width_s, $color:v.$black, $bg_color:v.$white, $shadow_color:v.$grey);
-}
-.secondary_button_m {
-  @include mx.setBtn($width:v.$btn_width_m, $color:v.$black, $bg_color:v.$white, $shadow_color:v.$grey);
-}
-.secondary_button_l {
-  @include mx.setBtn($width:v.$btn_width_l, $color:v.$black, $bg_color:v.$white, $shadow_color:v.$grey);
-}
-
-.secondary_button_s_reverse {
-  @include mx.setBtn($width: v.$btn_width_s, $color: v.$black, $bg_color: v.$white, $shadow_color: v.$grey, $shadow_reverse: true);
-}
-.secondary_button_m_reverse {
-  @include mx.setBtn($width:v.$btn_width_s, $color:v.$black, $bg_color:v.$white, $shadow_color:v.$grey, $shadow_reverse:true);
-}
-.secondary_button_l_reverse {
-  @include mx.setBtn($width:v.$btn_width_s, $color:v.$black, $bg_color:v.$white, $shadow_color:v.$grey, $shadow_reverse:true);
-}
-
-.secondary_button_s:active, .secondary_button_m:active, .secondary_button_l:active,
-.secondary_button_s_reverse:active, .secondary_button_m_reverse:active, .secondary_button_l_reverse:active {
-  color: v.$white;
-}
-
-.valid_button_s {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$valid_color, $shadow_color:#114E25);
-}
-.valid_button_m {
-  @include mx.setBtn(v.$btn_width_m, $bg_color:v.$valid_color, $shadow_color:#114E25);
-}
-.valid_button_l {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$valid_color, $shadow_color:#114E25);
-}
-.valid_button_s_reverse {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$valid_color, $shadow_color:#114E25, $shadow_reverse:true);
-}
-.valid_button_m_reverse {
-  @include mx.setBtn(v.$btn_width_m, $bg_color:v.$valid_color, $shadow_color:#114E25, $shadow_reverse:true);
-}
-.valid_button_l_reverse {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$valid_color, $shadow_color:#114E25, $shadow_reverse:true);
-}
-
-.info_button_s {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$info_color, $shadow_color:#274058);
-}
-.info_button_m {
-  @include mx.setBtn($width:v.$btn_width_m, $bg_color:v.$info_color, $shadow_color:#274058);
-}
-.info_button_l {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$info_color, $shadow_color:#274058);
-}
-.info_button_s_reverse {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$info_color, $shadow_color:#274058, $shadow_reverse:true);
-}
-.info_button_m_reverse {
-  @include mx.setBtn($width:v.$btn_width_m, $bg_color:v.$info_color, $shadow_color:#274058, $shadow_reverse:true);
-}
-.info_button_l_reverse {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$info_color, $shadow_color:#274058, $shadow_reverse:true);
-}
-
-.warning_button_s {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$warning_color, $shadow_color:#800000);
-}
-.warning_button_m {
-  @include mx.setBtn($width:v.$btn_width_m, $bg_color:v.$warning_color, $shadow_color:#800000);
-}
-.warning_button_l {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$warning_color, $shadow_color:#800000);
-}
-.warning_button_s_reverse {
-  @include mx.setBtn($width:v.$btn_width_s, $bg_color:v.$warning_color, $shadow_color:#800000, $shadow_reverse:true);
-}
-.warning_button_m_reverse {
-  @include mx.setBtn($width:v.$btn_width_m, $bg_color:v.$warning_color, $shadow_color:#800000, $shadow_reverse:true);
-}
-.warning_button_l_reverse {
-  @include mx.setBtn($width:v.$btn_width_l, $bg_color:v.$warning_color, $shadow_color:#800000, $shadow_reverse:true);
-}
-
-@media screen and (min-width:1025px) {
-  .primary_button_s:hover, .primary_button_m:hover, .primary_button_l:hover {
-    box-shadow: 3px 3px 0 v.$light_grey;
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: v.$radius_m;
+  font-family: v.$txt_font;
+  font-size: v.$size_txt_m;
+  font-weight: v.$txt_normal;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: v.$btn_height;
+  
+  &:hover {
+    transform: translateY(-1px);
   }
-  .primary_button_s_reverse:hover, .primary_button_m_reverse:hover, .primary_button_l_reverse:hover {
-    box-shadow: -3px 3px 0 v.$light_grey;
+  
+  &:active {
+    transform: translateY(0);
   }
-  .secondary_button_s:hover, .secondary_button_m:hover, .secondary_button_l:hover {
-    box-shadow: 3px 3px 0 v.$grey;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
   }
-  .secondary_button_s_reverse:hover, .secondary_button_m_reverse:hover, .secondary_button_l_reverse:hover {
-    box-shadow: 3px 3px 0 v.$grey;
+  
+  // Modèles de couleur
+  &.primary {
+    background: v.$primary_color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$primary_color, $lightness: -10%); 
+    }
   }
-  .valid_button_s:hover, .valid_button_m:hover, .valid_button_l:hover {
-    box-shadow: 3px 3px 0 #114E25;
+  
+  &.secondary {
+    background: v.$light_grey;
+    color: v.$black;
+    
+    &:hover { 
+      background: color.adjust(v.$light_grey, $lightness: -10%); 
+    }
   }
-  .valid_button_s_reverse:hover, .valid_button_m_reverse:hover, .valid_button_l_reverse:hover {
-    box-shadow: 3px 3px 0 #114E25;
+  
+  &.success {
+    background: v.$valid_color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$valid_color, $lightness: -10%); 
+    }
   }
-  .info_button_s:hover, .info_button_m:hover, .info_button_l:hover {
-    box-shadow: 3px 3px 0 #274058;
+  
+  &.info {
+    background: v.$info_color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$info_color, $lightness: -10%); 
+    }
   }
-  .info_button_s_reverse:hover, .info_button_m_reverse:hover, .info_button_l_reverse:hover {
-    box-shadow: 3px 3px 0 #274058;
+  
+  &.warning {
+    background: v.$warning_color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$warning_color, $lightness: -10%); 
+    }
   }
-  .warning_button_s:hover, .warning_button_m:hover, .warning_button_l:hover {
-    box-shadow: 3px 3px 0 #800000;
+  
+  // Tailles
+  &.s {
+    padding: 0.5rem 1rem;
+    font-size: v.$size_txt_s;
+    min-height: 32px;
   }
-  .warning_button_s_reverse:hover, .warning_button_m_reverse:hover, .warning_button_l_reverse:hover {
-    box-shadow: 3px 3px 0 #800000;
+  
+  &.l {
+    padding: 1rem 2rem;
+    font-size: v.$size_title_s;
+    min-height: 48px;
+  }
+  
+  // Variante outline
+  &.outline {
+    background: transparent;
+    border: 2px solid currentColor;
+    
+    &.primary {
+      color: v.$primary_color;
+      
+      &:hover {
+        background: v.$primary_color;
+        color: v.$white;
+      }
+    }
+    
+    &.secondary {
+      color: v.$light_grey;
+      
+      &:hover {
+        background: v.$light_grey;
+        color: v.$black;
+      }
+    }
+  }
+  
+  // Variante reverse
+  &.reverse {
+    flex-direction: row-reverse;
+    gap: 0.5rem;
   }
 } 

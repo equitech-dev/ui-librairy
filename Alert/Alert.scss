@@ -1,27 +1,33 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.alert {
-  padding: 1rem 1.5rem;
-  border-radius: v.$radius_s;
-  margin: 1rem 0;
-  font-size: v.$font_size_m;
-  font-weight: 500;
-  background: v.$light_grey;
-  color: v.$black;
+.ui-alert {
+  padding: 1rem;
+  border-radius: v.$radius_m;
+  margin-bottom: 1rem;
+  font-size: v.$size_txt_m;
+  border-left: 4px solid;
+  
   &.info {
-    background: v.$info_color;
-    color: v.$white;
+    background: rgba(v.$info_color, 0.1);
+    border-left-color: v.$info_color;
+    color: v.$info_color;
   }
+  
   &.success {
-    background: v.$valid_color;
-    color: v.$white;
+    background: rgba(v.$valid_color, 0.1);
+    border-left-color: v.$valid_color;
+    color: v.$valid_color;
   }
+  
   &.warning {
-    background: v.$warning_color;
-    color: v.$white;
+    background: rgba(v.$warning_color, 0.1);
+    border-left-color: v.$warning_color;
+    color: v.$warning_color;
   }
+  
   &.error {
-    background: v.$error_color;
-    color: v.$white;
+    background: rgba(v.$error_color, 0.1);
+    border-left-color: v.$error_color;
+    color: v.$error_color;
   }
 } 

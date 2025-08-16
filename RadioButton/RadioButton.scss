@@ -1,13 +1,46 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.radio_container {
+.ui-radio {
   display: flex;
   align-items: center;
-  gap: v.$flex_gap_s;
-
+  gap: 8px;
+  cursor: pointer;
+  
   input[type="radio"] {
     width: 18px;
     height: 18px;
-    accent-color: v.$info_color;
+    border: 2px solid v.$light_grey;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    accent-color: v.$primary_color;
+    
+    &:checked {
+      border-color: v.$primary_color;
+      background: radial-gradient(circle, v.$primary_color 0%, v.$primary_color 40%, transparent 40%);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: v.$primary_color;
+      box-shadow: 0 0 0 3px rgba(v.$primary_color, 0.1);
+    }
+    
+    &:disabled {
+      background-color: v.$light_grey;
+      border-color: v.$grey;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+  
+  label {
+    font-size: v.$size_txt_m;
+    color: v.$black;
+    cursor: pointer;
+    
+    &:hover {
+      color: v.$primary_color;
+    }
   }
 } 

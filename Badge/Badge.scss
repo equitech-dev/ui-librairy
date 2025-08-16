@@ -1,26 +1,41 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.badge {
+.ui-badge {
   display: inline-block;
-  padding: 0.25em 0.75em;
+  padding: 0.25rem 0.5rem;
   border-radius: v.$radius_s;
-  font-size: 0.85em;
-  font-weight: 600;
-  background: v.$grey;
-  color: v.$white;
+  font-size: v.$size_txt_s;
+  font-weight: v.$txt_semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
   &.default {
-    background: v.$grey;
+    background: v.$light_grey;
+    color: v.$black;
   }
+  
+  &.primary {
+    background: v.$primary_color;
+    color: v.$white;
+  }
+  
   &.success {
     background: v.$valid_color;
+    color: v.$white;
   }
+  
   &.warning {
     background: v.$warning_color;
+    color: v.$white;
   }
+  
   &.error {
     background: v.$error_color;
+    color: v.$white;
   }
+  
   &.info {
     background: v.$info_color;
+    color: v.$white;
   }
 } 

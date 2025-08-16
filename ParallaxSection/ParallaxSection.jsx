@@ -1,63 +1,39 @@
-'use client';
-import React, { useRef, useEffect } from 'react';
+"use client";
+import React, { useEffect, useRef } from 'react';
 
-/**
- * Composant ParallaxSection générique (librairie)
- * Props :
- * - bgSrc (string, requis) : image de fond
- * - backgroundStartPercent (number, défaut 100)
- * - maxShift (number, défaut 30)
- * - minHeight (number, défaut 600)
- * - customClasses (string, optionnel)
- * - backgroundSize (string, défaut 'cover')
- * - children (ReactNode, requis)
- */
-const ParallaxSection = ({
-  bgSrc,
-  backgroundStartPercent = 100,
-  maxShift = 30,
-  minHeight = 600,
-  customClasses = '',
-  backgroundSize = 'cover',
-  children,
+const ParallaxSection = ({ 
+  children, 
+  speed = 0.5, 
+  className = '', 
+  style = {}, 
+  'aria-label': ariaLabel,
+  ...props 
 }) => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
     const handleScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const scrollRatio = (windowHeight - rect.top) / windowHeight;
-      const backgroundY = backgroundStartPercent + -scrollRatio * maxShift;
-      el.style.backgroundPosition = `center ${backgroundY}%`;
+      if (!sectionRef.current) return;
+      
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -speed;
+      
+      sectionRef.current.style.transform = `translateY(${rate}px)`;
     };
 
-    handleScroll();
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [backgroundStartPercent, maxShift]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [speed]);
 
+  const customClasses = className || '';
+  
   return (
     <section
       ref={sectionRef}
-      className={`${styles.parallaxSection || ''} ${customClasses}`.trim()}
-      style={{
-        backgroundImage: `url(${bgSrc})`,
-        backgroundSize,
-        backgroundRepeat: 'no-repeat',
-        minHeight,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
+      className={`ui-parallaxSection ${customClasses}`.trim()}
+      style={style}
+      aria-label={ariaLabel}
+      {...props}
     >
       {children}
     </section>

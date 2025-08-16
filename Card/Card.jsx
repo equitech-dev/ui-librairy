@@ -8,10 +8,10 @@ import React from "react";
  * - style : style inline additionnel
  * - ...props: props natifs (aria-*, tabIndex, ref, etc.)
  */
-const Card = React.forwardRef(({ children, className = '', style = {}, ...props }, ref) => (
-  <div ref={ref} className={`card_container ${className}`} style={style} {...props}>
+const Card = ({ children, className = '', style = {}, 'aria-label': ariaLabel, ...props }) => (
+  <div className={`ui-card ${className}`} style={style} aria-label={ariaLabel} {...props}>
     {children}
   </div>
-));
-Card.displayName = 'Card';
+);
+
 export { Card }; 

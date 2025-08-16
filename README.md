@@ -10,6 +10,7 @@
    - :baby: [Composants de base](#baby-composants-de-base)
    - :older_man: [Composants avancés](#olderman-composants-avancés)
  - :rocket: [Installation et déploiement](#rocket-installation-et-déploiement)
+ - :art: [Système de design](#art-système-de-design)
  - :muscle: [Bonnes pratiques](#muscle-bonnes-pratiques)
 
 ---
@@ -94,7 +95,7 @@ npm run build
 - :link: [Header](/ui-library/Header/README.md) - En-tête universel et personnalisable
 - :link: [Footer](/ui-library/Footer/README.md) - Pied de page universel
 - :link: [Section](/ui-library/Section/README.md) - Section de contenu avec espacement
-- :link: [Grid](/ui-library/Grid/README.md) - Système de grille responsive
+- :link: [Grid](/ui-library/Grid/README.md) - Système de grille responsive avec fonctionnalités avancées (drag & drop, resize, repositionnement intelligent)
 - :link: [Modal](/ui-library/Modal/README.md) - Fenêtre modale accessible
 - :link: [Alert](/ui-library/Alert/README.md) - Message d'alerte contextuel
 - :link: [Badge](/ui-library/Badge/README.md) - Badge d'information
@@ -137,25 +138,221 @@ npm run compile-sass
 
 ---
 
+## :art: Système de design
+
+### 🎨 Classes CSS avec préfixe `ui-`
+
+Tous les composants utilisent le préfixe `ui-` pour éviter les conflits de noms dans les projets consommateurs :
+
+```scss
+// Exemples de classes
+.ui-button { /* ... */ }
+.ui-button.primary { /* ... */ }
+.ui-button.s { /* ... */ }
+
+.ui-input { /* ... */ }
+.ui-input:focus { /* ... */ }
+
+.ui-modal { /* ... */ }
+.ui-overlay { /* ... */ }
+```
+
+### 🎯 Variables SASS disponibles
+
+```scss
+// Couleurs principales
+$primary_color: #0070f3;
+$secondary_color: #242323;
+$valid_color: #36A12D;
+$warning_color: #BF3232;
+$info_color: #5E8CB7;
+$error_color: #D32F2F;
+
+// Couleurs neutres
+$white: #FCFFFF;
+$light_grey: #989898;
+$grey: #595959;
+$black: #242323;
+
+// Tailles de police
+$size_txt_xs: 0.75em;  // Très petit texte
+$size_txt_s: 0.9em;    // Petit texte
+$size_txt_m: 1em;      // Texte standard
+$size_title_s: 1.4em;  // Petit titre
+$size_title_m: 1.6em;  // Titre moyen
+$size_title_l: 1.8em;  // Grand titre
+
+// Espacements
+$flex_gap_s: 10px;
+$flex_gap: 20px;
+$flex_gap_l: 50px;
+
+// Rayons de bordure
+$radius_s: 4px;
+$radius_m: 8px;
+```
+
+### 🎨 Classes utilitaires (generic.scss)
+
+#### **Display & Positioning**
+```scss
+.ui-block { display: block; }
+.ui-flex { display: flex; }
+.ui-grid { display: grid; }
+.ui-none { display: none; }
+
+.ui-absolute { position: absolute; }
+.ui-relative { position: relative; }
+.ui-fixed { position: fixed; }
+.ui-sticky { position: sticky; }
+
+.ui-top-0, .ui-bottom-0, .ui-left-0, .ui-right-0 { /* positioning */ }
+.ui-transform-center { transform: translate(-50%, -50%); }
+```
+
+#### **Sizing & Overflow**
+```scss
+.ui-w-100 { width: 100%; }
+.ui-w-fit { width: fit-content; }
+.ui-h-auto { height: auto; }
+
+.ui-overflow-hidden { overflow: hidden; }
+.ui-overflow-auto { overflow: auto; }
+.ui-overflow-x-auto { overflow-x: auto; }
+```
+
+#### **Flexbox & Grid**
+```scss
+.ui-flex-col { flex-direction: column; }
+.ui-flex-row { flex-direction: row; }
+.ui-flex-wrap { flex-wrap: wrap; }
+
+.ui-justify-center { justify-content: center; }
+.ui-justify-between { justify-content: space-between; }
+.ui-items-center { align-items: center; }
+
+.ui-gap-s { gap: 10px; }
+.ui-gap-m { gap: 20px; }
+.ui-gap-l { gap: 50px; }
+
+.ui-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.ui-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+```
+
+#### **Visual Styles**
+```scss
+.ui-rounded { border-radius: 2000px; }
+.ui-rounded-s { border-radius: 4px; }
+.ui-rounded-m { border-radius: 8px; }
+
+.ui-border-none { border: none; }
+.ui-border-s { border: 1px solid #595959; }
+.ui-border-top { border-top: 1px solid #595959; }
+
+.ui-shadow { box-shadow: 0 10px 20px #0000000d; }
+```
+
+#### **Backgrounds & Colors**
+```scss
+.ui-bg-white { background: #FCFFFF; }
+.ui-bg-black { background: #242323; }
+.ui-bg-primary { background: #0070f3; }
+.ui-bg-success { background: #36A12D; }
+.ui-bg-warning { background: #BF3232; }
+.ui-bg-error { background: #D32F2F; }
+
+.ui-text-white { color: #FCFFFF; }
+.ui-text-black { color: #242323; }
+.ui-text-primary { color: #0070f3; }
+.ui-text-success { color: #36A12D; }
+```
+
+#### **Typography**
+```scss
+.ui-font-normal { font-weight: 400; }
+.ui-font-semibold { font-weight: 600; }
+.ui-font-bold { font-weight: 800; }
+
+.ui-text-center { text-align: center; }
+.ui-text-left { text-align: left; }
+.ui-text-right { text-align: end; }
+
+.ui-text-xs { font-size: 0.75em; }
+.ui-text-s { font-size: 0.9em; }
+.ui-text-m { font-size: 1em; }
+.ui-title-s { font-size: 1.4em; }
+.ui-title-m { font-size: 1.6em; }
+.ui-title-l { font-size: 1.8em; }
+```
+
+#### **Spacing & Interactivity**
+```scss
+.ui-m-0 { margin: 0; }
+.ui-p-0 { padding: 0; }
+.ui-p-s { padding: 5px; }
+
+.ui-cursor-pointer { cursor: pointer; }
+.ui-opacity-50 { opacity: 50%; }
+
+.ui-z-1, .ui-z-2, .ui-z-3, .ui-z-10, .ui-z-100, .ui-z-1000 { /* z-index */ }
+```
+
+#### **Responsive Utilities**
+```scss
+.ui-tablet-hidden { display: none; } /* @media (425px <= width <= 1024px) */
+.ui-desktop-hidden { display: none; } /* @media (width >= 1025px) */
+```
+
+#### **Accessibility**
+```scss
+.ui-sr-only {
+  /* Screen reader only - masque visuellement mais accessible aux lecteurs d'écran */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+### 📱 Responsive Design
+
+```scss
+// Breakpoints
+@media screen and (425px <= width <= 1024px) {
+  // Styles tablette
+}
+
+@media screen and (width >= 1025px) {
+  // Styles desktop
+}
+```
+
+---
+
 ## :muscle: Bonnes pratiques
 - **Ne pas ajouter de logique métier dans la librairie**
-- **Préfixer les classes** pour éviter les collisions
+- **Utiliser le préfixe `ui-`** pour toutes les classes CSS
 - **Documenter la distinction générique/métier**
-- **Utiliser CSS Modules stricts en React**
-- **Utiliser le global uniquement pour HTML natif/JS**
-- **Utiliser les utilitaires et styles de base centralisés**
+- **Utiliser les variables SASS** pour la cohérence
 - **Respecter l'accessibilité** (ARIA, navigation clavier, lecteurs d'écran)
 - **Tester sur tous les breakpoints** (mobile first)
+- **Utiliser les classes utilitaires** de `generic.scss` quand possible
 
 ---
 
 ## 📝 Contribution
 - Ajoutez un nouveau composant dans un dossier dédié avec :
   - `MonComposant.jsx`
-  - `MonComposant.module.scss`
+  - `MonComposant.scss`
   - `README.md`
 - Documentez systématiquement l'API et l'accessibilité
 - Ajoutez l'import dans `index.scss` si le composant est universel
+- Utilisez le préfixe `ui-` pour toutes les classes CSS
 
 ---
 

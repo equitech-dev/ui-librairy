@@ -7,10 +7,10 @@ import React from "react";
  * - style : style inline additionnel
  * - ...props: props natifs (aria-*, tabIndex, ref, etc.)
  */
-const Grid = React.forwardRef(({ children, className = '', style = {}, ...props }, ref) => (
-  <div ref={ref} className={`grid_container ${className}`} style={style} {...props}>
+const Grid = ({ children, className = '', style = {}, 'aria-label': ariaLabel, ...props }) => (
+  <div className={`ui-grid ${className}`} style={style} aria-label={ariaLabel} {...props}>
     {children}
   </div>
-));
-Grid.displayName = 'Grid';
+);
+
 export { Grid }; 

@@ -13,9 +13,9 @@ const Modal = ({ open, onClose, children, className = '', style = {}, 'aria-labe
 
   if (!open) return null;
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className="ui-overlay" onClick={onClose}>
       <div
-        className={`${styles.modal} ${className}`}
+        className={`ui-modal ${className}`}
         style={style}
         role="dialog"
         aria-modal="true"
@@ -24,7 +24,7 @@ const Modal = ({ open, onClose, children, className = '', style = {}, 'aria-labe
         {...props}
       >
         {children}
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Fermer">×</button>
+        <button className="ui-closeBtn" onClick={onClose} aria-label="Fermer">×</button>
       </div>
     </div>
   );

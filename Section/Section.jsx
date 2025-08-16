@@ -8,12 +8,12 @@ import React from "react";
  * - style: style inline additionnel
  * - ...props: props natifs (aria-*, tabIndex, ref, etc.)
  */
-const Section = React.forwardRef(({ children, className = '', style = {}, ...props }, ref) => {
+const Section = ({ children, className = '', style = {}, 'aria-label': ariaLabel, ...props }) => {
   return (
-    <section ref={ref} className={`${styles['lib-section']} ${className}`} style={style} {...props}>
+    <section className={`ui-section ${className}`} style={style} aria-label={ariaLabel} {...props}>
       {children}
     </section>
   );
-});
-Section.displayName = 'Section';
+};
+
 export { Section }; 

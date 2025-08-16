@@ -12,17 +12,38 @@ import React from "react";
  * - style: style inline additionnel
  * - ...props: props natifs (aria-*, tabIndex, ref, etc.)
  */
-const Button = React.forwardRef(({ model = 'primary', size = 'm', reverse = false, children, onClick, className = '', style = {}, ...props }, ref) => {
+const Button = React.forwardRef(({ 
+  model = 'primary', 
+  size = 'm', 
+  reverse = false, 
+  children, 
+  onClick, 
+  className = '', 
+  style = {}, 
+  disabled = false,
+  ...props 
+}, ref) => {
   const classNames = [
-    `${model}_button_${size}${reverse ? '_reverse' : ''}`,
+    'ui-button',
+    model,
+    size,
+    reverse ? 'reverse' : '',
     className
-  ].join(' ');
+  ].filter(Boolean).join(' ');
 
   return (
-    <button ref={ref} className={classNames} style={style} onClick={onClick} {...props}>
+    <button 
+      ref={ref} 
+      className={classNames} 
+      style={style} 
+      onClick={onClick} 
+      disabled={disabled}
+      {...props}
+    >
       {children}
     </button>
   );
 });
+
 Button.displayName = 'Button';
 export { Button }; 

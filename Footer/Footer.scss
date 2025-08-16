@@ -1,32 +1,52 @@
 @use '../tools/_sass_variables.scss' as v;
-@use '../tools/_mixins.scss' as mx;
-@use '../tools/_models.scss' as m;
 
-.lib-footer {
-  @include mx.setSize(100%,auto);
-  background: url("/img/dark_bg_scratched.png") no-repeat;
-  background-size: cover;
-
-  .list_container {
-    padding: 5%;
-
-    div {
-      width: 50%;
+.ui-footer {
+  background: v.$black;
+  color: v.$white;
+  padding: 3rem 0 1rem;
+  
+  .ui-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .ui-footer-section {
+    h3 {
       color: v.$white;
-
-      h3 {
-        text-align: center;
-      }
-      ul {
-
-        li {
-          list-style: none;
-          font-size: v.$size_txt_s;
+      margin-bottom: 1rem;
+      font-size: v.$size_title_s;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        margin-bottom: 0.5rem;
+        
+        a {
+          color: v.$light_grey;
+          text-decoration: none;
+          transition: color 0.2s ease;
+          
+          &:hover {
+            color: v.$white;
+          }
         }
       }
     }
   }
-  p.footer_banner {
-    background: v.$light-grey;
+  
+  .ui-footer-bottom {
+    border-top: 1px solid v.$grey;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    text-align: center;
+    color: v.$light_grey;
+    font-size: v.$size_txt_s;
   }
 } 

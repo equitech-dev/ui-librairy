@@ -1,4 +1,43 @@
-.parallaxSection {
-  width: 100%;
-  box-sizing: border-box;
+@use '../tools/_sass_variables.scss' as v;
+
+.ui-parallaxSection {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  
+  // Optimisation des performances
+  transform: translateZ(0);
+  
+  // Variante avec arrière-plan
+  &.with-background {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  // Variante avec overlay
+  &.with-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  // Contenu au-dessus de l'overlay
+  &.with-overlay > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// Réduction de mouvement pour l'accessibilité
+@media (prefers-reduced-motion: reduce) {
+  .ui-parallaxSection {
+    transform: none !important;
+  }
 } 

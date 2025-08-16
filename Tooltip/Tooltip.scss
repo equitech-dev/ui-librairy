@@ -1,39 +1,46 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.wrapper {
+.ui-wrapper {
   position: relative;
   display: inline-block;
 }
 
-.tooltip {
+.ui-tooltip {
   position: absolute;
-  z-index: 10;
   background: v.$black;
   color: v.$white;
-  padding: 0.5em 1em;
+  padding: 0.5rem 0.75rem;
   border-radius: v.$radius_s;
-  font-size: 0.9em;
+  font-size: v.$size_txt_s;
   white-space: nowrap;
-  opacity: 0.95;
-  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
   &.top {
-    left: 50%;
     bottom: 100%;
-    transform: translateX(-50%) translateY(-0.5em);
-  }
-  &.right {
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%) translateX(0.5em);
-  }
-  &.bottom {
     left: 50%;
-    top: 100%;
-    transform: translateX(-50%) translateY(0.5em);
+    transform: translateX(-50%);
+    margin-bottom: 0.5rem;
   }
+  
+  &.bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0.5rem;
+  }
+  
   &.left {
     right: 100%;
     top: 50%;
-    transform: translateY(-50%) translateX(-0.5em);
+    transform: translateY(-50%);
+    margin-right: 0.5rem;
+  }
+  
+  &.right {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0.5rem;
   }
 } 

@@ -1,17 +1,16 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 
-/**
- * Carousel générique, sans dépendance externe.
- * Props :
- * - items : array
- * - renderItem : (item, i) => ReactNode
- * - autoPlay : bool
- * - interval : ms
- * - arrows : bool
- * - dots : bool
- */
-export default function Carousel({ items = [], renderItem, autoPlay = false, interval = 4000, arrows = true, dots = true }) {
+export default function Carousel({ 
+  items = [], 
+  renderItem, 
+  autoPlay = false, 
+  interval = 4000, 
+  arrows = true, 
+  dots = true,
+  className = '',
+  'aria-label': ariaLabel = 'Carrousel d\'images'
+}) {
   const [index, setIndex] = useState(0);
   const timer = useRef();
 
@@ -27,8 +26,8 @@ export default function Carousel({ items = [], renderItem, autoPlay = false, int
   const goTo = i => setIndex((i + items.length) % items.length);
 
   return (
-    <div className="ui-library-carousel">
-      <div className="carousel-track" style={{ transform: `translateX(-${index * 100}%)` }}>
+    <div className={`ui-carousel ${className}`} aria-label={ariaLabel}>
+      <div className="ui-carousel-track" style={{ transform: `translateX(-${index * 100}%)` }}>
         {items.map((item, i) => (
           <div key={i} style={{ minWidth: '100%' }}>
             {renderItem ? renderItem(item, i) : item}
@@ -37,14 +36,31 @@ export default function Carousel({ items = [], renderItem, autoPlay = false, int
       </div>
       {arrows && (
         <>
-          <button className="carousel-arrow left" onClick={() => goTo(index - 1)}>‹</button>
-          <button className="carousel-arrow right" onClick={() => goTo(index + 1)}>›</button>
+          <button 
+            className="ui-carousel-arrow ui-carousel-arrow-left" 
+            onClick={() => goTo(index - 1)}
+            aria-label="Image précédente"
+          >
+            ‹
+          </button>
+          <button 
+            className="ui-carousel-arrow ui-carousel-arrow-right" 
+            onClick={() => goTo(index + 1)}
+            aria-label="Image suivante"
+          >
+            ›
+          </button>
         </>
       )}
       {dots && (
-        <div className="carousel-dot-group">
+        <div className="ui-carousel-dots">
           {items.map((_, i) => (
-            <button key={i} className={`carousel-dot${i === index ? ' active' : ''}`} onClick={() => goTo(i)} />
+            <button 
+              key={i} 
+              className={`ui-carousel-dot${i === index ? ' ui-carousel-dot-active' : ''}`} 
+              onClick={() => goTo(i)}
+              aria-label={`Aller à l'image ${i + 1}`}
+            />
           ))}
         </div>
       )}

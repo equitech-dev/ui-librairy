@@ -2,21 +2,17 @@
 
 import React from 'react';
 
-const Input = React.forwardRef(({ type = 'text', value, onChange, placeholder, disabled, className = '', style = {}, 'aria-label': ariaLabel, ...props }, ref) => (
+const Input = ({ type = 'text', value, onChange, placeholder, className = '', disabled = false, 'aria-label': ariaLabel, ...props }) => (
   <input
-    ref={ref}
     type={type}
     value={value}
     onChange={onChange}
     placeholder={placeholder}
+    className={`ui-input ${className}`}
     disabled={disabled}
-    className={`${styles.input} ${className}`}
-    style={style}
     aria-label={ariaLabel}
     {...props}
   />
-));
-
-Input.displayName = 'Input';
+);
 
 export default Input; 

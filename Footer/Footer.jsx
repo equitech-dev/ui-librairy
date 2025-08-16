@@ -1,19 +1,12 @@
 "use client";
 import React from "react";
 
-/**
- * Props :
- * - children: contenu du footer (liens, logos, etc.)
- * - className: classes CSS additionnelles
- * - style: style inline additionnel
- * - ...props: props natifs (aria-*, tabIndex, ref, etc.)
- */
-const Footer = React.forwardRef(({ children, className = '', style = {}, ...props }, ref) => {
+const Footer = ({ children, className = '', style = {}, 'aria-label': ariaLabel, ...props }) => {
   return (
-    <footer ref={ref} className={`${styles['lib-footer']} ${className}`} style={style} {...props}>
+    <footer className={`ui-footer ${className}`} style={style} aria-label={ariaLabel} {...props}>
       {children}
     </footer>
   );
-});
-Footer.displayName = 'Footer';
+};
+
 export { Footer }; 

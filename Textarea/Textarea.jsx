@@ -1,20 +1,17 @@
 "use client";
 import React from 'react';
 
-const Textarea = React.forwardRef(({ value, onChange, placeholder, disabled, className = '', style = {}, 'aria-label': ariaLabel, ...props }, ref) => (
+const Textarea = ({ value, onChange, placeholder, rows = 4, className = '', disabled = false, 'aria-label': ariaLabel, ...props }) => (
   <textarea
-    ref={ref}
     value={value}
     onChange={onChange}
     placeholder={placeholder}
+    rows={rows}
+    className={`ui-textarea ${className}`}
     disabled={disabled}
-    className={`${styles.textarea} ${className}`}
-    style={style}
     aria-label={ariaLabel}
     {...props}
   />
-));
-
-Textarea.displayName = 'Textarea';
+);
 
 export default Textarea; 
