@@ -11,7 +11,7 @@ Section universelle, personnalisable et accessible.
 
 ## Exemple
 ```jsx
-import { Section } from 'ui-library/Section';
+import { Section } from '@equitech/ui-library';
 
 <Section
   className="my-section"

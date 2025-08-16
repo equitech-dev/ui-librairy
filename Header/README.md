@@ -11,7 +11,7 @@ En-tête universel, personnalisable et accessible.
 
 ## Exemple
 ```jsx
-import { Header } from 'ui-library/Header';
+import { Header } from '@equitech/ui-library';
 
 <Header
   className="my-header"

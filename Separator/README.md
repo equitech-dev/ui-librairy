@@ -10,7 +10,7 @@ Séparateur universel, personnalisable et accessible.
 
 ## Exemple
 ```jsx
-import { Separator } from 'ui-library/Separator';
+import { Separator } from '@equitech/ui-library';
 
 <Separator
   className="my-separator"

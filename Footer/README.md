@@ -11,7 +11,7 @@ Pied de page universel, personnalisable et accessible.
 
 ## Exemple
 ```jsx
-import { Footer } from 'ui-library/Footer';
+import { Footer } from '@equitech/ui-library';
 
 <Footer
   className="my-footer"

@@ -5,7 +5,7 @@ Composant carousel générique, sans dépendance externe.
 ## Utilisation
 
 ```jsx
-import Carousel from 'ui-library/Carousel';
+import { Carousel } from '@equitech/ui-library';
 
 <Carousel items={[...]} renderItem={(item) => <img src={item.src} alt={item.alt} />} autoPlay arrows dots />
 ```

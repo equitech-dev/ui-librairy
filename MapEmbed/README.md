@@ -5,7 +5,7 @@ Composant générique pour intégrer une carte (Google Maps, OpenStreetMap, etc.
 ## Utilisation
 
 ```jsx
-import MapEmbed from 'ui-library/MapEmbed';
+import { MapEmbed } from '@equitech/ui-library';
 
 <MapEmbed src="https://www.google.com/maps/embed?..." height={400} />
 ```
