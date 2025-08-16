@@ -8,11 +8,12 @@
     "index.js",
     "index.css",
     "index.css.map",
-    "**/*.jsx"
+    "**/*.js"
   ],
   "scripts": {
     "compile-sass": "sass index.scss:index.css",
-    "build": "npm run compile-sass",
+    "build": "npm run compile-sass && npm run compile-jsx",
+    "compile-jsx": "babel . --out-dir . --extensions .jsx,.js --ignore node_modules",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -37,6 +38,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
     "sass": "^1.90.0"
   }
 }
