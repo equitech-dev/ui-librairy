@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 
 /**
  * AdvancedGrid - Grid component with drag & drop, resize, and intelligent repositioning
@@ -61,9 +61,9 @@ const AdvancedGrid = ({
     SIDE_SEARCH_RANGE: 3
   };
 
-  // Grid utilities
-  const GridUtils = {
-    getMetrics: useCallback(() => {
+  // Grid utilities - using useRef to prevent recreation on every render
+  const GridUtils = useRef({
+    getMetrics: () => {
       if (!gridRef.current) return null;
       
       const grid = gridRef.current;
@@ -77,14 +77,14 @@ const AdvancedGrid = ({
       const rect = grid.getBoundingClientRect();
       
       return { cols, colWidth, rowHeight: computedRowHeight, gapX, gapY, rect };
-    }, []),
+    },
 
-    applyStyles: useCallback((element, newState) => {
+    applyStyles: (element, newState) => {
       element.style.gridColumn = `${newState.col} / span ${newState.w}`;
       element.style.gridRow = `${newState.row} / span ${newState.h}`;
-    }, []),
+    },
 
-    mouseToCell: useCallback((clientX, clientY) => {
+    mouseToCell: (clientX, clientY) => {
       if (!gridMetrics) return { col: 1, row: 1 };
       
       const { colWidth, rowHeight, gapX, gapY, rect } = gridMetrics;
@@ -97,32 +97,32 @@ const AdvancedGrid = ({
       const row = Math.max(1, Math.floor(y / strideY) + 1);
       
       return { col, row };
-    }, [gridMetrics])
-  };
+    }
+  }).current;
 
-  // Element state management
-  const ElementState = {
-    get: useCallback((element) => {
+  // Element state management - using useRef to prevent recreation on every render
+  const ElementState = useRef({
+    get: (element) => {
       return {
         col: +element.dataset.col,
         row: +element.dataset.row,
         w: +element.dataset.w || 1,
         h: +element.dataset.h || 1
       };
-    }, []),
+    },
 
-    set: useCallback((element, newState) => {
+    set: (element, newState) => {
       element.dataset.col = newState.col;
       element.dataset.row = newState.row;
       element.dataset.w = newState.w;
       element.dataset.h = newState.h;
       GridUtils.applyStyles(element, newState);
-    }, [GridUtils])
-  };
+    }
+  }).current;
 
-  // Collision detection
-  const CollisionDetector = {
-    hasOverlap: useCallback((element, state) => {
+  // Collision detection - using useRef to prevent recreation on every render
+  const CollisionDetector = useRef({
+    hasOverlap: (element, state) => {
       if (!gridRef.current) return false;
       
       const otherItems = gridRef.current.querySelectorAll(".ui-grid-item");
@@ -131,141 +131,148 @@ const AdvancedGrid = ({
         if (other === element) continue;
         
         const otherState = ElementState.get(other);
-        if (this._isOverlapping(state, otherState)) {
+        if (CollisionDetector._isOverlapping(state, otherState)) {
           return true;
         }
       }
       
       return false;
-    }, []),
+    },
 
-    _isOverlapping: useCallback((state1, state2) => {
+    _isOverlapping: (state1, state2) => {
       return !(state1.col + state1.w <= state2.col ||
               state2.col + state2.w <= state1.col ||
               state1.row + state1.h <= state2.row ||
               state2.row + state2.h <= state1.row);
-    }, [])
-  };
+    }
+  }).current;
 
   // Position finding algorithms (only if advanced collision detection is enabled)
-  const PositionFinder = collisionDetection === "advanced" ? {
-    findNearestFree: useCallback((element, desiredState) => {
-      if (!gridMetrics) return desiredState;
-      
-      const { cols } = gridMetrics;
-      
-      // Try exact position first
-      if (!CollisionDetector.hasOverlap(element, desiredState)) {
-        return desiredState;
-      }
-      
-      // Search for nearest available position
-      for (let row = Math.max(1, desiredState.row); row <= CONSTANTS.MAX_ROW; row++) {
-        for (let col = 1; col <= cols - desiredState.w + 1; col++) {
-          const trialState = { ...desiredState, col, row };
-          if (!CollisionDetector.hasOverlap(element, trialState)) {
-            return trialState;
+  const PositionFinder = useMemo(() => {
+    if (collisionDetection !== "advanced") return null;
+    
+    return {
+      findNearestFree: (element, desiredState) => {
+        if (!gridMetrics) return desiredState;
+        
+        const { cols } = gridMetrics;
+        
+        // Try exact position first
+        if (!CollisionDetector.hasOverlap(element, desiredState)) {
+          return desiredState;
+        }
+        
+        // Search for nearest available position
+        for (let row = Math.max(1, desiredState.row); row <= CONSTANTS.MAX_ROW; row++) {
+          for (let col = 1; col <= cols - desiredState.w + 1; col++) {
+            const trialState = { ...desiredState, col, row };
+            if (!CollisionDetector.hasOverlap(element, trialState)) {
+              return trialState;
+            }
           }
         }
-      }
-      
-      // Fallback: push to bottom
-      return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
-    }, [gridMetrics, CollisionDetector]),
+        
+        // Fallback: push to bottom
+        return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
+      },
 
-    findBestPosition: useCallback((item, desiredState) => {
-      if (!CollisionDetector.hasOverlap(item, desiredState)) {
-        return desiredState;
-      }
-      
-      const { cols } = gridMetrics;
-      const strategies = [
-        // Priority 1: Try going up
-        { 
-          start: Math.max(1, desiredState.row - CONSTANTS.SEARCH_RANGE), 
-          end: desiredState.row - 1, 
-          direction: 'up' 
-        },
-        // Priority 2: Try sideways
-        { 
-          start: desiredState.row, 
-          end: desiredState.row, 
-          direction: 'side' 
-        },
-        // Priority 3: Try going down
-        { 
-          start: desiredState.row + 1, 
-          end: Math.min(CONSTANTS.MAX_ROW, desiredState.row + CONSTANTS.SEARCH_RANGE), 
-          direction: 'down' 
+      findBestPosition: (item, desiredState) => {
+        if (!CollisionDetector.hasOverlap(item, desiredState)) {
+          return desiredState;
         }
-      ];
-      
-      for (const strategy of strategies) {
-        for (let row = strategy.start; row <= strategy.end; row++) {
-          if (row < 1 || row > CONSTANTS.MAX_ROW) continue;
-          
-          if (strategy.direction === 'side') {
-            // Try left first
-            for (let col = Math.max(1, desiredState.col - CONSTANTS.SIDE_SEARCH_RANGE); col <= desiredState.col; col++) {
-              if (col + desiredState.w - 1 > cols) continue;
-              const trial = { ...desiredState, col, row };
-              if (!CollisionDetector.hasOverlap(item, trial)) {
-                return trial;
+        
+        const { cols } = gridMetrics;
+        const strategies = [
+          // Priority 1: Try going up
+          { 
+            start: Math.max(1, desiredState.row - CONSTANTS.SEARCH_RANGE), 
+            end: desiredState.row - 1, 
+            direction: 'up' 
+          },
+          // Priority 2: Try sideways
+          { 
+            start: desiredState.row, 
+            end: desiredState.row, 
+            direction: 'side' 
+          },
+          // Priority 3: Try going down
+          { 
+            start: desiredState.row + 1, 
+            end: Math.min(CONSTANTS.MAX_ROW, desiredState.row + CONSTANTS.SEARCH_RANGE), 
+            direction: 'down' 
+          }
+        ];
+        
+        for (const strategy of strategies) {
+          for (let row = strategy.start; row <= strategy.end; row++) {
+            if (row < 1 || row > CONSTANTS.MAX_ROW) continue;
+            
+            if (strategy.direction === 'side') {
+              // Try left first
+              for (let col = Math.max(1, desiredState.col - CONSTANTS.SIDE_SEARCH_RANGE); col <= desiredState.col; col++) {
+                if (col + desiredState.w - 1 > cols) continue;
+                const trial = { ...desiredState, col, row };
+                if (!CollisionDetector.hasOverlap(item, trial)) {
+                  return trial;
+                }
               }
-            }
-            // Try right
-            for (let col = desiredState.col + 1; col <= Math.min(cols - desiredState.w + 1, desiredState.col + CONSTANTS.SIDE_SEARCH_RANGE); col++) {
-              const trial = { ...desiredState, col, row };
-              if (!CollisionDetector.hasOverlap(item, trial)) {
-                return trial;
+              // Try right
+              for (let col = desiredState.col + 1; col <= Math.min(cols - desiredState.w + 1, desiredState.col + CONSTANTS.SIDE_SEARCH_RANGE); col++) {
+                const trial = { ...desiredState, col, row };
+                if (!CollisionDetector.hasOverlap(item, trial)) {
+                  return trial;
+                }
               }
-            }
-          } else {
-            // Try all columns for up/down
-            for (let col = 1; col <= cols - desiredState.w + 1; col++) {
-              const trial = { ...desiredState, col, row };
-              if (!CollisionDetector.hasOverlap(item, trial)) {
-                return trial;
+            } else {
+              // Try all columns for up/down
+              for (let col = 1; col <= cols - desiredState.w + 1; col++) {
+                const trial = { ...desiredState, col, row };
+                if (!CollisionDetector.hasOverlap(item, trial)) {
+                  return trial;
+                }
               }
             }
           }
         }
+        
+        // Last resort: push down
+        return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
       }
-      
-      // Last resort: push down
-      return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
-    }, [gridMetrics, CollisionDetector])
-  } : null;
+    };
+  }, [collisionDetection, gridMetrics, CollisionDetector]);
 
   // Repositioning strategies (only if autoReposition is enabled)
-  const RepositioningStrategy = autoReposition ? {
-    forResize: useCallback((element, targetState) => {
+  const RepositioningStrategy = useMemo(() => {
+    if (!autoReposition) return null;
+    
+    return {
+    forResize: (element, targetState) => {
       if (!gridRef.current || collisionDetection !== "advanced") return;
       
       const items = Array.from(gridRef.current.querySelectorAll(".ui-grid-item"));
       const repositionedItems = new Set();
       
       // First pass: reposition directly blocking items
-      this._repositionBlockingItems(element, targetState, items, repositionedItems);
+      RepositioningStrategy._repositionBlockingItems(element, targetState, items, repositionedItems);
       
       // Second pass: resolve overlaps between repositioned items
-      this._resolveOverlaps(element, items, repositionedItems);
-    }, [collisionDetection]),
+      RepositioningStrategy._resolveOverlaps(element, items, repositionedItems);
+    },
 
-    forDrop: useCallback((element, targetState) => {
+    forDrop: (element, targetState) => {
       if (!gridRef.current || collisionDetection !== "advanced") return;
       
       const items = Array.from(gridRef.current.querySelectorAll(".ui-grid-item"));
       const repositionedItems = new Set();
       
       // Reposition blocking items
-      this._repositionBlockingItems(element, targetState, items, repositionedItems);
+      RepositioningStrategy._repositionBlockingItems(element, targetState, items, repositionedItems);
       
       // Resolve overlaps
-      this._resolveOverlaps(element, items, repositionedItems);
-    }, [collisionDetection]),
+      RepositioningStrategy._resolveOverlaps(element, items, repositionedItems);
+    },
 
-    _repositionBlockingItems: useCallback((element, targetState, items, repositionedItems) => {
+    _repositionBlockingItems: (element, targetState, items, repositionedItems) => {
       if (!PositionFinder) return;
       
       for (const item of items) {
@@ -280,9 +287,9 @@ const AdvancedGrid = ({
           repositionedItems.add(item);
         }
       }
-    }, [PositionFinder, CollisionDetector, ElementState]),
+    },
 
-    _resolveOverlaps: useCallback((element, items, repositionedItems) => {
+    _resolveOverlaps: (element, items, repositionedItems) => {
       if (!PositionFinder) return;
       
       let hasOverlaps = true;
@@ -309,35 +316,40 @@ const AdvancedGrid = ({
           }
         }
       }
-    }, [PositionFinder, CollisionDetector, ElementState])
-  } : null;
+    }
+  };
+}, [autoReposition, collisionDetection, PositionFinder, CollisionDetector, ElementState]);
 
-  // Lock system
-  const LockSystem = lockSystem ? {
-    toggle: useCallback((element) => {
-      const isLocked = element.dataset.locked === "true";
-      element.dataset.locked = !isLocked;
-      
-      if (!isLocked) {
-        element.classList.add("ui-locked");
-        element.style.opacity = "0.7";
-        element.style.filter = "grayscale(20%)";
-      } else {
-        element.classList.remove("ui-locked");
-        element.style.opacity = "1";
-        element.style.filter = "none";
+  // Lock system - using useRef to prevent recreation on every render
+  const LockSystem = useMemo(() => {
+    if (!lockSystem) return null;
+    
+    return {
+      toggle: (element) => {
+        const isLocked = element.dataset.locked === "true";
+        element.dataset.locked = !isLocked;
+        
+        if (!isLocked) {
+          element.classList.add("ui-locked");
+          element.style.opacity = "0.7";
+          element.style.filter = "grayscale(20%)";
+        } else {
+          element.classList.remove("ui-locked");
+          element.style.opacity = "1";
+          element.style.filter = "none";
+        }
+        
+        // Call callback
+        if (onItemLock) {
+          onItemLock(element.dataset.id, !isLocked);
+        }
       }
-      
-      // Call callback
-      if (onItemLock) {
-        onItemLock(element.dataset.id, !isLocked);
-      }
-    }, [onItemLock])
-  } : null;
+    };
+  }, [lockSystem, onItemLock]);
 
-  // Event handlers
-  const EventHandlers = {
-    onMouseDown: useCallback((event) => {
+  // Event handlers - using useMemo to prevent recreation on every render
+  const EventHandlers = useMemo(() => ({
+    onMouseDown: (event) => {
       if (!draggable && !resizable) return;
       
       const item = event.target.closest(".ui-grid-item");
@@ -378,9 +390,9 @@ const AdvancedGrid = ({
       window.addEventListener("mousemove", EventHandlers.onMouseMove);
       window.addEventListener("mouseup", EventHandlers.onMouseUp);
       event.preventDefault();
-    }, [draggable, resizable, GridUtils, ElementState]),
+    },
 
-    onMouseMove: useCallback((event) => {
+    onMouseMove: (event) => {
       if (!state.active) return;
       
       if (state.isDragging) {
@@ -390,9 +402,9 @@ const AdvancedGrid = ({
       if (state.isResizing) {
         EventHandlers._handleResize(event);
       }
-    }, [state.active, state.isDragging, state.isResizing]),
+    },
 
-    onMouseUp: useCallback((event) => {
+    onMouseUp: (event) => {
       if (!state.active) return;
       
       if (state.isDragging) {
@@ -409,9 +421,9 @@ const AdvancedGrid = ({
       
       window.removeEventListener("mousemove", EventHandlers.onMouseMove);
       window.removeEventListener("mouseup", EventHandlers.onMouseUp);
-    }, [state.active, state.isDragging]),
+    },
 
-    onDoubleClick: useCallback((event) => {
+    onDoubleClick: (event) => {
       if (!lockSystem) return;
       
       const item = event.target.closest(".ui-grid-item");
@@ -419,9 +431,9 @@ const AdvancedGrid = ({
       
       LockSystem.toggle(item);
       event.preventDefault();
-    }, [lockSystem, LockSystem]),
+    },
 
-    _handleDrag: useCallback((event) => {
+    _handleDrag: (event) => {
       if (!state.active || !gridMetrics) return;
       
       const { col, row } = GridUtils.mouseToCell(event.clientX, event.clientY);
@@ -438,9 +450,9 @@ const AdvancedGrid = ({
       
       // Allow free movement during drag, repositioning only on drop
       ElementState.set(state.active, newState);
-    }, [state.active, state.grabOffset, gridMetrics, GridUtils, ElementState]),
+    },
 
-    _handleResize: useCallback((event) => {
+    _handleResize: (event) => {
       if (!state.active || !gridMetrics) return;
       
       const { colWidth, rowHeight } = gridMetrics;
@@ -465,9 +477,9 @@ const AdvancedGrid = ({
       if (onItemResize) {
         onItemResize(state.active.dataset.id, { w: newW, h: newH });
       }
-    }, [state.active, state.startMouse, state.startState, gridMetrics, CollisionDetector, autoReposition, RepositioningStrategy, ElementState, onItemResize]),
+    },
 
-    _handleDrop: useCallback(() => {
+    _handleDrop: () => {
       if (!state.active) return;
       
       const currentState = ElementState.get(state.active);
@@ -482,7 +494,7 @@ const AdvancedGrid = ({
         } else if (PositionFinder) {
           // If still not free, find best position
           const finalState = PositionFinder.findNearestFree(state.active, currentState);
-          ElementState.set(state.active, finalState);
+          ElementState.set(state.active, currentState);
         }
       }
       
@@ -490,8 +502,8 @@ const AdvancedGrid = ({
       if (onItemMove) {
         onItemMove(state.active.dataset.id, currentState);
       }
-    }, [state.active, CollisionDetector, autoReposition, RepositioningStrategy, PositionFinder, ElementState, onItemMove])
-  };
+    }
+  }), [draggable, resizable, lockSystem, GridUtils, ElementState, CollisionDetector, autoReposition, RepositioningStrategy, PositionFinder, onItemResize, onItemMove]);
 
   // Initialize grid metrics on mount and resize
   useEffect(() => {
