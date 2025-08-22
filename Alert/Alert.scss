@@ -1,33 +1,194 @@
 @use '../tools/_sass_variables.scss' as v;
+@use '../tools/_mixins.scss' as mx;
 
 .ui-alert {
-  padding: 1rem;
-  border-radius: v.$radius_m;
-  margin-bottom: 1rem;
-  font-size: v.$size_txt_m;
+  padding: v.$spacing-l;
+  border-radius: v.$radius-m;
+  margin-bottom: v.$spacing-m;
+  font-family: v.$font-body;
+  font-size: v.$size-txt-m;
+  font-weight: v.$txt-normal;
+  line-height: 1.5;
   border-left: 4px solid;
+  position: relative;
+  @include mx.transition(all, 0.3s, ease);
   
+  // Icône par défaut
+  &::before {
+    content: '';
+    position: absolute;
+    left: v.$spacing-m;
+    top: v.$spacing-l;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  // Contenu avec padding pour l'icône
+  .ui-alert-content {
+    padding-left: v.$spacing-xxl;
+  }
+  
+  // Variantes de type
   &.info {
-    background: rgba(v.$info_color, 0.1);
-    border-left-color: v.$info_color;
-    color: v.$info_color;
+    background: rgba(66, 165, 245, 0.1);
+    border-left-color: v.$info-color;
+    color: #1976D2;
+    
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231976D2'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+    }
   }
   
   &.success {
-    background: rgba(v.$valid_color, 0.1);
-    border-left-color: v.$valid_color;
-    color: v.$valid_color;
+    background: rgba(43, 169, 133, 0.1);
+    border-left-color: v.$success-color;
+    color: v.$success-color;
+    
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232BA985'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    }
   }
   
   &.warning {
-    background: rgba(v.$warning_color, 0.1);
-    border-left-color: v.$warning_color;
-    color: v.$warning_color;
+    background: rgba(255, 167, 38, 0.1);
+    border-left-color: v.$warning-color;
+    color: #F57C00;
+    
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F57C00'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+    }
   }
   
   &.error {
-    background: rgba(v.$error_color, 0.1);
-    border-left-color: v.$error_color;
-    color: v.$error_color;
+    background: rgba(239, 83, 80, 0.1);
+    border-left-color: v.$error-color;
+    color: #D32F2F;
+    
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D32F2F'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+    }
+  }
+  
+  // Tailles
+  &.s {
+    padding: v.$spacing-m;
+    font-size: v.$size-txt-s;
+    
+    &::before {
+      left: v.$spacing-s;
+      top: v.$spacing-m;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .ui-alert-content {
+      padding-left: v.$spacing-xl;
+    }
+  }
+  
+  &.l {
+    padding: v.$spacing-xl;
+    font-size: v.$size-txt-l;
+    
+    &::before {
+      left: v.$spacing-l;
+      top: v.$spacing-xl;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .ui-alert-content {
+      padding-left: v.$spacing-xxl;
+    }
+  }
+  
+  // Variante avec titre
+  &.with-title {
+    .ui-alert-title {
+      font-family: v.$font-title;
+      font-weight: v.$txt-semibold;
+      font-size: v.$size-title-s;
+      margin-bottom: v.$spacing-s;
+      display: block;
+    }
+  }
+  
+  // Variante avec actions
+  &.with-actions {
+    .ui-alert-actions {
+      display: flex;
+      gap: v.$spacing-s;
+      justify-content: flex-end;
+      margin-top: v.$spacing-m;
+      padding-top: v.$spacing-m;
+      border-top: 1px solid currentColor;
+      opacity: 0.3;
+    }
+  }
+  
+  // Variante dismissible
+  &.dismissible {
+    .ui-alert-close {
+      position: absolute;
+      top: v.$spacing-m;
+      right: v.$spacing-m;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: v.$spacing-xs;
+      border-radius: v.$radius-s;
+      opacity: 0.6;
+      @include mx.transition(opacity, 0.2s, ease);
+      
+      &:hover {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.1);
+      }
+      
+      &::before {
+        content: '×';
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+      }
+    }
+  }
+  
+  // Variante avec bordure complète
+  &.bordered {
+    border: 1px solid;
+    border-left-width: 4px;
+  }
+  
+  // Variante avec ombre
+  &.shadowed {
+    @include mx.shadow('s');
+  }
+  
+  // Variante compacte
+  &.compact {
+    padding: v.$spacing-s v.$spacing-m;
+    margin-bottom: v.$spacing-s;
+    
+    &::before {
+      display: none;
+    }
+    
+    .ui-alert-content {
+      padding-left: 0;
+    }
+  }
+  
+  // Animation d'entrée
+  &.animate-in {
+    @include mx.slide-in-up(0.3s);
+  }
+  
+  // Animation de sortie
+  &.animate-out {
+    @include mx.fade-out(0.3s);
   }
 } 

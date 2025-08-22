@@ -1,368 +1,477 @@
-# 📚 DOCUMENTATION DE LA LIBRAIRIE UI - EQUITECH
+# 🚀 UI Library EQUITECH
 
-## :link: Sommaire
- - :file_folder: [Architecture dossiers](#file_folder-architecture-dossiers)
- - :hammer: [Usage](#hammer-usage)
-   - :computer: [Environnement de développement](#computer-environnement-de-développement)
-   - :pager: [Environnement de production](#pager-environnement-de-production)
-   - :clipboard: [Méthodologie](#clipboard-méthodologie)
- - :mortar_board: [Composants disponibles](#mortar_board-composants-disponibles)
-   - :baby: [Composants de base](#baby-composants-de-base)
-   - :older_man: [Composants avancés](#olderman-composants-avancés)
- - :rocket: [Installation et déploiement](#rocket-installation-et-déploiement)
- - :art: [Système de design](#art-système-de-design)
- - :muscle: [Bonnes pratiques](#muscle-bonnes-pratiques)
+> **Une bibliothèque de composants UI moderne et cohérente, conçue pour la marque EQUITECH**
 
----
+Développez des interfaces utilisateur exceptionnelles avec notre collection de composants réutilisables, optimisés pour l'accessibilité et la performance. Notre bibliothèque suit les meilleures pratiques UX/UI et s'adapte parfaitement à l'identité visuelle EQUITECH.
 
-## :file_folder: Architecture dossiers
-- :open_file_folder: [ui-library](/ui-library)
-  - :open_file_folder: [tools](/ui-library/tools)
-    - :page_facing_up: [_mixins.scss](/ui-library/tools/_mixins.scss)
-    - :page_facing_up: [_models.scss](/ui-library/tools/_models.scss)
-    - :page_facing_up: [_sass_variables.scss](/ui-library/tools/_sass_variables.scss)
-    - :page_facing_up: [generic.scss](/ui-library/tools/generic.scss)
-    - :page_facing_up: [variables.scss](/ui-library/tools/variables.scss)
-    - :page_facing_up: [base.scss](/ui-library/tools/base.scss)
-  - :open_file_folder: [composants](/ui-library)
-    - :page_facing_up: [Button/README.md](/ui-library/Button/README.md)
-    - :page_facing_up: [Header/README.md](/ui-library/Header/README.md)
-    - :page_facing_up: [Footer/README.md](/ui-library/Footer/README.md)
-    - :page_facing_up: [Section/README.md](/ui-library/Section/README.md)
-    - :page_facing_up: [Grid/README.md](/ui-library/Grid/README.md)
-    - :page_facing_up: [Card/README.md](/ui-library/Card/README.md)
-    - :page_facing_up: [Input/README.md](/ui-library/Input/README.md)
-    - :page_facing_up: [Select/README.md](/ui-library/Select/README.md)
-    - :page_facing_up: [Textarea/README.md](/ui-library/Textarea/README.md)
-    - :page_facing_up: [Checkbox/README.md](/ui-library/Checkbox/README.md)
-    - :page_facing_up: [RadioButton/README.md](/ui-library/RadioButton/README.md)
-    - :page_facing_up: [Loader/README.md](/ui-library/Loader/README.md)
-    - :page_facing_up: [Modal/README.md](/ui-library/Modal/README.md)
-    - :page_facing_up: [Alert/README.md](/ui-library/Alert/README.md)
-    - :page_facing_up: [Badge/README.md](/ui-library/Badge/README.md)
-    - :page_facing_up: [Tooltip/README.md](/ui-library/Tooltip/README.md)
-    - :page_facing_up: [Separator/README.md](/ui-library/Separator/README.md)
-    - :page_facing_up: [Carousel/README.md](/ui-library/Carousel/README.md)
-    - :page_facing_up: [Gallery/README.md](/ui-library/Gallery/README.md)
-    - :page_facing_up: [MapEmbed/README.md](/ui-library/MapEmbed/README.md)
-    - :page_facing_up: [ParallaxSection/README.md](/ui-library/ParallaxSection/README.md)
-  - :page_facing_up: [index.scss](/ui-library/index.scss) ← **Point d'entrée unique**
-  - :page_facing_up: [index.js](/ui-library/index.js)
-  - :page_facing_up: [index.css](/ui-library/index.css) ← **CSS compilé**
+## ✨ Pourquoi choisir notre UI Library ?
+
+- 🎨 **Design System cohérent** - Palette de couleurs harmonieuse et typographie soignée
+- ♿ **Accessibilité native** - Conforme aux standards WCAG 2.1
+- 📱 **Responsive by design** - Optimisé pour tous les appareils
+- ⚡ **Performance optimisée** - Composants légers et rapides
+- 🔧 **Facilement personnalisable** - Variables SCSS et classes modulaires
+- 🛡️ **Préfixe `ui-`** - Évite les conflits de noms dans vos projets
 
 ---
 
-## :hammer: Usage
+## 🎨 Charte Graphique EQUITECH
 
-<sup>Si vous n'avez pas connaissance de React et/ou de la structure de composants utilisée au sein d'Equitech merci de vous référer à la section [Composants disponibles](#mortar_board-composants-disponibles).</sup>
+### Palette de Couleurs
 
-### :computer: Environnement de développement
-Lors du processus de développement de vos composants et afin d'avoir une compilation automatique de tous vos styles, 
-dans un terminal, à la racine du projet ui-library exécutez la commande :
-```bash
-npm run compile-sass
+Notre palette de couleurs a été soigneusement conçue pour refléter l'identité EQUITECH :
+
+#### Couleurs Principales
+```scss
+// Couleurs de marque
+$primary-green: #2BA985;    // Vert/Teal principal - Actions, liens
+$secondary-teal: #0C3640;   // Teal/Bleu-Vert - Éléments secondaires
+$primary-dark: #1A2A38;     // Bleu-Vert foncé - Textes, arrière-plans
+
+// Neutres
+$light-grey: #F5F5F5;       // Gris clair - Arrière-plans
+$pure-white: #FAFBFC;       // Blanc non-pur - Meilleure pratique UX
 ```
 
-### :pager: Environnement de production
-Avant la mise en production de votre composant et afin d'uploader un travail optimisé, exécutez la commande :
-```bash
-npm run build
+#### Couleurs Sémantiques
+```scss
+// États et feedback
+$success: #2BA985;          // Succès (utilise la couleur principale)
+$warning: #FFA726;          // Avertissement
+$error: #EF5350;            // Erreur
+$info: #42A5F5;             // Information
 ```
 
-### :clipboard: Méthodologie
-- Il est important de respecter la structure des fichiers afin de profiter de la compilation automatique.
-- Le fichier :page_facing_up: [index.scss](/ui-library/index.scss) est le **point d'entrée unique** et doit comporter tous les imports nécessaires.
-- Le dossier :open_file_folder: [tools](/ui-library/tools) **ne doit pas être modifié**, sauf exception, uniquement des ajouts si nécessaires.
-- Le développement des composants se fait en **mobile first**, les breakpoints utilisés sont :
-  - **tablette** : `@media screen and (425px <= width <= 1024px){ ... }`
-  - **desktop** : `@media screen and (width >= 1025px){ ... }`
+### Typographie
 
----
-
-## :mortar_board: Composants disponibles
-
-### :baby: Composants de base
-- :link: [Button](/ui-library/Button/README.md) - Bouton universel, accessible et personnalisable
-- :link: [Input](/ui-library/Input/README.md) - Champ de saisie texte standard
-- :link: [Checkbox](/ui-library/Checkbox/README.md) - Case à cocher accessible
-- :link: [RadioButton](/ui-library/RadioButton/README.md) - Bouton radio accessible
-- :link: [Select](/ui-library/Select/README.md) - Liste déroulante personnalisable
-- :link: [Textarea](/ui-library/Textarea/README.md) - Zone de texte multi-lignes
-- :link: [Card](/ui-library/Card/README.md) - Conteneur de contenu stylisé
-- :link: [Separator](/ui-library/Separator/README.md) - Séparateur visuel flexible
-
-### :older_man: Composants avancés
-- :link: [Header](/ui-library/Header/README.md) - En-tête universel et personnalisable
-- :link: [Footer](/ui-library/Footer/README.md) - Pied de page universel
-- :link: [Section](/ui-library/Section/README.md) - Section de contenu avec espacement
-- :link: [Grid](/ui-library/Grid/README.md) - Système de grille responsive avec fonctionnalités avancées (drag & drop, resize, repositionnement intelligent)
-- :link: [Modal](/ui-library/Modal/README.md) - Fenêtre modale accessible
-- :link: [Alert](/ui-library/Alert/README.md) - Message d'alerte contextuel
-- :link: [Badge](/ui-library/Badge/README.md) - Badge d'information
-- :link: [Tooltip](/ui-library/Tooltip/README.md) - Info-bulle contextuelle
-- :link: [Loader](/ui-library/Loader/README.md) - Indicateur de chargement
-- :link: [Carousel](/ui-library/Carousel/README.md) - Carrousel d'images
-- :link: [Gallery](/ui-library/Gallery/README.md) - Galerie d'images responsive
-- :link: [MapEmbed](/ui-library/MapEmbed/README.md) - Intégration de carte
-- :link: [ParallaxSection](/ui-library/ParallaxSection/README.md) - Section avec effet parallax
-
----
-
-## :rocket: Installation et déploiement
-
-### Installation locale (développement)
-```bash
-# Dans le projet qui utilise la librairie
-npm install file:./ui-library
-```
-
-### Installation depuis npm (production)
-```bash
-npm install @equitech/ui-library
-```
-
-### Utilisation dans votre projet
-```jsx
-// Import des composants
-import { Button, Header, Footer } from '@equitech/ui-library';
-
-// Import des styles (automatique avec le composant)
-// Pas besoin d'importer manuellement le CSS
-```
-
-### Compilation des styles
-```bash
-# Dans le dossier ui-library
-npm run compile-sass
-```
-
----
-
-## :art: Système de design
-
-### 🎨 Classes CSS avec préfixe `ui-`
-
-Tous les composants utilisent le préfixe `ui-` pour éviter les conflits de noms dans les projets consommateurs :
+Notre système typographique combine élégance et lisibilité :
 
 ```scss
-// Exemples de classes
-.ui-button { /* ... */ }
-.ui-button.primary { /* ... */ }
-.ui-button.s { /* ... */ }
+// Polices
+$font-title: 'Josefin Sans', sans-serif;  // Titres et headings
+$font-body: 'Inter', sans-serif;          // Corps de texte
 
-.ui-input { /* ... */ }
-.ui-input:focus { /* ... */ }
-
-.ui-modal { /* ... */ }
-.ui-overlay { /* ... */ }
+// Tailles
+$h1: 2rem;      // 32px - Titres principaux
+$h2: 1.5rem;    // 24px - Sous-titres
+$h3: 1.25rem;   // 20px - Titres de section
+$body: 1rem;    // 16px - Texte normal
+$small: 0.875rem; // 14px - Texte petit
 ```
 
-### 🎯 Variables SASS disponibles
+### Système d'Espacement
+
+Espacement cohérent basé sur `rem` :
+
+```scss
+$spacing-xs: 0.25rem;  // 4px
+$spacing-s: 0.5rem;    // 8px
+$spacing-m: 1rem;      // 16px
+$spacing-l: 1.5rem;    // 24px
+$spacing-xl: 2rem;     // 32px
+$spacing-xxl: 3rem;    // 48px
+```
+
+---
+
+## 🧩 Composants Disponibles
+
+### 🎯 Composants de Base
+| Composant | Description | Statut |
+|-----------|-------------|--------|
+| **Button** | Boutons avec variantes de couleur, taille et style | ✅ Stable |
+| **Card** | Cartes avec headers, footers et variantes | ✅ Stable |
+| **Input** | Champs de saisie avec validation et icônes | ✅ Stable |
+| **Alert** | Alertes avec types sémantiques et icônes | ✅ Stable |
+| **Badge** | Badges pour étiquettes et statuts | ✅ Stable |
+| **Modal** | Modales et dialogues | ✅ Stable |
+| **Tooltip** | Infobulles contextuelles | ✅ Stable |
+| **Loader** | Indicateurs de chargement | ✅ Stable |
+
+### 📝 Composants de Formulaire
+| Composant | Description | Statut |
+|-----------|-------------|--------|
+| **Checkbox** | Cases à cocher | ✅ Stable |
+| **RadioButton** | Boutons radio | ✅ Stable |
+| **Select** | Listes déroulantes | ✅ Stable |
+| **Textarea** | Zones de texte multilignes | ✅ Stable |
+
+### 🏗️ Composants de Layout
+| Composant | Description | Statut |
+|-----------|-------------|--------|
+| **Header** | En-têtes de page | ✅ Stable |
+| **Footer** | Pieds de page | ✅ Stable |
+| **Section** | Sections de contenu | ✅ Stable |
+| **Grid** | Système de grille responsive | ✅ Stable |
+| **Separator** | Séparateurs visuels | ✅ Stable |
+
+### 🎨 Composants Spécialisés
+| Composant | Description | Statut |
+|-----------|-------------|--------|
+| **Carousel** | Carrousels d'images | ✅ Stable |
+| **Gallery** | Galeries d'images | ✅ Stable |
+| **MapEmbed** | Intégration de cartes | ✅ Stable |
+| **ParallaxSection** | Sections avec effet parallaxe | ✅ Stable |
+
+### 🚀 Nouveaux Composants P1 (Critiques)
+| Composant | Description | Statut |
+|-----------|-------------|--------|
+| **Pagination** | Navigation entre pages avec indicateurs | 🆕 Nouveau |
+| **Tabs** | Onglets pour organiser le contenu | 🆕 Nouveau |
+| **Switch/Toggle** | Interrupteurs on/off avec variantes | 🆕 Nouveau |
+| **DatePicker** | Sélecteur de date avec calendrier interactif | 🆕 Nouveau |
+| **DataTable** | Tableaux de données avec tri, recherche et actions | 🆕 Nouveau |
+
+---
+
+## 🎨 Système d'Icônes EQUITECH
+
+Notre collection d'icônes SVG optimisées pour une utilisation cohérente dans tous vos projets.
+
+### Icônes Disponibles
+
+#### 🔍 Icônes d'Action
+- `ui-icon-search` - Recherche
+- `ui-icon-edit` - Modifier
+- `ui-icon-trash` - Supprimer
+- `ui-icon-upload` - Télécharger
+- `ui-icon-settings` - Paramètres
+
+#### 🧭 Icônes de Navigation
+- `ui-icon-cart` - Panier
+- `ui-icon-users` - Utilisateurs
+- `ui-icon-stats` - Statistiques
+- `ui-icon-box` - Boîte/Produit
+- `ui-icon-chevron` - Flèche
+- `ui-icon-exclamation` - Point d'exclamation
+
+### Utilisation des Icônes
+
+```html
+<!-- Icône simple -->
+<div class="ui-icon-search"></div>
+
+<!-- Icône avec taille -->
+<div class="ui-icon-search ui-icon-s"></div>
+<div class="ui-icon-search ui-icon-l"></div>
+
+<!-- Icône avec couleur -->
+<div class="ui-icon-search ui-icon-primary"></div>
+<div class="ui-icon-search ui-icon-secondary"></div>
+
+<!-- Icône dans un bouton -->
+<button class="ui-button primary">
+    <div class="ui-icon-search"></div>
+    Rechercher
+</button>
+
+<!-- Icône dans un input -->
+<div class="ui-input-wrapper">
+    <input type="text" class="ui-input" placeholder="Rechercher...">
+    <div class="ui-input-icon-right">
+        <div class="ui-icon-search"></div>
+    </div>
+</div>
+```
+
+### Tailles d'Icônes
+- **S** : 16px - Icônes compactes
+- **M** : 24px - Taille par défaut
+- **L** : 32px - Icônes importantes
+- **XL** : 48px - Icônes de mise en avant
+
+### Couleurs d'Icônes
+- `primary` - Couleur principale (#2BA985)
+- `secondary` - Couleur secondaire (#0C3640)
+- `success` - Succès (#2BA985)
+- `warning` - Avertissement (#FFA726)
+- `error` - Erreur (#EF5350)
+- `info` - Information (#42A5F5)
+- `white` - Blanc (#FAFBFC)
+- `grey` - Gris (#9E9E9E)
+- `dark` - Sombre (#1A2A38)
+
+---
+
+## 🚀 Nouveaux Composants P1 - Guide Détaillé
+
+### 📄 Pagination
+Navigation entre pages avec indicateurs visuels et contrôles de navigation.
+
+```html
+<div class="ui-pagination">
+    <div class="ui-pagination-info">Page 1 sur 10</div>
+    <ul class="ui-pagination-list">
+        <li><button class="ui-pagination-prev">Précédent</button></li>
+        <li><button class="ui-pagination-item active">1</button></li>
+        <li><button class="ui-pagination-item">2</button></li>
+        <li><button class="ui-pagination-item">3</button></li>
+        <li><button class="ui-pagination-next">Suivant</button></li>
+    </ul>
+</div>
+```
+
+**Fonctionnalités :**
+- Navigation intuitive avec boutons précédent/suivant
+- Indicateurs de page actuelle
+- Responsive design
+- Accessibilité complète
+
+### 📑 Tabs
+Organisation du contenu en onglets avec navigation claire.
+
+```html
+<div class="ui-tabs">
+    <ul class="ui-tab-list">
+        <li><button class="ui-tab-button active">Onglet 1</button></li>
+        <li><button class="ui-tab-button">Onglet 2</button></li>
+        <li><button class="ui-tab-button">Onglet 3</button></li>
+    </ul>
+    <div class="ui-tab-content">
+        <div class="ui-tab-panel active">Contenu de l'onglet 1</div>
+        <div class="ui-tab-panel">Contenu de l'onglet 2</div>
+        <div class="ui-tab-panel">Contenu de l'onglet 3</div>
+    </div>
+</div>
+```
+
+**Fonctionnalités :**
+- Navigation par clavier (Tab, Arrow keys)
+- Transitions fluides
+- Support des icônes
+- Design responsive
+
+### 🔄 Switch/Toggle
+Interrupteurs on/off avec variantes de taille et de style.
+
+```html
+<label class="ui-switch">
+    <input type="checkbox" class="ui-switch-input">
+    <div class="ui-switch-track">
+        <div class="ui-switch-thumb"></div>
+    </div>
+    <span class="ui-switch-label">Notifications</span>
+</label>
+```
+
+**Fonctionnalités :**
+- Animations fluides
+- Variantes de taille (S, M, L)
+- Support des états disabled
+- Accessibilité ARIA
+
+### 📅 DatePicker
+Sélecteur de date avec calendrier interactif et validation.
+
+```html
+<div class="ui-datepicker with-icon">
+    <input type="text" class="ui-datepicker-input" placeholder="Sélectionner une date" readonly>
+    <div class="ui-datepicker-icon"></div>
+</div>
+```
+
+**Fonctionnalités :**
+- Calendrier avec navigation mensuelle
+- Sélection de date avec validation
+- Support des dates min/max
+- Icônes intégrées
+- Responsive design
+
+### 📊 DataTable
+Tableaux de données avancés avec tri, recherche et actions.
+
+```html
+<div class="ui-datatable striped">
+    <div class="ui-datatable-header">
+        <h3 class="ui-datatable-title">Titre du Tableau</h3>
+        <div class="ui-datatable-search">
+            <input type="text" placeholder="Rechercher...">
+        </div>
+    </div>
+    <table class="ui-datatable-table">
+        <!-- En-têtes et données -->
+    </table>
+    <div class="ui-datatable-footer">
+        <div class="ui-datatable-info">X élément(s) affiché(s)</div>
+    </div>
+</div>
+```
+
+**Fonctionnalités :**
+- Tri des colonnes
+- Recherche globale
+- Actions avec icônes EQUITECH
+- Pagination intégrée
+- Design responsive
+- Variantes (striped, bordered)
+
+---
+
+## 🚀 Installation et Utilisation
+
+### Installation
+
+1. **Importer les styles SCSS :**
+```scss
+@use 'path/to/ui-library/index.scss';
+```
+
+2. **Ou importer les composants individuellement :**
+```scss
+@use 'path/to/ui-library/tools/_sass_variables.scss';
+@use 'path/to/ui-library/Button/Button.scss';
+@use 'path/to/ui-library/Card/Card.scss';
+// etc.
+```
+
+### Utilisation HTML
+
+```html
+<!-- Bouton principal -->
+<button class="ui-button primary">Action Principale</button>
+
+<!-- Carte avec header -->
+<div class="ui-card with-header">
+    <div class="ui-card-header">Titre de la Carte</div>
+    <div class="ui-card-content">
+        <p>Contenu de la carte</p>
+    </div>
+</div>
+
+<!-- Input avec validation -->
+<input type="text" class="ui-input success" placeholder="Champ valide">
+
+<!-- Alerte de succès -->
+<div class="ui-alert success">
+    <div class="ui-alert-content">Opération réussie !</div>
+</div>
+```
+
+---
+
+## 📋 Bonnes Pratiques
+
+### 🏷️ Préfixe de Classes
+Toutes les classes utilisent le préfixe `ui-` pour éviter les conflits :
+- ✅ `ui-button`
+- ✅ `ui-card`
+- ❌ `button`
+- ❌ `card`
+
+### 📱 Design Responsive
+- Utilisez les classes de grille pour les layouts
+- Testez sur mobile, tablette et desktop
+- Respectez les breakpoints définis
+
+### ♿ Accessibilité
+- Utilisez les attributs ARIA appropriés
+- Assurez un contraste suffisant
+- Testez avec des lecteurs d'écran
+- Utilisez des focus states visibles
+
+### ⚡ Performance
+- Importez uniquement les composants nécessaires
+- Utilisez les variables CSS pour la cohérence
+- Optimisez les images et icônes SVG
+
+### 🆕 Nouveaux Composants P1
+- **Pagination** : Utilisez les classes `ui-pagination-*` pour la cohérence
+- **Tabs** : Structure avec `ui-tabs`, `ui-tab-list`, `ui-tab-button`, `ui-tab-content`, `ui-tab-panel`
+- **Switch** : Label avec `ui-switch`, input caché, et éléments visuels `ui-switch-track` et `ui-switch-thumb`
+- **DatePicker** : Wrapper `ui-datepicker`, input `ui-datepicker-input`, et calendrier `ui-datepicker-calendar`
+- **DataTable** : Container `ui-datatable`, header avec recherche, table avec classes `ui-datatable-*`, et footer
+
+---
+
+## 🎨 Personnalisation
+
+### Variables SCSS
+Modifiez les variables dans `tools/_sass_variables.scss` :
 
 ```scss
 // Couleurs principales
-$primary_color: #0070f3;
-$secondary_color: #242323;
-$valid_color: #36A12D;
-$warning_color: #BF3232;
-$info_color: #5E8CB7;
-$error_color: #D32F2F;
+$primary-green: #2BA985;
+$secondary-teal: #0C3640;
+$primary-dark: #1A2A38;
 
-// Couleurs neutres
-$white: #FCFFFF;
-$light_grey: #989898;
-$grey: #595959;
-$black: #242323;
+// Typographie
+$font-title: 'Josefin Sans', sans-serif;
+$font-body: 'Inter', sans-serif;
 
-// Tailles de police
-$size_txt_xs: 0.75em;  // Très petit texte
-$size_txt_s: 0.9em;    // Petit texte
-$size_txt_m: 1em;      // Texte standard
-$size_title_s: 1.4em;  // Petit titre
-$size_title_m: 1.6em;  // Titre moyen
-$size_title_l: 1.8em;  // Grand titre
-
-// Espacements
-$flex_gap_s: 10px;
-$flex_gap: 20px;
-$flex_gap_l: 50px;
-
-// Rayons de bordure
-$radius_s: 4px;
-$radius_m: 8px;
+// Espacement
+$spacing-m: 1rem;
+$spacing-l: 1.5rem;
 ```
 
-### 🎨 Classes utilitaires (generic.scss)
-
-#### **Display & Positioning**
-```scss
-.ui-block { display: block; }
-.ui-flex { display: flex; }
-.ui-grid { display: grid; }
-.ui-none { display: none; }
-
-.ui-absolute { position: absolute; }
-.ui-relative { position: relative; }
-.ui-fixed { position: fixed; }
-.ui-sticky { position: sticky; }
-
-.ui-top-0, .ui-bottom-0, .ui-left-0, .ui-right-0 { /* positioning */ }
-.ui-transform-center { transform: translate(-50%, -50%); }
-```
-
-#### **Sizing & Overflow**
-```scss
-.ui-w-100 { width: 100%; }
-.ui-w-fit { width: fit-content; }
-.ui-h-auto { height: auto; }
-
-.ui-overflow-hidden { overflow: hidden; }
-.ui-overflow-auto { overflow: auto; }
-.ui-overflow-x-auto { overflow-x: auto; }
-```
-
-#### **Flexbox & Grid**
-```scss
-.ui-flex-col { flex-direction: column; }
-.ui-flex-row { flex-direction: row; }
-.ui-flex-wrap { flex-wrap: wrap; }
-
-.ui-justify-center { justify-content: center; }
-.ui-justify-between { justify-content: space-between; }
-.ui-items-center { align-items: center; }
-
-.ui-gap-s { gap: 10px; }
-.ui-gap-m { gap: 20px; }
-.ui-gap-l { gap: 50px; }
-
-.ui-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-.ui-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-```
-
-#### **Visual Styles**
-```scss
-.ui-rounded { border-radius: 2000px; }
-.ui-rounded-s { border-radius: 4px; }
-.ui-rounded-m { border-radius: 8px; }
-
-.ui-border-none { border: none; }
-.ui-border-s { border: 1px solid #595959; }
-.ui-border-top { border-top: 1px solid #595959; }
-
-.ui-shadow { box-shadow: 0 10px 20px #0000000d; }
-```
-
-#### **Backgrounds & Colors**
-```scss
-.ui-bg-white { background: #FCFFFF; }
-.ui-bg-black { background: #242323; }
-.ui-bg-primary { background: #0070f3; }
-.ui-bg-success { background: #36A12D; }
-.ui-bg-warning { background: #BF3232; }
-.ui-bg-error { background: #D32F2F; }
-
-.ui-text-white { color: #FCFFFF; }
-.ui-text-black { color: #242323; }
-.ui-text-primary { color: #0070f3; }
-.ui-text-success { color: #36A12D; }
-```
-
-#### **Typography**
-```scss
-.ui-font-normal { font-weight: 400; }
-.ui-font-semibold { font-weight: 600; }
-.ui-font-bold { font-weight: 800; }
-
-.ui-text-center { text-align: center; }
-.ui-text-left { text-align: left; }
-.ui-text-right { text-align: end; }
-
-.ui-text-xs { font-size: 0.75em; }
-.ui-text-s { font-size: 0.9em; }
-.ui-text-m { font-size: 1em; }
-.ui-title-s { font-size: 1.4em; }
-.ui-title-m { font-size: 1.6em; }
-.ui-title-l { font-size: 1.8em; }
-```
-
-#### **Spacing & Interactivity**
-```scss
-.ui-m-0 { margin: 0; }
-.ui-p-0 { padding: 0; }
-.ui-p-s { padding: 5px; }
-
-.ui-cursor-pointer { cursor: pointer; }
-.ui-opacity-50 { opacity: 50%; }
-
-.ui-z-1, .ui-z-2, .ui-z-3, .ui-z-10, .ui-z-100, .ui-z-1000 { /* z-index */ }
-```
-
-#### **Responsive Utilities**
-```scss
-.ui-tablet-hidden { display: none; } /* @media (425px <= width <= 1024px) */
-.ui-desktop-hidden { display: none; } /* @media (width >= 1025px) */
-```
-
-#### **Accessibility**
-```scss
-.ui-sr-only {
-  /* Screen reader only - masque visuellement mais accessible aux lecteurs d'écran */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-```
-
-### 📱 Responsive Design
+### Mixins Utiles
+Utilisez les mixins dans `tools/_mixins.scss` :
 
 ```scss
-// Breakpoints
-@media screen and (425px <= width <= 1024px) {
-  // Styles tablette
-}
-
-@media screen and (width >= 1025px) {
-  // Styles desktop
-}
+@include mx.transition(all, 0.3s, ease);
+@include mx.shadow('m');
+@include mx.mobile { /* styles mobile */ }
 ```
 
 ---
 
-## :muscle: Bonnes pratiques
-- **Ne pas ajouter de logique métier dans la librairie**
-- **Utiliser le préfixe `ui-`** pour toutes les classes CSS
-- **Documenter la distinction générique/métier**
-- **Utiliser les variables SASS** pour la cohérence
-- **Respecter l'accessibilité** (ARIA, navigation clavier, lecteurs d'écran)
-- **Tester sur tous les breakpoints** (mobile first)
-- **Utiliser les classes utilitaires** de `generic.scss` quand possible
+## 📚 Documentation des Composants
+
+Chaque composant dispose de sa propre documentation détaillée dans son dossier :
+- `Button/README.md` - Boutons et actions
+- `Card/README.md` - Conteneurs de contenu
+- `Input/README.md` - Champs de saisie
+- `Alert/README.md` - Notifications et alertes
+- Et bien plus encore...
+
+### 📖 Exemples d'utilisation
+Chaque composant inclut :
+- Exemples de code HTML/JSX
+- Props et options disponibles
+- Cas d'usage courants
+- Bonnes pratiques d'accessibilité
+- Personnalisation avancée
 
 ---
 
-## 📝 Contribution
-- Ajoutez un nouveau composant dans un dossier dédié avec :
-  - `MonComposant.jsx`
-  - `MonComposant.scss`
-  - `README.md`
-- Documentez systématiquement l'API et l'accessibilité
-- Ajoutez l'import dans `index.scss` si le composant est universel
-- Utilisez le préfixe `ui-` pour toutes les classes CSS
+## 🤝 Contribution
+
+Nous accueillons les contributions de la communauté EQUITECH ! Voici comment participer :
+
+### 📋 Guidelines
+1. **Respectez la charte graphique EQUITECH**
+2. **Utilisez le préfixe `ui-` pour toutes les classes**
+3. **Documentez les nouveaux composants**
+4. **Testez sur différents navigateurs**
+5. **Suivez les bonnes pratiques d'accessibilité**
+
+### 🔧 Processus de développement
+1. Créez une branche pour votre fonctionnalité
+2. Développez en respectant les standards
+3. Testez sur mobile et desktop
+4. Documentez vos changements
+5. Soumettez une pull request
+
+### 🧪 Tests
+- Testez sur Chrome, Firefox, Safari, Edge
+- Vérifiez l'accessibilité avec les outils appropriés
+- Validez le responsive design
+- Testez les performances
 
 ---
 
-## 📖 Ressources & apprentissage
-- [Documentation SASS officielle](https://sass-lang.com/documentation/)
-- [Design tokens](https://design-tokens.github.io/community-group/format/)
-- [Accessibilité web (WAI-ARIA)](https://www.w3.org/WAI/standards-guidelines/aria/)
-- [React best practices](https://react.dev/learn)
-- [CSS Modules](https://github.com/css-modules/css-modules)
+## 📄 Licence
+
+Cette bibliothèque est propriétaire d'**EQUITECH**. Tous droits réservés.
 
 ---
 
-> **Vous savez tout, bon dev ! :muscle:** 
+## 🆘 Support
+
+Besoin d'aide ? Contactez notre équipe de développement :
+- 📧 Email : contact@equitech.onl
+- 📱 Slack : #ui-library
+- 📚 Documentation : [docs.equitech.onl](https://docs.equitech.onl)
+
+---
+
+*Développé avec ❤️ par l'équipe EQUITECH* 

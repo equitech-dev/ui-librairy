@@ -347,93 +347,10 @@ const AdvancedGrid = ({
     };
   }, [lockSystem, onItemLock]);
 
-  // Event handlers - using useMemo to prevent recreation on every render
-  const EventHandlers = useMemo(() => ({
-    onMouseDown: (event) => {
-      if (!draggable && !resizable) return;
-      
-      const item = event.target.closest(".ui-grid-item");
-      if (!item) return;
-      
-      const metrics = GridUtils.getMetrics();
-      if (!metrics) return;
-      
-      setGridMetrics(metrics);
-      
-      const onHandle = event.target.classList.contains("ui-resize-handle");
-      
-      setState(prev => ({
-        ...prev,
-        active: item,
-        startMouse: { x: event.clientX, y: event.clientY },
-        startState: ElementState.get(item)
-      }));
-      
-      const startPointerCell = GridUtils.mouseToCell(event.clientX, event.clientY);
-      const startState = ElementState.get(item);
-      
-      setState(prev => ({
-        ...prev,
-        grabOffset: {
-          dc: startPointerCell.col - startState.col,
-          dr: startPointerCell.row - startState.row
-        }
-      }));
-      
-      if (onHandle && resizable) {
-        setState(prev => ({ ...prev, isResizing: true, isDragging: false }));
-      } else if (draggable) {
-        setState(prev => ({ ...prev, isDragging: true, isResizing: false }));
-        item.classList.add("ui-dragging");
-      }
-      
-      window.addEventListener("mousemove", EventHandlers.onMouseMove);
-      window.addEventListener("mouseup", EventHandlers.onMouseUp);
-      event.preventDefault();
-    },
-
-    onMouseMove: (event) => {
-      if (!state.active) return;
-      
-      if (state.isDragging) {
-        EventHandlers._handleDrag(event);
-      }
-      
-      if (state.isResizing) {
-        EventHandlers._handleResize(event);
-      }
-    },
-
-    onMouseUp: (event) => {
-      if (!state.active) return;
-      
-      if (state.isDragging) {
-        EventHandlers._handleDrop();
-      }
-      
-      state.active.classList.remove("ui-dragging");
-      setState(prev => ({
-        ...prev,
-        isDragging: false,
-        isResizing: false,
-        active: null
-      }));
-      
-      window.removeEventListener("mousemove", EventHandlers.onMouseMove);
-      window.removeEventListener("mouseup", EventHandlers.onMouseUp);
-    },
-
-    onDoubleClick: (event) => {
-      if (!lockSystem) return;
-      
-      const item = event.target.closest(".ui-grid-item");
-      if (!item || event.target.classList.contains("ui-resize-handle")) return;
-      
-      LockSystem.toggle(item);
-      event.preventDefault();
-    },
-
-    _handleDrag: (event) => {
+  // Event handlers - restructured to avoid circular references
+  const EventHandlers = useMemo(() => {
+    // Define handlers first to avoid circular references
+    const handleDrag = (event) => {
       if (!state.active || !gridMetrics) return;
       
       const { col, row } = GridUtils.mouseToCell(event.clientX, event.clientY);
@@ -450,9 +367,9 @@ const AdvancedGrid = ({
       
       // Allow free movement during drag, repositioning only on drop
       ElementState.set(state.active, newState);
-    },
+    };
 
-    _handleResize: (event) => {
+    const handleResize = (event) => {
       if (!state.active || !gridMetrics) return;
       
       const { colWidth, rowHeight } = gridMetrics;
@@ -477,9 +394,9 @@ const AdvancedGrid = ({
       if (onItemResize) {
         onItemResize(state.active.dataset.id, { w: newW, h: newH });
       }
-    },
+    };
 
-    _handleDrop: () => {
+    const handleDrop = () => {
       if (!state.active) return;
       
       const currentState = ElementState.get(state.active);
@@ -502,8 +419,129 @@ const AdvancedGrid = ({
       if (onItemMove) {
         onItemMove(state.active.dataset.id, currentState);
       }
-    }
-  }), [draggable, resizable, lockSystem, GridUtils, ElementState, CollisionDetector, autoReposition, RepositioningStrategy, PositionFinder, onItemResize, onItemMove]);
+    };
+
+    return {
+      onMouseDown: (event) => {
+        if (!draggable && !resizable) return;
+        
+        const item = event.target.closest(".ui-grid-item");
+        if (!item) return;
+        
+        const metrics = GridUtils.getMetrics();
+        if (!metrics) return;
+        
+        setGridMetrics(metrics);
+        
+        const onHandle = event.target.classList.contains("ui-resize-handle");
+        
+        setState(prev => ({
+          ...prev,
+          active: item,
+          startMouse: { x: event.clientX, y: event.clientY },
+          startState: ElementState.get(item)
+        }));
+        
+        const startPointerCell = GridUtils.mouseToCell(event.clientX, event.clientY);
+        const startState = ElementState.get(item);
+        
+        setState(prev => ({
+          ...prev,
+          grabOffset: {
+            dc: startPointerCell.col - startState.col,
+            dr: startPointerCell.row - startState.row
+          }
+        }));
+        
+        if (onHandle && resizable) {
+          setState(prev => ({ ...prev, isResizing: true, isDragging: false }));
+        } else if (draggable) {
+          setState(prev => ({ ...prev, isDragging: true, isResizing: false }));
+          item.classList.add("ui-dragging");
+        }
+        
+        // Add global event listeners
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+        event.preventDefault();
+      },
+
+      onMouseMove: (event) => {
+        if (!state.active) return;
+        
+        if (state.isDragging) {
+          handleDrag(event);
+        }
+        
+        if (state.isResizing) {
+          handleResize(event);
+        }
+      },
+
+      onMouseUp: (event) => {
+        if (!state.active) return;
+        
+        if (state.isDragging) {
+          handleDrop();
+        }
+        
+        state.active.classList.remove("ui-dragging");
+        setState(prev => ({
+          ...prev,
+          isDragging: false,
+          isResizing: false,
+          active: null
+        }));
+        
+        // Remove global event listeners
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      },
+
+      onDoubleClick: (event) => {
+        if (!lockSystem) return;
+        
+        const item = event.target.closest(".ui-grid-item");
+        if (!item || event.target.classList.contains("ui-resize-handle")) return;
+        
+        LockSystem.toggle(item);
+        event.preventDefault();
+      }
+    };
+
+    // Define global handlers that reference the local handlers
+    const handleMouseMove = (event) => {
+      if (!state.active) return;
+      
+      if (state.isDragging) {
+        handleDrag(event);
+      }
+      
+      if (state.isResizing) {
+        handleResize(event);
+      }
+    };
+
+    const handleMouseUp = (event) => {
+      if (!state.active) return;
+      
+      if (state.isDragging) {
+        handleDrop();
+      }
+      
+      state.active.classList.remove("ui-dragging");
+      setState(prev => ({
+        ...prev,
+        isDragging: false,
+        isResizing: false,
+        active: null
+      }));
+      
+      // Remove global event listeners
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [draggable, resizable, lockSystem, GridUtils, ElementState, CollisionDetector, autoReposition, RepositioningStrategy, PositionFinder, onItemResize, onItemMove, state.active, state.isDragging, state.isResizing, state.grabOffset, state.startMouse, state.startState, gridMetrics]);
 
   // Initialize grid metrics on mount and resize
   useEffect(() => {

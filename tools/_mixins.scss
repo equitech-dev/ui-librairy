@@ -48,4 +48,209 @@
     color: v.$grey;
     cursor: not-allowed;
   }
+}
+
+// Mixins pour la librairie EQUITECH
+
+// Mixin pour les transitions
+@mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Mixin pour les ombres
+@mixin shadow($level: 'm') {
+  @if $level == 's' {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  } @else if $level == 'm' {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  } @else if $level == 'l' {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  } @else if $level == 'xl' {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
+
+// Mixin pour les focus states
+@mixin focus-ring($color: #59AD8A, $opacity: 0.2) {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color, $opacity);
+  }
+}
+
+// Mixin pour les hover effects
+@mixin hover-lift($distance: -2px) {
+  &:hover {
+    transform: translateY($distance);
+    @include shadow('m');
+  }
+  
+  &:active {
+    transform: translateY(0);
+    @include shadow('s');
+  }
+}
+
+// Mixin pour les gradients EQUITECH
+@mixin gradient-primary {
+  background: linear-gradient(135deg, #59AD8A 0%, #2BA985 100%);
+}
+
+@mixin gradient-secondary {
+  background: linear-gradient(135deg, #194146 0%, #0C3640 100%);
+}
+
+@mixin gradient-subtle {
+  background: linear-gradient(135deg, rgba(89, 173, 138, 0.1) 0%, rgba(43, 169, 133, 0.1) 100%);
+}
+
+// Mixin pour les bordures arrondies
+@mixin border-radius($size: 'm') {
+  @if $size == 's' {
+    border-radius: 4px;
+  } @else if $size == 'm' {
+    border-radius: 8px;
+  } @else if $size == 'l' {
+    border-radius: 12px;
+  } @else if $size == 'xl' {
+    border-radius: 16px;
+  } @else if $size == 'full' {
+    border-radius: 9999px;
+  }
+}
+
+// Mixin pour les états de chargement
+@mixin loading-spinner($size: 16px, $color: currentColor) {
+  position: relative;
+  color: transparent;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: $size;
+    height: $size;
+    border: 2px solid transparent;
+    border-top: 2px solid $color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// Mixin pour les animations de fade
+@mixin fade-in($duration: 0.3s) {
+  animation: fadeIn $duration ease-in-out;
+}
+
+@mixin fade-out($duration: 0.3s) {
+  animation: fadeOut $duration ease-in-out;
+}
+
+// Mixin pour les responsive breakpoints
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Mixin pour les états de focus visibles
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid #59AD8A;
+    outline-offset: 2px;
+  }
+}
+
+// Mixin pour les textes tronqués
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Mixin pour les textes multi-lignes tronqués
+@mixin text-truncate-multiline($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Mixin pour les grilles flexibles
+@mixin flex-grid($columns: 3, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Mixin pour les centrages
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Animations keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Mixin pour les animations de slide
+@mixin slide-in-up($duration: 0.3s) {
+  animation: slideInUp $duration ease-out;
+}
+
+@mixin slide-in-down($duration: 0.3s) {
+  animation: slideInDown $duration ease-out;
 } 

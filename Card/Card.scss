@@ -2,13 +2,168 @@
 
 .ui-card {
   background: v.$white;
-  border-radius: v.$radius_m;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  border: 1px solid v.$light_grey;
-  transition: box-shadow 0.2s ease;
+  border-radius: v.$radius-l;
+  box-shadow: v.$shadow-s;
+  padding: v.$spacing-xl;
+  border: 1px solid v.$light-grey;
+  transition: all v.$transition-normal;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: v.$shadow-m;
+    transform: translateY(-2px);
+  }
+  
+  // Variantes de couleur simplifiées
+  &.primary {
+    border-left: 4px solid v.$primary-green;
+    
+    &:hover {
+      border-left-color: color.adjust(v.$primary-green, $lightness: -10%);
+    }
+  }
+  
+  &.secondary {
+    border-left: 4px solid v.$secondary-teal;
+    
+    &:hover {
+      border-left-color: color.adjust(v.$secondary-teal, $lightness: -10%);
+    }
+  }
+  
+  &.success {
+    border-left: 4px solid v.$success-color;
+  }
+  
+  &.warning {
+    border-left: 4px solid v.$warning-color;
+  }
+  
+  &.error {
+    border-left: 4px solid v.$error-color;
+  }
+  
+  // Tailles
+  &.s {
+    padding: v.$spacing-m;
+    border-radius: v.$radius-m;
+  }
+  
+  &.l {
+    padding: v.$spacing-xxl;
+    border-radius: v.$radius-xl;
+  }
+  
+  // Variante avec image
+  &.with-image {
+    padding: 0;
+    overflow: hidden;
+    
+    .ui-card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .ui-card-content {
+      padding: v.$spacing-xl;
+    }
+  }
+  
+  // Variante interactive
+  &.interactive {
+    cursor: pointer;
+    
+    &:hover {
+      box-shadow: v.$shadow-l;
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: v.$shadow-s;
+    }
+  }
+  
+  // Variante avec header
+  &.with-header {
+    padding: 0;
+    
+    .ui-card-header {
+      padding: v.$spacing-l v.$spacing-xl;
+      border-bottom: 1px solid v.$light-grey;
+      background: v.$light-grey;
+      font-family: v.$font-title;
+      font-weight: v.$txt-semibold;
+      color: v.$primary-dark;
+    }
+    
+    .ui-card-content {
+      padding: v.$spacing-xl;
+    }
+  }
+  
+  // Variante avec footer
+  &.with-footer {
+    .ui-card-footer {
+      padding: v.$spacing-l v.$spacing-xl;
+      border-top: 1px solid v.$light-grey;
+      background: v.$light-grey;
+      margin: v.$spacing-xl -#{v.$spacing-xl} -#{v.$spacing-xl} -#{v.$spacing-xl};
+    }
+  }
+  
+  // Variante avec actions
+  &.with-actions {
+    .ui-card-actions {
+      display: flex;
+      gap: v.$spacing-s;
+      justify-content: flex-end;
+      padding-top: v.$spacing-l;
+      border-top: 1px solid v.$light-grey;
+      margin-top: v.$spacing-l;
+    }
+  }
+  
+  // Variante compacte
+  &.compact {
+    padding: v.$spacing-m;
+    
+    .ui-card-header {
+      padding: v.$spacing-s v.$spacing-m;
+    }
+    
+    .ui-card-content {
+      padding: v.$spacing-m;
+    }
+    
+    .ui-card-footer {
+      padding: v.$spacing-s v.$spacing-m;
+      margin: v.$spacing-m -#{v.$spacing-m} -#{v.$spacing-m} -#{v.$spacing-m};
+    }
+  }
+  
+  // Variante avec gradient
+  &.gradient {
+    background: linear-gradient(135deg, v.$primary-green-20 0%, v.$secondary-teal-20 100%);
+    border: none;
+  }
+  
+  // Variante sombre
+  &.dark {
+    background: v.$primary-dark;
+    color: v.$white;
+    border-color: v.$secondary-teal;
+    
+    .ui-card-header {
+      background: v.$secondary-teal;
+      border-bottom-color: v.$secondary-teal;
+      color: v.$white;
+    }
+    
+    .ui-card-footer {
+      background: v.$secondary-teal;
+      border-top-color: v.$secondary-teal;
+    }
   }
 } 

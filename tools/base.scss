@@ -1,39 +1,145 @@
 @use './_sass_variables.scss' as v;
 
-// @font-face supprimé : la police Edo est spécifique au BDA, à déclarer dans le projet métier.
-// Les polices génériques ou open source peuvent être déclarées ici si besoin.
+// Import des polices Google Fonts pour EQUITECH
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Reset et styles de base
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
   padding: 0;
-  // font-family: 'Edo', sans-serif; // À définir dans le projet métier si besoin
-  font-weight: v.$txt_normal;
-  font-size: v.$size_txt_m;
+  font-family: v.$font-body;
+  font-weight: v.$txt-normal;
+  font-size: v.$size-txt-m;
+  line-height: 1.6;
+  color: v.$black;
+  background-color: v.$white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: v.$font-title;
+  font-weight: v.$txt-semibold;
+  line-height: 1.2;
+  margin: 0 0 v.$spacing-m 0;
+  color: v.$primary-dark;
+}
+
+h1 {
+  font-size: v.$size-title-l;
+  font-weight: v.$txt-bold;
+  margin-bottom: v.$spacing-l;
+}
+
+h2 {
+  font-size: v.$size-title-m;
+  font-weight: v.$txt-semibold;
+  margin-bottom: v.$spacing-m;
+}
+
+h3 {
+  font-size: v.$size-title-s;
+  font-weight: v.$txt-medium;
+  margin-bottom: v.$spacing-s;
+}
+
+h4, h5, h6 {
+  font-size: v.$size-txt-l;
+  font-weight: v.$txt-medium;
+  margin-bottom: v.$spacing-s;
+}
+
+p {
+  margin: 0 0 v.$spacing-m 0;
+  line-height: 1.6;
+}
+
+a {
+  color: v.$primary-green;
+  text-decoration: none;
+  transition: color v.$transition-fast;
+  
+  &:hover {
+    color: v.$secondary-teal;
+  }
+  
+  &:focus {
+    outline: 2px solid v.$primary-green-40;
+    outline-offset: 2px;
+  }
+}
+
+// Layout
+main {
+  & > * {
+    padding: 0 v.$spacing-l;
+  }
+}
+
+// Utility classes
+.ui-text-center {
+  text-align: center;
+}
+
+.ui-text-left {
+  text-align: left;
+}
+
+.ui-text-right {
+  text-align: right;
+}
+
+.ui-text-primary {
+  color: v.$primary-green;
+}
+
+.ui-text-secondary {
+  color: v.$secondary-teal;
+}
+
+.ui-text-muted {
+  color: v.$grey;
+}
+
+.ui-bg-primary {
+  background-color: v.$primary-green;
+}
+
+.ui-bg-secondary {
+  background-color: v.$secondary-teal;
+}
+
+.ui-bg-light {
+  background-color: v.$light-grey;
+}
+
+// Responsive breakpoints
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
   main {
-    & > *{
-      padding: 0 20px;
+    & > * {
+      padding: 0 v.$spacing-m;
     }
   }
-  h1,h2,h3 {margin:0;}
-  h1 {
-    font-size: v.$size_title_l;
-    font-weight: v.$txt_bold;
-  }
-  h2 {
-    font-size: v.$size_title_m;
-    font-weight: v.$txt_bold;
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-  h3 {
-    font-size: v.$size_title_s;
-    font-weight: v.$txt_bold;
-  }
 }
 
-@media screen and (425px <= width <= 1024px){
-}
-@media screen and (min-width:1025px) {
+@media screen and (min-width: 1025px) {
+  main {
+    & > * {
+      padding: 0 v.$spacing-xl;
+    }
+  }
 } 

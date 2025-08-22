@@ -1,41 +1,41 @@
-// ============================================================================
-// Point d'entrée SCSS unique de la librairie graphique
-// À importer dans tout projet pour bénéficier des variables, mixins et styles
-// universels des composants UI. Aucun style métier ici.
-// ============================================================================
+// EQUITECH UI Library - Entry Point
+// Import de tous les outils et composants
 
-// Outils SCSS (variables, mixins, modèles)
-@use './tools/_sass_variables.scss' as v;
-@use './tools/_mixins.scss' as mx;
-@use './tools/_models.scss' as m;
-@use './tools/generic.scss' as *;
-@use './tools/variables.scss' as *;
-@use './tools/base.scss' as *;
+// Outils SCSS
+@use 'tools/_sass_variables.scss';
+@use 'tools/_mixins.scss';
+@use 'tools/_models.scss';
+@use 'tools/generic.scss';
+@use 'tools/variables.scss';
+@use 'tools/base.scss';
+@use 'tools/_icons.scss';
 
-// Styles de base des composants universels
-@use './Button/Button.scss';
-@use './Card/Card.scss';
-@use './Checkbox/Checkbox.scss';
-@use './RadioButton/RadioButton.scss';
-@use './Grid/Grid.scss';
-@use './Grid/AdvancedGrid.scss';
-@use './Section/Section.scss';
-@use './Footer/Footer.scss';
-@use './Header/Header.scss';
-@use './Separator/Separator.scss';
-
-// Nouveaux composants universels
-@use './Input/Input.scss';
-@use './Select/Select.scss';
-@use './Textarea/Textarea.scss';
-@use './Loader/Loader.scss';
-@use './Modal/Modal.scss';
-@use './Alert/Alert.scss';
-@use './Badge/Badge.scss';
-@use './Tooltip/Tooltip.scss';
-
-// Composants spécialisés
-@use './Carousel/Carousel.scss';
-@use './Gallery/Gallery.scss';
-@use './MapEmbed/MapEmbed.scss';
-@use './ParallaxSection/ParallaxSection.scss'; 
+// Composants UI
+@use 'Button/Button.scss';
+@use 'Card/Card.scss';
+@use 'Input/Input.scss';
+@use 'Alert/Alert.scss';
+@use 'Pagination/Pagination.scss';
+@use 'Tabs/Tabs.scss';
+@use 'Switch/Switch.scss';
+@use 'DatePicker/DatePicker.scss';
+@use 'DataTable/DataTable.scss';
+@use 'Badge/Badge.scss';
+@use 'Modal/Modal.scss';
+@use 'Tooltip/Tooltip.scss';
+@use 'Loader/Loader.scss';
+@use 'Checkbox/Checkbox.scss';
+@use 'RadioButton/RadioButton.scss';
+@use 'Select/Select.scss';
+@use 'Textarea/Textarea.scss';
+@use 'Header/Header.scss';
+@use 'Footer/Footer.scss';
+@use 'Section/Section.scss';
+@use 'Grid/Grid.scss';
+@use 'Grid/AdvancedGrid.scss';
+@use 'Grid/GridItem.scss';
+@use 'Carousel/Carousel.scss';
+@use 'Gallery/Gallery.scss';
+@use 'MapEmbed/MapEmbed.scss';
+@use 'ParallaxSection/ParallaxSection.scss';
+@use 'Separator/Separator.scss'; 

@@ -1,114 +1,219 @@
 @use '../tools/_sass_variables.scss' as v;
+@use '../tools/_icons.scss' as icons;
 @use 'sass:color';
 
 .ui-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  gap: v.$spacing-s;
+  padding: v.$spacing-m v.$spacing-l;
   border: none;
-  border-radius: v.$radius_m;
-  font-family: v.$txt_font;
-  font-size: v.$size_txt_m;
-  font-weight: v.$txt_normal;
+  border-radius: v.$radius-m;
+  font-family: v.$font-body;
+  font-size: v.$size-txt-m;
+  font-weight: v.$txt-medium;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: v.$btn_height;
+  transition: all v.$transition-normal;
+  min-height: v.$btn-height-m;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-m;
   }
   
   &:active {
     transform: translateY(0);
+    box-shadow: v.$shadow-s;
   }
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
   
-  // Modèles de couleur
+  &:focus {
+    outline: 2px solid v.$primary-green-40;
+    outline-offset: 2px;
+  }
+  
+  // Support des icônes
+  .ui-icon {
+    @include icons.icon-base(20px);
+  }
+  
+  // Modèles de couleur EQUITECH simplifiés
   &.primary {
-    background: v.$primary_color;
+    background: v.$primary-green;
     color: v.$white;
     
     &:hover { 
-      background: color.adjust(v.$primary_color, $lightness: -10%); 
+      background: color.adjust(v.$primary-green, $lightness: -10%);
+    }
+    
+    &:active {
+      background: color.adjust(v.$primary-green, $lightness: -15%);
     }
   }
   
   &.secondary {
-    background: v.$light_grey;
-    color: v.$black;
+    background: v.$secondary-teal;
+    color: v.$white;
     
     &:hover { 
-      background: color.adjust(v.$light_grey, $lightness: -10%); 
+      background: color.adjust(v.$secondary-teal, $lightness: -10%);
+    }
+    
+    &:active {
+      background: color.adjust(v.$secondary-teal, $lightness: -15%);
     }
   }
   
   &.success {
-    background: v.$valid_color;
+    background: v.$success-color;
     color: v.$white;
     
     &:hover { 
-      background: color.adjust(v.$valid_color, $lightness: -10%); 
-    }
-  }
-  
-  &.info {
-    background: v.$info_color;
-    color: v.$white;
-    
-    &:hover { 
-      background: color.adjust(v.$info_color, $lightness: -10%); 
+      background: color.adjust(v.$success-color, $lightness: -10%);
     }
   }
   
   &.warning {
-    background: v.$warning_color;
+    background: v.$warning-color;
     color: v.$white;
     
     &:hover { 
-      background: color.adjust(v.$warning_color, $lightness: -10%); 
+      background: color.adjust(v.$warning-color, $lightness: -10%);
     }
   }
   
-  // Tailles
+  &.error {
+    background: v.$error-color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$error-color, $lightness: -10%);
+    }
+  }
+  
+  &.info {
+    background: v.$info-color;
+    color: v.$white;
+    
+    &:hover { 
+      background: color.adjust(v.$info-color, $lightness: -10%);
+    }
+  }
+  
+  // Tailles EQUITECH
   &.s {
-    padding: 0.5rem 1rem;
-    font-size: v.$size_txt_s;
-    min-height: 32px;
+    padding: v.$spacing-s v.$spacing-m;
+    font-size: v.$size-txt-s;
+    min-height: v.$btn-height-s;
+    border-radius: v.$radius-s;
+    
+    .ui-icon {
+      @include icons.icon-base(16px);
+    }
   }
   
   &.l {
-    padding: 1rem 2rem;
-    font-size: v.$size_title_s;
-    min-height: 48px;
+    padding: v.$spacing-l v.$spacing-xl;
+    font-size: v.$size-txt-l;
+    min-height: v.$btn-height-l;
+    border-radius: v.$radius-l;
+    
+    .ui-icon {
+      @include icons.icon-base(24px);
+    }
   }
   
-  // Variante outline
+  &.xl {
+    padding: v.$spacing-xl v.$spacing-xxl;
+    font-size: v.$size-title-s;
+    min-height: v.$btn-height-xl;
+    border-radius: v.$radius-l;
+    
+    .ui-icon {
+      @include icons.icon-base(32px);
+    }
+  }
+  
+  // Variante outline EQUITECH
   &.outline {
     background: transparent;
     border: 2px solid currentColor;
     
     &.primary {
-      color: v.$primary_color;
+      color: v.$primary-green;
+      border-color: v.$primary-green;
       
       &:hover {
-        background: v.$primary_color;
+        background: v.$primary-green;
         color: v.$white;
       }
     }
     
     &.secondary {
-      color: v.$light_grey;
+      color: v.$secondary-teal;
+      border-color: v.$secondary-teal;
       
       &:hover {
-        background: v.$light_grey;
-        color: v.$black;
+        background: v.$secondary-teal;
+        color: v.$white;
+      }
+    }
+    
+    &.success {
+      color: v.$success-color;
+      border-color: v.$success-color;
+      
+      &:hover {
+        background: v.$success-color;
+        color: v.$white;
+      }
+    }
+    
+    &.warning {
+      color: v.$warning-color;
+      border-color: v.$warning-color;
+      
+      &:hover {
+        background: v.$warning-color;
+        color: v.$white;
+      }
+    }
+    
+    &.error {
+      color: v.$error-color;
+      border-color: v.$error-color;
+      
+      &:hover {
+        background: v.$error-color;
+        color: v.$white;
+      }
+    }
+  }
+  
+  // Variante ghost (transparent)
+  &.ghost {
+    background: transparent;
+    color: v.$primary-green;
+    
+    &:hover {
+      background: v.$primary-green-20;
+    }
+    
+    &.secondary {
+      color: v.$secondary-teal;
+      
+      &:hover {
+        background: v.$secondary-teal-20;
       }
     }
   }
@@ -116,6 +221,60 @@
   // Variante reverse
   &.reverse {
     flex-direction: row-reverse;
-    gap: 0.5rem;
   }
+  
+  // Bouton avec icône
+  &.icon-only {
+    padding: v.$spacing-m;
+    min-width: v.$btn-height-m;
+    
+    .ui-icon {
+      @include icons.icon-base(20px);
+    }
+    
+    &.s {
+      padding: v.$spacing-s;
+      min-width: v.$btn-height-s;
+      
+      .ui-icon {
+        @include icons.icon-base(16px);
+      }
+    }
+    
+    &.l {
+      padding: v.$spacing-l;
+      min-width: v.$btn-height-l;
+      
+      .ui-icon {
+        @include icons.icon-base(24px);
+      }
+    }
+  }
+  
+  // Bouton plein largeur
+  &.full-width {
+    width: 100%;
+  }
+  
+  // Loading state
+  &.loading {
+    position: relative;
+    color: transparent;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 } 

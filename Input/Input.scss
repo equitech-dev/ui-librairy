@@ -1,26 +1,218 @@
 @use '../tools/_sass_variables.scss' as v;
 @use '../tools/_mixins.scss' as mx;
+@use '../tools/_icons.scss' as icons;
 
 .ui-input {
-  padding: 0.75rem 1rem;
-  border: 2px solid v.$light_grey;
-  border-radius: v.$radius_m;
-  font-size: v.$size_txt_m;
+  padding: v.$spacing-m v.$spacing-l;
+  border: 2px solid v.$light-grey;
+  border-radius: v.$radius-m;
+  font-family: v.$font-body;
+  font-size: 1rem;
+  font-weight: 400;
   background: v.$white;
   color: v.$black;
-  transition: all 0.2s ease;
+  transition: all v.$transition-normal;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  
+  &::placeholder {
+    color: v.$grey;
+    font-weight: 400;
+  }
+  
+  &:hover {
+    border-color: rgba(43, 169, 133, 0.4);
+  }
   
   &:focus {
     outline: none;
-    border-color: v.$primary_color;
-    box-shadow: 0 0 0 3px rgba(v.$primary_color, 0.1);
+    border-color: v.$primary-green;
+    box-shadow: 0 0 0 3px rgba(43, 169, 133, 0.2);
   }
   
-  &:disabled {
-    background: v.$light_grey;
-    border-color: v.$grey;
-    cursor: not-allowed;
+  // États de validation
+  &.success {
+    border-color: v.$success-color;
+    
+    &:focus {
+      border-color: v.$success-color;
+      box-shadow: 0 0 0 3px rgba(43, 169, 133, 0.2);
+    }
+  }
+  
+  &.warning {
+    border-color: v.$warning-color;
+    
+    &:focus {
+      border-color: v.$warning-color;
+      box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2);
+    }
+  }
+  
+  &.error {
+    border-color: v.$error-color;
+    
+    &:focus {
+      border-color: v.$error-color;
+      box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.2);
+    }
+  }
+  
+  // Tailles
+  &.s {
+    padding: v.$spacing-s v.$spacing-m;
+    font-size: 0.875rem;
+    border-radius: v.$radius-s;
+  }
+  
+  &.l {
+    padding: v.$spacing-l v.$spacing-xl;
+    font-size: 1.125rem;
+    border-radius: v.$radius-l;
+  }
+  
+  // Styles
+  &.filled {
+    background: v.$light-grey;
+    border-color: transparent;
+    
+    &:focus {
+      background: v.$white;
+      border-color: v.$primary-green;
+    }
+  }
+  
+  &.shadowed {
+    box-shadow: v.$shadow-s;
+    
+    &:focus {
+      box-shadow: v.$shadow-m, 0 0 0 3px rgba(43, 169, 133, 0.2);
+    }
+  }
+  
+  &.bordered {
+    border-width: 1px;
+    
+    &.primary {
+      border-color: v.$primary-green;
+    }
+    
+    &.secondary {
+      border-color: v.$secondary-teal;
+    }
+  }
+  
+  // Nouveau style "pill" pour correspondre à la maquette
+  &.pill {
+    border-radius: 50px; // Forme de pilule très arrondie
+    border: 2px solid #E0E0E0; // Bordure grise par défaut
+    background: v.$white;
+    padding: v.$spacing-m v.$spacing-xl;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all v.$transition-normal;
+    
+    &:hover {
+      border-color: #BDBDBD;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:focus {
+      border-color: #42A5F5; // Bordure bleue comme dans la maquette
+      box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+    }
+    
+    &::placeholder {
+      color: #9E9E9E;
+      font-style: italic;
+    }
+  }
+}
+
+// Wrapper pour les inputs avec icônes
+.ui-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  .ui-input {
+    flex: 1;
+    
+    // Ajustements pour les inputs avec icônes
+    &.with-icon-left {
+      padding-left: calc(v.$spacing-xl + v.$spacing-m);
+    }
+    
+    &.with-icon-right {
+      padding-right: calc(v.$spacing-xl + v.$spacing-m);
+    }
+    
+    // Ajustements spécifiques pour le style pill
+    &.pill.with-icon-left {
+      padding-left: calc(v.$spacing-xxl + v.$spacing-m);
+    }
+    
+    &.pill.with-icon-right {
+      padding-right: calc(v.$spacing-xxl + v.$spacing-m);
+    }
+  }
+  
+  // Icônes dans les inputs
+  .ui-input-icon-left,
+  .ui-input-icon-right {
+    @include icons.icon-base(20px);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: v.$grey;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .ui-input-icon-left {
+    left: v.$spacing-m;
+  }
+  
+  .ui-input-icon-right {
+    right: v.$spacing-m;
+  }
+  
+  // Style spécial pour les icônes dans les inputs pill
+  .ui-input-icon-right {
+    &.search-button {
+      position: absolute;
+      right: v.$spacing-s;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #F5F5F5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all v.$transition-normal;
+      pointer-events: auto;
+      
+      &:hover {
+        background: #E0E0E0;
+      }
+      
+      .ui-icon-search {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) saturate(100%) invert(60%);
+      }
+    }
+  }
+  
+  // Focus sur le wrapper pour les inputs pill
+  &:focus-within {
+    .ui-input.pill {
+      border-color: #42A5F5;
+      box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+    }
   }
 } 

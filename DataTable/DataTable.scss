@@ -1,0 +1,340 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.ui-datatable {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--black);
+  background: var(--white);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-s);
+  overflow: hidden;
+  width: 100%;
+}
+
+.ui-datatable-header {
+  padding: var(--spacing-l) var(--spacing-xl);
+  background: var(--light-grey);
+  border-bottom: 1px solid var(--light-grey);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-m);
+}
+
+.ui-datatable-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.ui-datatable-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+
+.ui-datatable-search {
+  position: relative;
+  min-width: 250px;
+}
+
+.ui-datatable-search input {
+  width: 100%;
+  padding: var(--spacing-s) var(--spacing-m);
+  padding-left: calc(var(--spacing-m) + 20px);
+  border: 2px solid var(--light-grey);
+  border-radius: var(--radius-m);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  background: var(--white);
+  transition: all var(--transition-normal);
+}
+
+.ui-datatable-search input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(43, 169, 133, 0.2);
+}
+
+.ui-datatable-search::before {
+  content: '';
+  position: absolute;
+  left: var(--spacing-s);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232BA985'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+}
+
+.ui-datatable-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+}
+
+.ui-datatable-thead {
+  background: var(--light-grey);
+}
+
+.ui-datatable-th {
+  padding: var(--spacing-m) var(--spacing-l);
+  text-align: left;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--light-grey);
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  user-select: none;
+}
+
+.ui-datatable-th:hover {
+  background: rgba(43, 169, 133, 0.1);
+}
+
+.ui-datatable-th.sortable::after {
+  content: '';
+  position: absolute;
+  right: var(--spacing-s);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid var(--grey);
+  opacity: 0.5;
+  transition: all var(--transition-normal);
+}
+
+.ui-datatable-th.sortable.asc::after {
+  border-bottom-color: var(--primary-green);
+  opacity: 1;
+}
+
+.ui-datatable-th.sortable.desc::after {
+  border-bottom: none;
+  border-top: 4px solid var(--primary-green);
+  opacity: 1;
+}
+
+.ui-datatable-td {
+  padding: var(--spacing-m) var(--spacing-l);
+  border-bottom: 1px solid var(--light-grey);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.ui-datatable-tr:hover {
+  background: rgba(43, 169, 133, 0.05);
+}
+
+.ui-datatable-tr.selected {
+  background: rgba(43, 169, 133, 0.1);
+}
+
+.ui-datatable-empty {
+  padding: var(--spacing-xxl);
+  text-align: center;
+  color: var(--grey);
+  font-style: italic;
+}
+
+.ui-datatable-loading {
+  padding: var(--spacing-xxl);
+  text-align: center;
+  color: var(--grey);
+}
+
+.ui-datatable-footer {
+  padding: var(--spacing-l) var(--spacing-xl);
+  background: var(--light-grey);
+  border-top: 1px solid var(--light-grey);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-m);
+}
+
+.ui-datatable-info {
+  font-size: 0.875rem;
+  color: var(--grey);
+}
+
+.ui-datatable-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+
+/* Variantes de taille */
+.ui-datatable.small .ui-datatable-th,
+.ui-datatable.small .ui-datatable-td {
+  padding: var(--spacing-s) var(--spacing-m);
+  font-size: 0.75rem;
+}
+
+.ui-datatable.large .ui-datatable-th,
+.ui-datatable.large .ui-datatable-td {
+  padding: var(--spacing-l) var(--spacing-xl);
+  font-size: 1rem;
+}
+
+/* Variante compacte */
+.ui-datatable.compact .ui-datatable-th,
+.ui-datatable.compact .ui-datatable-td {
+  padding: var(--spacing-s) var(--spacing-m);
+}
+
+/* Variante avec bordures */
+.ui-datatable.bordered .ui-datatable-th,
+.ui-datatable.bordered .ui-datatable-td {
+  border: 1px solid var(--light-grey);
+}
+
+/* Variante avec rayures */
+.ui-datatable.striped .ui-datatable-tbody .ui-datatable-tr:nth-child(even) {
+  background: rgba(43, 169, 133, 0.02);
+}
+
+.ui-datatable.striped .ui-datatable-tbody .ui-datatable-tr:nth-child(even):hover {
+  background: rgba(43, 169, 133, 0.07);
+}
+
+/* Actions dans les cellules */
+.ui-datatable-actions-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.ui-datatable-action-button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-s);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+/* Effet de survol subtil sans masquer les icônes */
+.ui-datatable-action-button:hover {
+  background: rgba(43, 169, 133, 0.1);
+  transform: scale(1.05);
+}
+
+/* Styles pour les icônes EQUITECH dans la DataTable - Utilisation des mêmes SVG que les classes ui-icon-* */
+.ui-datatable-action-button.edit {
+  background-image: url("data:image/svg+xml,%3Csvg width='46' height='46' viewBox='0 0 46 46' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M43.1587 10.8283L22.2973 31.7259C20.2199 33.8069 14.0533 34.7707 12.6756 33.3907C11.298 32.0107 12.2383 25.8334 14.3157 23.7524L35.199 2.8328C35.714 2.26996 36.3374 1.81753 37.0319 1.50275C37.7262 1.18797 38.4771 1.01733 39.2392 1.00125C40.0011 0.985194 40.7586 1.12394 41.4655 1.40917C42.1725 1.6944 42.8145 2.12024 43.3527 2.66086C43.8908 3.20149 44.3142 3.84572 44.5969 4.55471C44.8797 5.26372 45.0164 6.02274 44.9982 6.78603C44.9801 7.54933 44.8075 8.30109 44.4915 8.99582C44.1753 9.69055 43.722 10.314 43.1587 10.8283Z' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M20.6806 5.57031H9.74693C7.42709 5.57031 5.20242 6.49345 3.56204 8.13668C1.92169 9.7799 1 12.0086 1 14.3324V36.2378C1 38.5617 1.92169 40.7904 3.56204 42.4335C5.20242 44.0768 7.42709 44.9999 9.74693 44.9999H33.801C38.6337 44.9999 40.3612 41.057 40.3612 36.2378V25.2851' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.ui-datatable-action-button.delete {
+  background-image: url("data:image/svg+xml,%3Csvg width='46' height='46' viewBox='0 0 46 46' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.498 23V35.2222' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M28.502 23V35.2222' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M1 10.7773H45' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.50195 18.1113V37.6669C6.50195 41.7171 10.1956 45.0002 14.752 45.0002H31.252C35.8084 45.0002 39.502 41.7171 39.502 37.6669V18.1113' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.7471 5.88889C14.7471 3.18883 17.2095 1 20.2471 1H25.7471C28.7847 1 31.2471 3.18883 31.2471 5.88889V10.7778H14.7471V5.88889Z' stroke='%232BA985' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ui-datatable-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ui-datatable-search {
+    min-width: auto;
+  }
+  
+  .ui-datatable-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .ui-datatable-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .ui-datatable-pagination {
+    justify-content: center;
+  }
+}
+
+/* Animations */
+.ui-datatable-tr {
+  transition: all var(--transition-normal);
+}
+
+.ui-datatable-tr.entering {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.ui-datatable-tr.entered {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ui-datatable-tr.exiting {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Support pour le mode sombre */
+@media (prefers-color-scheme: dark) {
+  .ui-datatable {
+    background: var(--primary-dark);
+    color: var(--white);
+  }
+  
+  .ui-datatable-header,
+  .ui-datatable-footer {
+    background: var(--secondary-teal);
+    border-color: var(--primary-green);
+  }
+  
+  .ui-datatable-thead {
+    background: var(--secondary-teal);
+  }
+  
+  .ui-datatable-th {
+    color: var(--white);
+    border-bottom-color: var(--primary-green);
+  }
+  
+  .ui-datatable-td {
+    border-bottom-color: var(--secondary-teal);
+  }
+  
+  .ui-datatable-tr:hover {
+    background: rgba(43, 169, 133, 0.2);
+  }
+  
+  .ui-datatable-tr.selected {
+    background: rgba(43, 169, 133, 0.3);
+  }
+}

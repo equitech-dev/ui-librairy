@@ -19,3 +19,8 @@ export { default as ParallaxSection } from './ParallaxSection/ParallaxSection';
 export { default as MapEmbed } from './MapEmbed';
 export { default as Gallery } from './Gallery';
 export { default as Carousel } from './Carousel';
+export { default as Pagination } from './Pagination';
+export { default as Tabs } from './Tabs';
+export { default as Switch } from './Switch';
+export { default as DatePicker } from './DatePicker';
+export { default as DataTable } from './DataTable';
