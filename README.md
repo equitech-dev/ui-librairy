@@ -77,50 +77,50 @@ $spacing-xxl: 3rem;    // 48px
 ## 🧩 Composants Disponibles
 
 ### 🎯 Composants de Base
-| Composant | Description | Statut |
-|-----------|-------------|--------|
-| **Button** | Boutons avec variantes de couleur, taille et style | ✅ Stable |
-| **Card** | Cartes avec headers, footers et variantes | ✅ Stable |
-| **Input** | Champs de saisie avec validation et icônes | ✅ Stable |
-| **Alert** | Alertes avec types sémantiques et icônes | ✅ Stable |
-| **Badge** | Badges pour étiquettes et statuts | ✅ Stable |
-| **Modal** | Modales et dialogues | ✅ Stable |
-| **Tooltip** | Infobulles contextuelles | ✅ Stable |
-| **Loader** | Indicateurs de chargement | ✅ Stable |
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Button** | Boutons avec variantes de couleur, taille et style | ✅ Stable | [📖 Button/README.md](Button/README.md) |
+| **Card** | Cartes avec headers, footers et variantes | ✅ Stable | [📖 Card/README.md](Card/README.md) |
+| **Input** | Champs de saisie avec validation et icônes | ✅ Stable | [📖 Input/README.md](Input/README.md) |
+| **Alert** | Alertes avec types sémantiques et icônes | ✅ Stable | [📖 Alert/README.md](Alert/README.md) |
+| **Badge** | Badges pour étiquettes et statuts | ✅ Stable | [📖 Badge/README.md](Badge/README.md) |
+| **Modal** | Modales et dialogues | ✅ Stable | [📖 Modal/README.md](Modal/README.md) |
+| **Tooltip** | Infobulles contextuelles | ✅ Stable | [📖 Tooltip/README.md](Tooltip/README.md) |
+| **Loader** | Indicateurs de chargement | ✅ Stable | [📖 Loader/README.md](Loader/README.md) |
 
 ### 📝 Composants de Formulaire
-| Composant | Description | Statut |
-|-----------|-------------|--------|
-| **Checkbox** | Cases à cocher | ✅ Stable |
-| **RadioButton** | Boutons radio | ✅ Stable |
-| **Select** | Listes déroulantes | ✅ Stable |
-| **Textarea** | Zones de texte multilignes | ✅ Stable |
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Checkbox** | Cases à cocher | ✅ Stable | [📖 Checkbox/README.md](Checkbox/README.md) |
+| **RadioButton** | Boutons radio | ✅ Stable | [📖 RadioButton/README.md](RadioButton/README.md) |
+| **Select** | Listes déroulantes | ✅ Stable | [📖 Select/README.md](Select/README.md) |
+| **Textarea** | Zones de texte multilignes | ✅ Stable | [📖 Textarea/README.md](Textarea/README.md) |
 
 ### 🏗️ Composants de Layout
-| Composant | Description | Statut |
-|-----------|-------------|--------|
-| **Header** | En-têtes de page | ✅ Stable |
-| **Footer** | Pieds de page | ✅ Stable |
-| **Section** | Sections de contenu | ✅ Stable |
-| **Grid** | Système de grille responsive | ✅ Stable |
-| **Separator** | Séparateurs visuels | ✅ Stable |
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Header** | En-têtes de page | ✅ Stable | [📖 Header/README.md](Header/README.md) |
+| **Footer** | Pieds de page | ✅ Stable | [📖 Footer/README.md](Footer/README.md) |
+| **Section** | Sections de contenu | ✅ Stable | [📖 Section/README.md](Section/README.md) |
+| **Grid** | Système de grille responsive | ✅ Stable | [📖 Grid/README.md](Grid/README.md) |
+| **Separator** | Séparateurs visuels | ✅ Stable | [📖 Separator/README.md](Separator/README.md) |
 
 ### 🎨 Composants Spécialisés
-| Composant | Description | Statut |
-|-----------|-------------|--------|
-| **Carousel** | Carrousels d'images | ✅ Stable |
-| **Gallery** | Galeries d'images | ✅ Stable |
-| **MapEmbed** | Intégration de cartes | ✅ Stable |
-| **ParallaxSection** | Sections avec effet parallaxe | ✅ Stable |
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Carousel** | Carrousels d'images | ✅ Stable | [📖 Carousel/README.md](Carousel/README.md) |
+| **Gallery** | Galeries d'images | ✅ Stable | [📖 Gallery/README.md](Gallery/README.md) |
+| **MapEmbed** | Intégration de cartes | ✅ Stable | [📖 MapEmbed/README.md](MapEmbed/README.md) |
+| **ParallaxSection** | Sections avec effet parallaxe | ✅ Stable | [📖 ParallaxSection/README.md](ParallaxSection/README.md) |
 
 ### 🚀 Nouveaux Composants P1 (Critiques)
-| Composant | Description | Statut |
-|-----------|-------------|--------|
-| **Pagination** | Navigation entre pages avec indicateurs | 🆕 Nouveau |
-| **Tabs** | Onglets pour organiser le contenu | 🆕 Nouveau |
-| **Switch/Toggle** | Interrupteurs on/off avec variantes | 🆕 Nouveau |
-| **DatePicker** | Sélecteur de date avec calendrier interactif | 🆕 Nouveau |
-| **DataTable** | Tableaux de données avec tri, recherche et actions | 🆕 Nouveau |
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Pagination** | Navigation entre pages avec indicateurs | 🆕 Nouveau | [📖 Pagination/README.md](Pagination/README.md) |
+| **Tabs** | Onglets pour organiser le contenu | 🆕 Nouveau | [📖 Tabs/README.md](Tabs/README.md) |
+| **Switch/Toggle** | Interrupteurs on/off avec variantes | 🆕 Nouveau | [📖 Switch/README.md](Switch/README.md) |
+| **DatePicker** | Sélecteur de date avec calendrier interactif | 🆕 Nouveau | [📖 DatePicker/README.md](DatePicker/README.md) |
+| **DataTable** | Tableaux de données avec tri, recherche et actions | 🆕 Nouveau | [📖 DataTable/README.md](DataTable/README.md) |
 
 ---
 

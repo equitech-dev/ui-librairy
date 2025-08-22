@@ -1,0 +1,39 @@
+# Fichiers de développement
+node_modules/
+.git/
+.gitignore
+.npmignore
+package-lock.json
+
+# Fichiers de build temporaires
+*.map
+*.log
+
+# Fichiers de développement
+demo.html
+test.js
+test.jsx
+
+# Fichiers de documentation globale
+UI_LIBRARY_ANALYSIS.md
+
+# Fichiers de configuration de développement
+.babelrc
+.eslintrc
+.prettierrc
+
+# Fichiers de test
+__tests__/
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+
+# Fichiers d'outils de développement
+tools/
+.vscode/
+.idea/
+
+# Fichiers de documentation de développement
+CHANGELOG.md
+CONTRIBUTING.md

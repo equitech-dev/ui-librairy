@@ -8,7 +8,10 @@
     "index.js",
     "index.css",
     "index.css.map",
-    "**/*.js"
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.scss",
+    "**/README.md"
   ],
   "scripts": {
     "compile-sass": "sass index.scss:index.css",
