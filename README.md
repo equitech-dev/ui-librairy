@@ -103,6 +103,7 @@ $spacing-xxl: 3rem;    // 48px
 | **Footer** | Pieds de page | ✅ Stable | [📖 Footer/README.md](Footer/README.md) |
 | **Section** | Sections de contenu | ✅ Stable | [📖 Section/README.md](Section/README.md) |
 | **Grid** | Système de grille responsive | ✅ Stable | [📖 Grid/README.md](Grid/README.md) |
+| **GridItem** | Élément de grille avec drag & drop | ✅ Stable | [📖 Grid/README_GridItem.md](Grid/README_GridItem.md) |
 | **Separator** | Séparateurs visuels | ✅ Stable | [📖 Separator/README.md](Separator/README.md) |
 
 ### 🎨 Composants Spécialisés

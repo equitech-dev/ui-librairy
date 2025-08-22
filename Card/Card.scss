@@ -1,4 +1,5 @@
 @use '../tools/_sass_variables.scss' as v;
+@use 'sass:color';
 
 .ui-card {
   background: v.$white;

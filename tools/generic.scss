@@ -80,9 +80,9 @@
 .ui-flex-wrap { flex-wrap: wrap; }
 .ui-flex-nowrap { flex-wrap: nowrap; }
 
-.ui-gap-s { gap: v.$flex_gap_s; }
-.ui-gap-m { gap: v.$flex_gap; }
-.ui-gap-l { gap: v.$flex_gap_l; }
+.ui-gap-s { gap: v.$spacing-s; }
+.ui-gap-m { gap: v.$spacing-m; }
+.ui-gap-l { gap: v.$spacing-l; }
 
 /*  FLEX ALIGNMENT  */
 .ui-justify-center { justify-content: center; }
