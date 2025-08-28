@@ -1,0 +1,271 @@
+/* ===================================
+   STEPPER COMPONENT - EQUITECH UI
+   =================================== */
+
+.ui-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: var(--spacing-lg) 0;
+}
+
+.ui-stepper-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-border);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.ui-stepper-progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: width var(--transition-normal);
+}
+
+.ui-stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  min-width: 0;
+}
+
+.ui-stepper-step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border: 2px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  
+  &.completed {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    
+    /* Icône check */
+    &::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3333 4L6 11.3333L2.66667 8' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  
+  &.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+  
+  &.error {
+    background: var(--color-error);
+    border-color: var(--color-error);
+    color: white;
+    
+    /* Icône error */
+    &::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 4V8M8 12H8.01M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &:hover {
+      border-color: var(--color-border);
+      color: var(--color-text-secondary);
+    }
+  }
+}
+
+.ui-stepper-step-label {
+  margin-top: var(--spacing-sm);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 120px;
+  line-height: 1.4;
+  transition: color var(--transition-normal);
+  
+  .ui-stepper-step.completed &,
+  .ui-stepper-step.active & {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  
+  .ui-stepper-step.error & {
+    color: var(--color-error);
+  }
+}
+
+.ui-stepper-step-description {
+  margin-top: var(--spacing-xs);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  text-align: center;
+  max-width: 100px;
+  line-height: 1.3;
+}
+
+/* Variants */
+.ui-stepper.vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 var(--spacing-lg);
+  
+  .ui-stepper-line {
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    transform: none;
+  }
+  
+  .ui-stepper-progress {
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    height: auto;
+    transform: none;
+  }
+  
+  .ui-stepper-step {
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .ui-stepper-step-content {
+    margin-left: var(--spacing-md);
+    flex: 1;
+  }
+  
+  .ui-stepper-step-label {
+    margin-top: 0;
+    text-align: left;
+    max-width: none;
+  }
+  
+  .ui-stepper-step-description {
+    margin-top: var(--spacing-xs);
+    text-align: left;
+    max-width: none;
+  }
+}
+
+.ui-stepper.compact {
+  padding: var(--spacing-md) 0;
+  
+  .ui-stepper-step-circle {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+  
+  .ui-stepper-step-label {
+    font-size: var(--font-size-xs);
+    max-width: 80px;
+  }
+  
+  .ui-stepper-step-description {
+    display: none;
+  }
+}
+
+.ui-stepper.large {
+  padding: var(--spacing-xl) 0;
+  
+  .ui-stepper-step-circle {
+    width: 48px;
+    height: 48px;
+    font-size: var(--font-size-base);
+  }
+  
+  .ui-stepper-step-label {
+    font-size: var(--font-size-base);
+    max-width: 150px;
+  }
+  
+  .ui-stepper-step-description {
+    font-size: var(--font-size-sm);
+    max-width: 120px;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ui-stepper {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .ui-stepper-step-circle {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+  
+  .ui-stepper-step-label {
+    font-size: var(--font-size-xs);
+    max-width: 60px;
+  }
+  
+  .ui-stepper-step-description {
+    display: none;
+  }
+  
+  .ui-stepper.vertical {
+    padding: 0 var(--spacing-md);
+    
+    .ui-stepper-step-label {
+      max-width: none;
+    }
+  }
+}

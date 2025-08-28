@@ -1,0 +1,63 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'demo.html'
+      - 'index.css'
+      - 'index.scss'
+      - 'tools/**'
+      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch: # Permet le déclenchement manuel
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      # 1️⃣ Checkout du repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Compiler les styles SCSS
+      - name: Compile SCSS
+        run: npm run compile-sass
+
+      # 5️⃣ Préparer les fichiers pour GitHub Pages
+      - name: Prepare documentation files
+        run: npm run docs:build
+
+      # 6️⃣ Déployer sur GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy documentation to GitHub Pages'
+
+      # 7️⃣ Notifier le succès du déploiement
+      - name: Notify deployment success
+        run: |
+          echo "✅ Documentation déployée avec succès sur GitHub Pages"
+          echo "🌐 URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"

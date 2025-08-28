@@ -1,0 +1,340 @@
+// Drawer/Sidebar Component Styles
+@use '../tools/sass_variables' as *;
+
+.ui-drawer {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: var(--shadow-xl);
+  transition: transform var(--transition-normal);
+  z-index: var(--z-drawer, 1000);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  // Positions
+  &.ui-drawer--left {
+    left: 0;
+    transform: translateX(-100%);
+    
+    &.ui-drawer--open {
+      transform: translateX(0);
+    }
+  }
+
+  &.ui-drawer--right {
+    right: 0;
+    transform: translateX(100%);
+    
+    &.ui-drawer--open {
+      transform: translateX(0);
+    }
+  }
+
+  &.ui-drawer--top {
+    left: 0;
+    right: 0;
+    top: 0;
+    height: auto;
+    transform: translateY(-100%);
+    
+    &.ui-drawer--open {
+      transform: translateY(0);
+    }
+  }
+
+  &.ui-drawer--bottom {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    height: auto;
+    transform: translateY(100%);
+    
+    &.ui-drawer--open {
+      transform: translateY(0);
+    }
+  }
+
+  // Sizes
+  &.ui-drawer--sm {
+    width: 320px;
+    max-width: 90vw;
+  }
+
+  &.ui-drawer--md {
+    width: 480px;
+    max-width: 90vw;
+  }
+
+  &.ui-drawer--lg {
+    width: 640px;
+    max-width: 90vw;
+  }
+
+  &.ui-drawer--xl {
+    width: 800px;
+    max-width: 90vw;
+  }
+
+  &.ui-drawer--full {
+    width: 100vw;
+  }
+
+  // Top/Bottom specific sizes
+  &.ui-drawer--top,
+  &.ui-drawer--bottom {
+    &.ui-drawer--sm {
+      height: 320px;
+      max-height: 90vh;
+    }
+
+    &.ui-drawer--md {
+      height: 480px;
+      max-height: 90vh;
+    }
+
+    &.ui-drawer--lg {
+      height: 640px;
+      max-height: 90vh;
+    }
+
+    &.ui-drawer--xl {
+      height: 800px;
+      max-height: 90vh;
+    }
+
+    &.ui-drawer--full {
+      height: 100vh;
+    }
+  }
+}
+
+// Drawer Header
+.ui-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--white);
+  flex-shrink: 0;
+
+  .ui-drawer-title {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .ui-drawer-subtitle {
+    margin: var(--spacing-xs) 0 0 0;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .ui-drawer-close {
+    background: none;
+    border: none;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background: var(--light-grey);
+      color: var(--text-primary);
+    }
+
+    &:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Drawer Body
+.ui-drawer-body {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--light-grey);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--text-secondary);
+    }
+  }
+}
+
+// Drawer Footer
+.ui-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  background: var(--white);
+  flex-shrink: 0;
+
+  &.ui-drawer-footer--left {
+    justify-content: flex-start;
+  }
+
+  &.ui-drawer-footer--center {
+    justify-content: center;
+  }
+
+  &.ui-drawer-footer--space-between {
+    justify-content: space-between;
+  }
+}
+
+// Drawer Overlay
+.ui-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-drawer, 1000) - 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+
+  &.ui-drawer-overlay--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.ui-drawer-overlay--blur {
+    backdrop-filter: blur(4px);
+  }
+}
+
+// Drawer Backdrop
+.ui-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc(var(--z-drawer, 1000) - 2);
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .ui-drawer {
+    &.ui-drawer--md,
+    &.ui-drawer--lg,
+    &.ui-drawer--xl {
+      width: 90vw;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .ui-drawer {
+    width: 100vw !important;
+    max-width: 100vw !important;
+
+    &.ui-drawer--top,
+    &.ui-drawer--bottom {
+      height: 100vh !important;
+      max-height: 100vh !important;
+    }
+  }
+
+  .ui-drawer-header,
+  .ui-drawer-body,
+  .ui-drawer-footer {
+    padding: var(--spacing-md);
+  }
+}
+
+// Animation variants
+.ui-drawer--slide {
+  transition: transform var(--transition-normal);
+}
+
+.ui-drawer--fade {
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+
+  &.ui-drawer--open {
+    opacity: 1;
+  }
+}
+
+.ui-drawer--scale {
+  transform: scale(0.95);
+  transition: transform var(--transition-normal);
+
+  &.ui-drawer--open {
+    transform: scale(1);
+  }
+}
+
+// Theme variants
+.ui-drawer--dark {
+  background: var(--dark-blue-green);
+  color: var(--white);
+
+  .ui-drawer-header {
+    background: var(--dark-blue-green);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+
+    .ui-drawer-title {
+      color: var(--white);
+    }
+
+    .ui-drawer-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .ui-drawer-close {
+      color: rgba(255, 255, 255, 0.7);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+      }
+    }
+  }
+
+  .ui-drawer-footer {
+    background: var(--dark-blue-green);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.ui-drawer--glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  .ui-drawer-header,
+  .ui-drawer-footer {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+

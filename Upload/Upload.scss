@@ -1,0 +1,330 @@
+// Upload Component Styles
+@use '../tools/variables' as *;
+@use '../tools/mixins' as *;
+@use '../tools/sass_variables' as *;
+
+.ui-upload {
+  position: relative;
+  width: 100%;
+  
+  // Zone de téléchargement principale
+  &-zone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: 2rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-lg);
+    background: var(--background-light);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    
+    &:hover {
+      border-color: var(--primary-color);
+      background: var(--primary-light);
+    }
+    
+    &.dragover {
+      border-color: var(--primary-color);
+      background: var(--primary-light);
+      transform: scale(1.02);
+    }
+    
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      
+      &:hover {
+        border-color: var(--border-color);
+        background: var(--background-light);
+        transform: none;
+      }
+    }
+  }
+  
+  // Icône de téléchargement
+  &-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    transition: color var(--transition-base);
+    
+    .ui-upload-zone:hover & {
+      color: var(--primary-color);
+    }
+    
+    .ui-upload-zone.dragover & {
+      color: var(--primary-color);
+      transform: scale(1.1);
+    }
+  }
+  
+  // Texte principal
+  &-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  // Description
+  &-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  // Bouton de sélection
+  &-button {
+    @include button-base;
+    @include button-variant(primary);
+    margin-top: 0.5rem;
+  }
+  
+  // Input file caché
+  &-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  
+  // Liste des fichiers
+  &-files {
+    margin-top: 1rem;
+  }
+  
+  // Item de fichier
+  &-file {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--background-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-base);
+    
+    &:hover {
+      border-color: var(--primary-color);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    &.error {
+      border-color: var(--error-color);
+      background: var(--error-light);
+    }
+    
+    &.success {
+      border-color: var(--success-color);
+      background: var(--success-light);
+    }
+  }
+  
+  // Icône de fichier
+  &-file-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  
+  // Informations du fichier
+  &-file-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  &-file-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    @include text-truncate;
+  }
+  
+  &-file-size {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  
+  // Barre de progression
+  &-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+  
+  &-progress-bar {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: width var(--transition-base);
+    
+    &.error {
+      background: var(--error-color);
+    }
+    
+    &.success {
+      background: var(--success-color);
+    }
+  }
+  
+  // Actions sur le fichier
+  &-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.75rem;
+  }
+  
+  &-file-action {
+    @include button-base;
+    @include button-size(small);
+    @include button-variant(ghost);
+    padding: 0.25rem;
+    min-width: auto;
+    
+    &.delete {
+      color: var(--error-color);
+      
+      &:hover {
+        background: var(--error-light);
+      }
+    }
+  }
+  
+  // États de chargement
+  &-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    
+    .ui-spinner {
+      margin-right: 0.5rem;
+    }
+  }
+  
+  // Message d'erreur
+  &-error {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  // Variantes de taille
+  &.small {
+    .ui-upload-zone {
+      min-height: 120px;
+      padding: 1rem;
+    }
+    
+    .ui-upload-icon {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .ui-upload-title {
+      font-size: 1rem;
+    }
+  }
+  
+  &.large {
+    .ui-upload-zone {
+      min-height: 300px;
+      padding: 3rem;
+    }
+    
+    .ui-upload-icon {
+      width: 64px;
+      height: 64px;
+    }
+    
+    .ui-upload-title {
+      font-size: 1.25rem;
+    }
+  }
+  
+  // Variantes de style
+  &.bordered {
+    .ui-upload-zone {
+      border-style: solid;
+      border-width: 1px;
+    }
+  }
+  
+  &.rounded {
+    .ui-upload-zone {
+      border-radius: var(--border-radius-xl);
+    }
+  }
+  
+  &.compact {
+    .ui-upload-zone {
+      min-height: 100px;
+      padding: 1.5rem;
+    }
+    
+    .ui-upload-files {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .ui-upload {
+    &-zone {
+      min-height: 150px;
+      padding: 1.5rem;
+    }
+    
+    &-file {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    &-file-actions {
+      margin-left: 0;
+      align-self: flex-end;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .ui-upload {
+    &-zone {
+      min-height: 120px;
+      padding: 1rem;
+    }
+    
+    &-title {
+      font-size: 1rem;
+    }
+    
+    &-description {
+      font-size: 0.8rem;
+    }
+  }
+}
+

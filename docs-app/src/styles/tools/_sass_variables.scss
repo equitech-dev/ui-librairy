@@ -1,0 +1,106 @@
+// EQUITECH Brand Colors - Palette Simplifiée
+$primary-green: #2BA985;      // Vert/Teal Moyen - Couleur principale
+$secondary-teal: #0C3640;     // Teal/Bleu-Vert - Couleur secondaire
+$primary-dark: #1A2A38;       // Bleu-Vert Foncé - Couleur sombre
+$light-grey: #F5F5F5;         // Gris Clair
+$off-white: #FAFBFC;          // Blanc non-pur (meilleure pratique)
+
+// EQUITECH Brand Colors - Semantic Colors
+$success-color: #2BA985;      // Utilise la couleur principale pour le succès
+$warning-color: #FFA726;      // Orange pour avertissements
+$error-color: #EF5350;        // Rouge pour erreurs
+$info-color: #42A5F5;         // Bleu pour informations
+
+// EQUITECH Brand Colors - Neutral Colors
+$white: $off-white;           // Utilise le blanc non-pur
+$grey: #9E9E9E;               // Gris neutre
+$dark-grey: #424242;          // Gris foncé
+$black: $primary-dark;        // Utilise la couleur sombre comme noir
+
+// EQUITECH Brand Colors - Opacity Variations (20%, 40%, 60%, 80%)
+$primary-green-80: rgba(43, 169, 133, 0.8);
+$primary-green-60: rgba(43, 169, 133, 0.6);
+$primary-green-40: rgba(43, 169, 133, 0.4);
+$primary-green-20: rgba(43, 169, 133, 0.2);
+
+$secondary-teal-80: rgba(12, 54, 64, 0.8);
+$secondary-teal-60: rgba(12, 54, 64, 0.6);
+$secondary-teal-40: rgba(12, 54, 64, 0.4);
+$secondary-teal-20: rgba(12, 54, 64, 0.2);
+
+// EQUITECH Typography
+$font-title: 'Josefin Sans', sans-serif;    // Police des titres
+$font-body: 'Inter', sans-serif;            // Police des textes
+
+// Typography Sizes
+$size-txt-xs: 0.75rem;       // 12px - Texte très petit
+$size-txt-s: 0.875rem;       // 14px - Texte petit
+$size-txt-m: 1rem;           // 16px - Texte normal
+$size-txt-l: 1.125rem;       // 18px - Texte grand
+$size-title-s: 1.25rem;      // 20px - Titre petit (h3)
+$size-title-m: 1.5rem;       // 24px - Titre moyen (h2)
+$size-title-l: 2rem;         // 32px - Titre grand (h1)
+$size-title-xl: 2.5rem;      // 40px - Titre très grand
+
+// Typography Weights
+$txt-light: 300;
+$txt-normal: 400;
+$txt-medium: 500;
+$txt-semibold: 600;
+$txt-bold: 700;
+
+// Spacing System
+$spacing-xs: 0.25rem;        // 4px
+$spacing-s: 0.5rem;          // 8px
+$spacing-m: 1rem;            // 16px
+$spacing-l: 1.5rem;          // 24px
+$spacing-xl: 2rem;           // 32px
+$spacing-xxl: 3rem;          // 48px
+
+// Border Radius
+$radius-s: 4px;
+$radius-m: 8px;
+$radius-l: 12px;
+$radius-xl: 16px;
+$radius-full: 9999px;
+
+// Button Dimensions
+$btn-height-s: 32px;
+$btn-height-m: 40px;
+$btn-height-l: 48px;
+$btn-height-xl: 56px;
+
+// Shadows
+$shadow-s: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+$shadow-m: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+$shadow-l: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+$shadow-xl: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Z-index Scale
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Legacy variables for backward compatibility
+$valid_color: $success-color;
+$warning_color: $warning-color;
+$info_color: $info-color;
+$error_color: $error-color;
+$txt_font: $font-body;
+$primary_color: $primary-green;
+$secondary_color: $secondary-teal;
+$btn_height: $btn-height-m;
+$main_radius: $radius-m;
+$padding_s: $spacing-s;
+$radius_s: $radius-s;
+$font_size_m: $size-txt-m;
+$radius_m: $radius-m;

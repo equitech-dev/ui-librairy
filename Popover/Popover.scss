@@ -1,0 +1,214 @@
+// Popover Component Styles
+.ui-popover {
+  position: relative;
+  display: inline-block;
+}
+
+.ui-popover-trigger {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:focus {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+    border-radius: var(--radius-s);
+  }
+}
+
+.ui-popover-content {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid var(--light-grey);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-m);
+  min-width: 200px;
+  max-width: 300px;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--primary-dark);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95) translateY(-8px);
+  transition: all var(--transition-normal);
+  
+  // Flèche
+  &::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border: 1px solid var(--light-grey);
+    transform: rotate(45deg);
+  }
+  
+  // Positionnement des flèches
+  &.top::before {
+    bottom: -5px;
+    left: 50%;
+    margin-left: -4px;
+    border-top: none;
+    border-left: none;
+  }
+  
+  &.bottom::before {
+    top: -5px;
+    left: 50%;
+    margin-left: -4px;
+    border-bottom: none;
+    border-right: none;
+  }
+  
+  &.left::before {
+    right: -5px;
+    top: 50%;
+    margin-top: -4px;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  &.right::before {
+    left: -5px;
+    top: 50%;
+    margin-top: -4px;
+    border-right: none;
+    border-top: none;
+  }
+  
+  // États
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+  }
+  
+  // Variantes
+  &.info {
+    border-left: 4px solid var(--info-color);
+    
+    &::before {
+      border-left-color: var(--info-color);
+    }
+  }
+  
+  &.success {
+    border-left: 4px solid var(--success-color);
+    
+    &::before {
+      border-left-color: var(--success-color);
+    }
+  }
+  
+  &.warning {
+    border-left: 4px solid var(--warning-color);
+    
+    &::before {
+      border-left-color: var(--warning-color);
+    }
+  }
+  
+  &.error {
+    border-left: 4px solid var(--error-color);
+    
+    &::before {
+      border-left-color: var(--error-color);
+    }
+  }
+  
+  // Tailles
+  &.small {
+    padding: var(--spacing-s);
+    font-size: var(--text-xs);
+    min-width: 150px;
+  }
+  
+  &.large {
+    padding: var(--spacing-l);
+    font-size: var(--text-base);
+    min-width: 250px;
+  }
+  
+  // Contenu riche
+  .ui-popover-header {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-s);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    
+    &::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    
+    &.info::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' stroke='%2342A5F5' stroke-width='1.5'/%3E%3Cpath d='M8 12V8' stroke='%2342A5F5' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='5' r='1' fill='%2342A5F5'/%3E%3C/svg%3E");
+    }
+    
+    &.success::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' stroke='%232BA985' stroke-width='1.5'/%3E%3Cpath d='M6 8L8 10L12 6' stroke='%232BA985' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+    
+    &.warning::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 1L15 14H1L8 1Z' stroke='%23FFA726' stroke-width='1.5'/%3E%3Cpath d='M8 6V10' stroke='%23FFA726' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='12' r='1' fill='%23FFA726'/%3E%3C/svg%3E");
+    }
+    
+    &.error::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' stroke='%23EF5350' stroke-width='1.5'/%3E%3Cpath d='M10 6L6 10' stroke='%23EF5350' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M6 6L10 10' stroke='%23EF5350' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    }
+  }
+  
+  .ui-popover-body {
+    margin-bottom: var(--spacing-s);
+  }
+  
+  .ui-popover-footer {
+    display: flex;
+    gap: var(--spacing-s);
+    justify-content: flex-end;
+    margin-top: var(--spacing-s);
+    padding-top: var(--spacing-s);
+    border-top: 1px solid var(--light-grey);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .ui-popover-content {
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.95) !important;
+    max-width: calc(100vw - 32px);
+    width: 100%;
+    
+    &.visible {
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    
+    &::before {
+      display: none;
+    }
+  }
+}

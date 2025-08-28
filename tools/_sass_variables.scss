@@ -90,6 +90,13 @@ $z-modal: 1050;
 $z-popover: 1060;
 $z-tooltip: 1070;
 
+// Breakpoints
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-large: 1200px;
+$breakpoint-xl: 1400px;
+
 // Legacy variables for backward compatibility
 $valid_color: $success-color;
 $warning_color: $warning-color;

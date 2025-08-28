@@ -4,6 +4,35 @@
 
 Développez des interfaces utilisateur exceptionnelles avec notre collection de composants réutilisables, optimisés pour l'accessibilité et la performance. Notre bibliothèque suit les meilleures pratiques UX/UI et s'adapte parfaitement à l'identité visuelle EQUITECH.
 
+## 📖 Documentation Interactive
+
+**🌐 Documentation en ligne :** https://equitech-dev.github.io/ui-library/
+
+La documentation interactive inclut tous les composants avec des exemples visuels, du code et des guides d'utilisation. Elle est automatiquement déployée sur GitHub Pages et mise à jour à chaque modification.
+
+### 🚀 Nouvelle Documentation React
+
+Nous avons créé une application React dédiée pour la documentation, offrant une expérience utilisateur moderne et interactive. Cette application est construite avec :
+
+- **React 18** avec TypeScript
+- **React Router** pour la navigation
+- **SCSS** pour les styles
+- **GitHub Pages** pour l'hébergement
+- **GitHub Actions** pour le déploiement automatique
+
+Pour lancer la documentation en local :
+```bash
+cd docs-app
+npm install
+npm start
+```
+
+Pour déployer manuellement :
+```bash
+cd docs-app
+npm run deploy
+```
+
 ## ✨ Pourquoi choisir notre UI Library ?
 
 - 🎨 **Design System cohérent** - Palette de couleurs harmonieuse et typographie soignée
@@ -122,6 +151,46 @@ $spacing-xxl: 3rem;    // 48px
 | **Switch/Toggle** | Interrupteurs on/off avec variantes | 🆕 Nouveau | [📖 Switch/README.md](Switch/README.md) |
 | **DatePicker** | Sélecteur de date avec calendrier interactif | 🆕 Nouveau | [📖 DatePicker/README.md](DatePicker/README.md) |
 | **DataTable** | Tableaux de données avec tri, recherche et actions | 🆕 Nouveau | [📖 DataTable/README.md](DataTable/README.md) |
+
+### 🚀 Nouveaux Composants P2 (Navigation)
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Breadcrumb** | Fil d'Ariane pour navigation hiérarchique | 🆕 Nouveau | [📖 Breadcrumb/README.md](Breadcrumb/README.md) |
+| **Accordion** | Panneaux pliables pour organiser le contenu | 🆕 Nouveau | [📖 Accordion/README.md](Accordion/README.md) |
+| **Stepper** | Indicateur d'étapes pour processus multi-étapes | 🆕 Nouveau | [📖 Stepper/README.md](Stepper/README.md) |
+
+### 🚀 Nouveaux Composants P2 (Feedback)
+| Composant | Description | Statut | Documentation |
+|-----------|-------------|--------|---------------|
+| **Popover** | Infobulles contextuelles avancées | 🆕 Nouveau | [📖 Popover/README.md](Popover/README.md) |
+| **Skeleton** | Placeholders de chargement animés | 🆕 Nouveau | [📖 Skeleton/README.md](Skeleton/README.md) |
+| **Loading** | Indicateurs de chargement sophistiqués | 🆕 Nouveau | [📖 Loading/README.md](Loading/README.md) |
+
+### Composants Données P2
+| **Progress** | Barres de progression linéaires et circulaires | 🆕 Nouveau | [📖 Progress/README.md](Progress/README.md) |
+| **Rating** | Système d'évaluation par étoiles interactif | 🆕 Nouveau | [📖 Rating/README.md](Rating/README.md) |
+| **Timeline** | Chronologie d'événements avec différents layouts | 🆕 Nouveau | [📖 Timeline/README.md](Timeline/README.md) |
+| **Tree** | Arborescence hiérarchique avec expansion/réduction | 🆕 Nouveau | [📖 Tree/README.md](Tree/README.md) |
+| **List** | Liste interactive avec actions et métadonnées | 🆕 Nouveau | [📖 List/README.md](List/README.md) |
+| **Calendar** | Calendrier interactif avec événements et navigation | 🆕 Nouveau | [📖 Calendar/README.md](Calendar/README.md) |
+| **Kanban** | Tableau Kanban avec drag & drop et gestion de colonnes | 🆕 Nouveau | [📖 Kanban/README.md](Kanban/README.md) |
+
+### Composants Formulaires P2
+| **Upload** | Zone de téléchargement de fichiers avec drag & drop | 🆕 Nouveau | [📖 Upload/README.md](Upload/README.md) |
+| **RangeSlider** | Curseur de plage interactif avec support tactile | 🆕 Nouveau | [📖 RangeSlider/README.md](RangeSlider/README.md) |
+| **ToggleSwitch** | Interrupteur avancé avec modes simple/avancé/groupe | 🆕 Nouveau | [📖 ToggleSwitch/README.md](ToggleSwitch/README.md) |
+| **AdvancedDropdown** | Menu déroulant avancé avec recherche et sélection multiple | 🆕 Nouveau | [📖 AdvancedDropdown/README.md](AdvancedDropdown/README.md) |
+
+### Composants Layout P2
+| **Drawer** | Panneau latéral coulissant avec positions multiples | 🆕 Nouveau | [📖 Drawer/README.md](Drawer/README.md) |
+| **Portal** | Rendu de contenu en dehors du DOM parent | 🆕 Nouveau | [📖 Portal/README.md](Portal/README.md) |
+| **Overlay** | Superposition avancée avec gestion des interactions | 🆕 Nouveau | [📖 Overlay/README.md](Overlay/README.md) |
+
+### Composants Formulaires P2 (Avancés)
+| **TimePicker** | Sélecteur d'heure avec format 12h/24h et contraintes | 🆕 Nouveau | [📖 TimePicker/README.md](TimePicker/README.md) |
+| **ColorPicker** | Sélecteur de couleur HSL avec palette prédéfinie | 🆕 Nouveau | [📖 ColorPicker/README.md](ColorPicker/README.md) |
+| **Form** | Conteneur de formulaire avec validation et sections | 🆕 Nouveau | [📖 Form/README.md](Form/README.md) |
+| **Fieldset** | Groupe de champs avec légende et structure sémantique | 🆕 Nouveau | [📖 Fieldset/README.md](Fieldset/README.md) |
 
 ---
 

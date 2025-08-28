@@ -1,0 +1,59 @@
+name: Deploy React Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs-app/**'
+      - '.github/workflows/deploy-docs-react.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: docs-app/package-lock.json
+          
+      - name: Install dependencies
+        run: |
+          cd docs-app
+          npm ci
+          
+      - name: Build React app
+        run: |
+          cd docs-app
+          npm run build
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-app/build
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+      - name: Notify deployment success
+        run: |
+          echo "✅ Documentation React déployée avec succès sur GitHub Pages"
+          echo "🌐 URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          echo "📁 Build directory: docs-app/build"
+
+

@@ -1,0 +1,17 @@
+:root{
+  --main_flex_dir:column;
+  --scnd_flex_dir:row;
+  --main_flex_reverse:column-reverse;
+  --scnd_flex_reverse:row-reverse;
+}
+
+@media screen and (425px <= width <= 1024px){
+}
+@media screen and (min-width:1025px) {
+  :root{
+    --main_flex_dir:row;
+    --scnd_flex_dir:column;
+    --main_flex_reverse:row-reverse;
+    --scnd_flex_reverse:column-reverse;
+  }
+} 

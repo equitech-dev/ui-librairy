@@ -1,0 +1,264 @@
+// Portal Component Styles
+@use '../tools/sass_variables' as *;
+
+.ui-portal {
+  // Portal container styles
+  // Note: Most styling is handled by the target container
+  // This is mainly for utility classes and positioning
+  
+  // Ensure portal content is properly positioned
+  position: relative;
+  z-index: var(--z-portal, 9999);
+  
+  // Handle different positioning contexts
+  &.ui-portal--fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    
+    > * {
+      pointer-events: auto;
+    }
+  }
+  
+  &.ui-portal--absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  // Portal content positioning
+  &.ui-portal--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &.ui-portal--top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  &.ui-portal--bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  &.ui-portal--left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  &.ui-portal--right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  // Portal overlay variants
+  &.ui-portal--overlay {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    
+    &.ui-portal--overlay-light {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    &.ui-portal--overlay-dark {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+  
+  // Portal animation variants
+  &.ui-portal--fade-in {
+    animation: portalFadeIn var(--transition-normal) ease-out;
+  }
+  
+  &.ui-portal--slide-in {
+    animation: portalSlideIn var(--transition-normal) ease-out;
+  }
+  
+  &.ui-portal--scale-in {
+    animation: portalScaleIn var(--transition-normal) ease-out;
+  }
+  
+  // Portal z-index management
+  &.ui-portal--z-low {
+    z-index: var(--z-portal-low, 1000);
+  }
+  
+  &.ui-portal--z-medium {
+    z-index: var(--z-portal-medium, 2000);
+  }
+  
+  &.ui-portal--z-high {
+    z-index: var(--z-portal-high, 3000);
+  }
+  
+  &.ui-portal--z-top {
+    z-index: var(--z-portal-top, 9999);
+  }
+}
+
+// Portal animations
+@keyframes portalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes portalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes portalScaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Portal container utilities
+.ui-portal-container {
+  // Base container for portal content
+  position: relative;
+  width: 100%;
+  height: 100%;
+  
+  // Container variants
+  &.ui-portal-container--constrained {
+    max-width: 90vw;
+    max-height: 90vh;
+    margin: auto;
+  }
+  
+  &.ui-portal-container--full {
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  &.ui-portal-container--auto {
+    width: auto;
+    height: auto;
+  }
+}
+
+// Portal backdrop
+.ui-portal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-portal, 9999) - 1);
+  
+  &.ui-portal-backdrop--blur {
+    backdrop-filter: blur(4px);
+  }
+  
+  &.ui-portal-backdrop--light {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  &.ui-portal-backdrop--dark {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+// Portal content wrapper
+.ui-portal-content {
+  position: relative;
+  z-index: var(--z-portal, 9999);
+  
+  // Content positioning
+  &.ui-portal-content--center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  &.ui-portal-content--top {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  &.ui-portal-content--bottom {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  &.ui-portal-content--left {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+  
+  &.ui-portal-content--right {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-tablet) {
+  .ui-portal {
+    &.ui-portal--overlay {
+      padding: var(--spacing-md);
+    }
+  }
+  
+  .ui-portal-container {
+    &.ui-portal-container--constrained {
+      max-width: 95vw;
+      max-height: 95vh;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .ui-portal {
+    &.ui-portal--overlay {
+      padding: var(--spacing-sm);
+    }
+  }
+  
+  .ui-portal-container {
+    &.ui-portal-container--constrained {
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+  }
+}
+
+

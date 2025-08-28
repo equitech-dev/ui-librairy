@@ -1,0 +1,415 @@
+// Overlay Component Styles
+@use '../tools/sass_variables' as *;
+
+.ui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-overlay, 1000);
+  pointer-events: none;
+  transition: all var(--transition-normal);
+
+  // Enable pointer events for overlay content
+  &.ui-overlay--active {
+    pointer-events: auto;
+  }
+
+  // Overlay variants
+  &.ui-overlay--backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  &.ui-overlay--backdrop-light {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  &.ui-overlay--backdrop-dark {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  &.ui-overlay--backdrop-blur {
+    backdrop-filter: blur(8px);
+  }
+
+  &.ui-overlay--backdrop-blur-light {
+    backdrop-filter: blur(4px);
+  }
+
+  &.ui-overlay--backdrop-blur-heavy {
+    backdrop-filter: blur(16px);
+  }
+
+  // Overlay states
+  &.ui-overlay--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.ui-overlay--hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  // Overlay animations
+  &.ui-overlay--fade {
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  }
+
+  &.ui-overlay--slide {
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+    
+    &.ui-overlay--slide-top {
+      transform: translateY(-100%);
+      
+      &.ui-overlay--visible {
+        transform: translateY(0);
+      }
+    }
+
+    &.ui-overlay--slide-bottom {
+      transform: translateY(100%);
+      
+      &.ui-overlay--visible {
+        transform: translateY(0);
+      }
+    }
+
+    &.ui-overlay--slide-left {
+      transform: translateX(-100%);
+      
+      &.ui-overlay--visible {
+        transform: translateX(0);
+      }
+    }
+
+    &.ui-overlay--slide-right {
+      transform: translateX(100%);
+      
+      &.ui-overlay--visible {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &.ui-overlay--scale {
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+    transform: scale(0.95);
+    
+    &.ui-overlay--visible {
+      transform: scale(1);
+    }
+  }
+
+  // Overlay content positioning
+  &.ui-overlay--content-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.ui-overlay--content-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--spacing-xl);
+  }
+
+  &.ui-overlay--content-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: var(--spacing-xl);
+  }
+
+  &.ui-overlay--content-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: var(--spacing-xl);
+  }
+
+  &.ui-overlay--content-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: var(--spacing-xl);
+  }
+
+  // Overlay content wrapper
+  .ui-overlay-content {
+    position: relative;
+    z-index: calc(var(--z-overlay, 1000) + 1);
+    pointer-events: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+
+    // Content animations
+    &.ui-overlay-content--fade-in {
+      animation: overlayContentFadeIn var(--transition-normal) ease-out;
+    }
+
+    &.ui-overlay-content--slide-in {
+      animation: overlayContentSlideIn var(--transition-normal) ease-out;
+    }
+
+    &.ui-overlay-content--scale-in {
+      animation: overlayContentScaleIn var(--transition-normal) ease-out;
+    }
+
+    &.ui-overlay-content--bounce-in {
+      animation: overlayContentBounceIn var(--transition-normal) ease-out;
+    }
+
+    // Content constraints
+    &.ui-overlay-content--constrained {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    &.ui-overlay-content--full {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    &.ui-overlay-content--auto {
+      width: auto;
+      height: auto;
+    }
+  }
+
+  // Overlay backdrop
+  .ui-overlay-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-overlay, 1000);
+    pointer-events: auto;
+  }
+
+  // Overlay close button
+  .ui-overlay-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: calc(var(--z-overlay, 1000) + 2);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(1.1);
+    }
+
+    &:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+    }
+  }
+
+  // Overlay loading state
+  &.ui-overlay--loading {
+    .ui-overlay-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+  }
+
+  // Overlay with scroll lock
+  &.ui-overlay--scroll-lock {
+    overflow: hidden;
+  }
+}
+
+// Overlay animations
+@keyframes overlayContentFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayContentSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes overlayContentScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes overlayContentBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Overlay theme variants
+.ui-overlay--glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  .ui-overlay-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+.ui-overlay--dark {
+  background: rgba(0, 0, 0, 0.8);
+
+  .ui-overlay-content {
+    background: var(--dark-blue-green);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+  }
+
+  .ui-overlay-close {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    svg {
+      color: var(--white);
+    }
+  }
+}
+
+// Overlay responsive
+@media (max-width: $breakpoint-tablet) {
+  .ui-overlay {
+    &.ui-overlay--content-top,
+    &.ui-overlay--content-bottom,
+    &.ui-overlay--content-left,
+    &.ui-overlay--content-right {
+      padding: var(--spacing-md);
+    }
+
+    .ui-overlay-content {
+      max-width: 95vw;
+      max-height: 95vh;
+
+      &.ui-overlay-content--constrained {
+        max-width: 95vw;
+        max-height: 95vh;
+      }
+    }
+
+    .ui-overlay-close {
+      top: var(--spacing-md);
+      right: var(--spacing-md);
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .ui-overlay {
+    &.ui-overlay--content-top,
+    &.ui-overlay--content-bottom,
+    &.ui-overlay--content-left,
+    &.ui-overlay--content-right {
+      padding: var(--spacing-sm);
+    }
+
+    .ui-overlay-content {
+      max-width: 100vw;
+      max-height: 100vh;
+
+      &.ui-overlay-content--constrained {
+        max-width: 100vw;
+        max-height: 100vh;
+      }
+
+      &.ui-overlay-content--full {
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    .ui-overlay-close {
+      top: var(--spacing-sm);
+      right: var(--spacing-sm);
+      width: 36px;
+      height: 36px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Overlay utility classes
+.ui-overlay--clickable {
+  cursor: pointer;
+}
+
+.ui-overlay--non-clickable {
+  cursor: default;
+}
+
+.ui-overlay--prevent-scroll {
+  overflow: hidden;
+}
+
+.ui-overlay--allow-scroll {
+  overflow: auto;
+}
+
+

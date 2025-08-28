@@ -20,6 +20,42 @@
 @use 'Switch/Switch.scss';
 @use 'DatePicker/DatePicker.scss';
 @use 'DataTable/DataTable.scss';
+
+// Composants P2 - Priorité 2 (Navigation)
+@use 'Breadcrumb/Breadcrumb.scss';
+@use 'Accordion/Accordion.scss';
+@use 'Stepper/Stepper.scss';
+
+// Composants P2 - Priorité 2 (Feedback)
+@use 'Popover/Popover.scss';
+@use 'Skeleton/Skeleton.scss';
+@use 'Loading/Loading.scss';
+
+// Composants P2 - Priorité 2 (Données)
+@use 'Progress/Progress.scss';
+@use 'Rating/Rating.scss';
+@use 'Timeline/Timeline.scss';
+@use 'Tree/Tree.scss';
+@use 'List/List.scss';
+@use 'Calendar/Calendar.scss';
+@use 'Kanban/Kanban.scss';
+
+// Composants P2 - Priorité 2 (Formulaires)
+@use 'Upload/Upload.scss';
+@use 'RangeSlider/RangeSlider.scss';
+@use 'ToggleSwitch/ToggleSwitch.scss';
+@use 'AdvancedDropdown/AdvancedDropdown.scss';
+
+// Composants P2 - Priorité 2 (Layout)
+@use 'Drawer/Drawer.scss';
+@use 'Portal/Portal.scss';
+@use 'Overlay/Overlay.scss';
+
+// Composants P2 - Priorité 2 (Formulaires avancés)
+@use 'TimePicker/TimePicker.scss';
+@use 'ColorPicker/ColorPicker.scss';
+@use 'Form/Form.scss';
+@use 'Fieldset/Fieldset.scss';
 @use 'Badge/Badge.scss';
 @use 'Modal/Modal.scss';
 @use 'Tooltip/Tooltip.scss';

@@ -1,0 +1,401 @@
+// Range Slider Component Styles
+@use '../tools/variables' as *;
+@use '../tools/mixins' as *;
+@use '../tools/sass_variables' as *;
+
+.ui-range-slider {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0;
+  
+  // Container principal
+  &-container {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+  
+  // Piste du slider
+  &-track {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    cursor: pointer;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--primary-color);
+      border-radius: 3px;
+      transition: all var(--transition-base);
+    }
+    
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+  
+  // Curseur (thumb)
+  &-thumb {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--background-white);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    transition: all var(--transition-base);
+    z-index: 2;
+    
+    &:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+    
+    &:active {
+      cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+    
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+      
+      &:hover {
+        transform: translate(-50%, -50%);
+        box-shadow: none;
+      }
+    }
+    
+    // Focus visible
+    &:focus-visible {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+  }
+  
+  // Zone de sélection (pour range)
+  &-selection {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+  
+  // Labels
+  &-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  
+  &-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  
+  &-value {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    min-width: 2rem;
+    text-align: center;
+  }
+  
+  // Marqueurs (ticks)
+  &-ticks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  &-tick {
+    position: absolute;
+    top: 50%;
+    width: 2px;
+    height: 8px;
+    background: var(--border-color);
+    transform: translate(-50%, -50%);
+    
+    &.active {
+      background: var(--primary-color);
+    }
+  }
+  
+  &-tick-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  
+  // Tooltip de valeur
+  &-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    z-index: 10;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--text-primary);
+    }
+    
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  
+  // Variantes de taille
+  &.small {
+    .ui-range-slider-track {
+      height: 4px;
+    }
+    
+    .ui-range-slider-thumb {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .ui-range-slider-tick {
+      height: 6px;
+    }
+  }
+  
+  &.large {
+    .ui-range-slider-track {
+      height: 8px;
+    }
+    
+    .ui-range-slider-thumb {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .ui-range-slider-tick {
+      height: 12px;
+    }
+  }
+  
+  // Variantes de style
+  &.outlined {
+    .ui-range-slider-thumb {
+      background: transparent;
+      border-width: 3px;
+    }
+  }
+  
+  &.filled {
+    .ui-range-slider-thumb {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+  }
+  
+  &.gradient {
+    .ui-range-slider-track::before,
+    .ui-range-slider-selection {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+  }
+  
+  &.rounded {
+    .ui-range-slider-track {
+      border-radius: 10px;
+      
+      &::before {
+        border-radius: 10px;
+      }
+    }
+    
+    .ui-range-slider-selection {
+      border-radius: 10px;
+    }
+  }
+  
+  // États sémantiques
+  &.success {
+    .ui-range-slider-track::before,
+    .ui-range-slider-selection {
+      background: var(--success-color);
+    }
+    
+    .ui-range-slider-thumb {
+      border-color: var(--success-color);
+    }
+  }
+  
+  &.warning {
+    .ui-range-slider-track::before,
+    .ui-range-slider-selection {
+      background: var(--warning-color);
+    }
+    
+    .ui-range-slider-thumb {
+      border-color: var(--warning-color);
+    }
+  }
+  
+  &.error {
+    .ui-range-slider-track::before,
+    .ui-range-slider-selection {
+      background: var(--error-color);
+    }
+    
+    .ui-range-slider-thumb {
+      border-color: var(--error-color);
+    }
+  }
+  
+  // Mode vertical
+  &.vertical {
+    .ui-range-slider-container {
+      width: 40px;
+      height: 200px;
+      flex-direction: column;
+    }
+    
+    .ui-range-slider-track {
+      width: 6px;
+      height: 100%;
+      
+      &::before {
+        width: 100%;
+        height: auto;
+        bottom: 0;
+        top: auto;
+      }
+    }
+    
+    .ui-range-slider-thumb {
+      left: 50%;
+      transform: translate(-50%, 50%);
+      
+      &:hover {
+        transform: translate(-50%, 50%) scale(1.1);
+      }
+      
+      &:active {
+        transform: translate(-50%, 50%) scale(1.15);
+      }
+    }
+    
+    .ui-range-slider-selection {
+      width: 100%;
+      height: auto;
+      bottom: 0;
+      top: auto;
+    }
+    
+    .ui-range-slider-labels {
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      margin-top: 0;
+      margin-left: 1rem;
+    }
+    
+    .ui-range-slider-tick {
+      width: 8px;
+      height: 2px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .ui-range-slider-tick-label {
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+    }
+  }
+  
+  // Mode range (double curseur)
+  &.range {
+    .ui-range-slider-thumb {
+      &:first-child {
+        z-index: 2;
+      }
+      
+      &:last-child {
+        z-index: 3;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .ui-range-slider {
+    &-labels {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+    
+    &-tick-label {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .ui-range-slider {
+    padding: 0.75rem 0;
+    
+    &-container {
+      height: 32px;
+    }
+    
+    &-thumb {
+      width: 18px;
+      height: 18px;
+    }
+    
+    &-value {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.4rem;
+    }
+  }
+}
+

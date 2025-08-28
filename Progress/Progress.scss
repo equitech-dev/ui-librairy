@@ -1,0 +1,313 @@
+// Progress Component Styles
+.ui-progress {
+  width: 100%;
+  
+  .ui-progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--text-sm);
+    color: var(--primary-dark);
+    font-weight: 500;
+  }
+  
+  .ui-progress-text {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+  
+  .ui-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    background: var(--light-grey);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    
+    // Variantes de taille
+    &.small {
+      height: 4px;
+    }
+    
+    &.large {
+      height: 12px;
+    }
+    
+    &.xlarge {
+      height: 16px;
+    }
+    
+    // Barre de progression
+    .ui-progress-fill {
+      height: 100%;
+      background: var(--primary-green);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-normal), background-color var(--transition-normal);
+      position: relative;
+      
+      // Animation de pulsation
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: progress-pulse 2s ease-in-out infinite;
+      }
+      
+      // Variantes sémantiques
+      &.success {
+        background: var(--success-color);
+      }
+      
+      &.warning {
+        background: var(--warning-color);
+      }
+      
+      &.error {
+        background: var(--error-color);
+      }
+      
+      &.info {
+        background: var(--info-color);
+      }
+    }
+    
+    // Variantes de style
+    &.striped .ui-progress-fill {
+      background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 20px 20px;
+      animation: progress-striped 1s linear infinite;
+    }
+    
+    &.gradient .ui-progress-fill {
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-teal));
+      
+      &.success {
+        background: linear-gradient(90deg, var(--success-color), #4CAF50);
+      }
+      
+      &.warning {
+        background: linear-gradient(90deg, var(--warning-color), #FF9800);
+      }
+      
+      &.error {
+        background: linear-gradient(90deg, var(--error-color), #F44336);
+      }
+      
+      &.info {
+        background: linear-gradient(90deg, var(--info-color), #2196F3);
+      }
+    }
+  }
+  
+  // Variantes de style
+  &.bordered .ui-progress-bar {
+    border: 2px solid var(--light-grey);
+    background: white;
+  }
+  
+  &.rounded .ui-progress-bar {
+    border-radius: var(--radius-l);
+  }
+  
+  // États
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    
+    .ui-progress-fill::after {
+      animation: none;
+    }
+  }
+  
+  // Indicateur de pourcentage
+  .ui-progress-indicator {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    background: var(--primary-dark);
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--radius-s);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    transform: translateX(50%);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--primary-dark);
+    }
+  }
+}
+
+// Progress circulaire
+.ui-progress-circular {
+  position: relative;
+  display: inline-block;
+  
+  .ui-progress-svg {
+    transform: rotate(-90deg);
+    
+    .ui-progress-track {
+      fill: none;
+      stroke: var(--light-grey);
+      stroke-width: 4;
+    }
+    
+    .ui-progress-fill {
+      fill: none;
+      stroke: var(--primary-green);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dasharray var(--transition-normal), stroke var(--transition-normal);
+      
+      &.success {
+        stroke: var(--success-color);
+      }
+      
+      &.warning {
+        stroke: var(--warning-color);
+      }
+      
+      &.error {
+        stroke: var(--error-color);
+      }
+      
+      &.info {
+        stroke: var(--info-color);
+      }
+    }
+  }
+  
+  .ui-progress-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    
+    .ui-progress-percentage {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--primary-dark);
+      line-height: 1;
+    }
+    
+    .ui-progress-label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+  }
+  
+  // Tailles
+  &.small {
+    width: 60px;
+    height: 60px;
+    
+    .ui-progress-percentage {
+      font-size: var(--text-sm);
+    }
+    
+    .ui-progress-label {
+      font-size: var(--text-xs);
+    }
+  }
+  
+  &.large {
+    width: 120px;
+    height: 120px;
+    
+    .ui-progress-percentage {
+      font-size: var(--text-xl);
+    }
+    
+    .ui-progress-label {
+      font-size: var(--text-sm);
+    }
+  }
+  
+  &.xlarge {
+    width: 160px;
+    height: 160px;
+    
+    .ui-progress-percentage {
+      font-size: var(--text-2xl);
+    }
+    
+    .ui-progress-label {
+      font-size: var(--text-base);
+    }
+  }
+}
+
+// Animations
+@keyframes progress-pulse {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes progress-striped {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 0;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .ui-progress {
+    .ui-progress-label {
+      font-size: var(--text-xs);
+    }
+    
+    .ui-progress-text {
+      font-size: var(--text-xs);
+    }
+  }
+  
+  .ui-progress-circular {
+    &.large {
+      width: 100px;
+      height: 100px;
+    }
+    
+    &.xlarge {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+
