@@ -178,9 +178,20 @@ const AlertPage: React.FC = () => {
                 <div className="ui-alert__content">
                   <h4 className="ui-alert__title">Documentation mise à jour</h4>
                   <p>La documentation a été mise à jour avec de nouvelles fonctionnalités. 
-                    <a href="#" style={{ color: 'var(--ui-primary-color)', textDecoration: 'underline', marginLeft: '0.5rem' }}>
+                    <button 
+                      onClick={() => alert('Lien vers la documentation')}
+                      style={{ 
+                        color: 'var(--ui-primary-color)', 
+                        textDecoration: 'underline', 
+                        marginLeft: '0.5rem',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        font: 'inherit'
+                      }}
+                    >
                       Consulter la documentation
-                    </a>
+                    </button>
                   </p>
                 </div>
               </div>
@@ -190,9 +201,20 @@ const AlertPage: React.FC = () => {
                 <div className="ui-alert__content">
                   <h4 className="ui-alert__title">Sécurité renforcée</h4>
                   <p>Nous avons renforcé la sécurité de votre compte. 
-                    <a href="#" style={{ color: 'var(--ui-warning-color)', textDecoration: 'underline', marginLeft: '0.5rem' }}>
+                    <button 
+                      onClick={() => alert('Lien vers les informations de sécurité')}
+                      style={{ 
+                        color: 'var(--ui-warning-color)', 
+                        textDecoration: 'underline', 
+                        marginLeft: '0.5rem',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        font: 'inherit'
+                      }}
+                    >
                       En savoir plus
-                    </a>
+                    </button>
                   </p>
                 </div>
               </div>

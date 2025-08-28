@@ -256,7 +256,13 @@ const FormPage: React.FC = () => {
                             className="ui-form__checkbox"
                           />
                           <span className="ui-form__checkbox-text">
-                            J'accepte les <a href="#" className="ui-form__link">conditions d'utilisation</a> 
+                            J'accepte les <button 
+                              onClick={() => alert('Ouverture des conditions d\'utilisation')}
+                              className="ui-form__link"
+                              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ui-primary-color)', textDecoration: 'underline' }}
+                            >
+                              conditions d'utilisation
+                            </button> 
                             <span className="ui-form__required">*</span>
                           </span>
                         </label>
@@ -544,8 +550,20 @@ const [errors, setErrors] = useState({});
                     </button>
                     
                     <div className="ui-form__links">
-                      <a href="#" className="ui-form__link">Mot de passe oublié ?</a>
-                      <a href="#" className="ui-form__link">Créer un compte</a>
+                      <button 
+                        onClick={() => alert('Récupération de mot de passe')}
+                        className="ui-form__link"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ui-primary-color)', textDecoration: 'underline' }}
+                      >
+                        Mot de passe oublié ?
+                      </button>
+                      <button 
+                        onClick={() => alert('Création de compte')}
+                        className="ui-form__link"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ui-primary-color)', textDecoration: 'underline' }}
+                      >
+                        Créer un compte
+                      </button>
                     </div>
                   </form>
                 </div>

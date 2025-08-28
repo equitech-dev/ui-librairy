@@ -41,10 +41,34 @@ const DrawerPage: React.FC = () => {
                     </div>
                     <div className="ui-drawer-body">
                       <nav className="ui-drawer-nav">
-                        <a href="#" className="ui-drawer-nav-item">Accueil</a>
-                        <a href="#" className="ui-drawer-nav-item">Profil</a>
-                        <a href="#" className="ui-drawer-nav-item">Paramètres</a>
-                        <a href="#" className="ui-drawer-nav-item">Aide</a>
+                        <button 
+                          onClick={() => alert('Navigation vers Accueil')}
+                          className="ui-drawer-nav-item"
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                        >
+                          Accueil
+                        </button>
+                        <button 
+                          onClick={() => alert('Navigation vers Profil')}
+                          className="ui-drawer-nav-item"
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                        >
+                          Profil
+                        </button>
+                        <button 
+                          onClick={() => alert('Navigation vers Paramètres')}
+                          className="ui-drawer-nav-item"
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                        >
+                          Paramètres
+                        </button>
+                        <button 
+                          onClick={() => alert('Navigation vers Aide')}
+                          className="ui-drawer-nav-item"
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                        >
+                          Aide
+                        </button>
                       </nav>
                     </div>
                   </div>

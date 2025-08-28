@@ -4,7 +4,7 @@ const CalendarPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [viewMode, setViewMode] = useState<'month' | 'week' | 'day'>('month');
-  const [events, setEvents] = useState([
+  const [events] = useState([
     {
       id: 1,
       title: 'Réunion équipe',

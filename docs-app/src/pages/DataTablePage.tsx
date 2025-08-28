@@ -19,7 +19,7 @@ const DataTablePage: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   // Données d'exemple
-  const users: User[] = [
+  const users = useMemo<User[]>(() => [
     { id: 1, name: 'Jean Dupont', email: 'jean.dupont@equitech.fr', role: 'Admin', status: 'active', lastLogin: '2024-08-20', actions: 'Modifier' },
     { id: 2, name: 'Marie Martin', email: 'marie.martin@equitech.fr', role: 'Utilisateur', status: 'active', lastLogin: '2024-08-19', actions: 'Modifier' },
     { id: 3, name: 'Pierre Durand', email: 'pierre.durand@equitech.fr', role: 'Modérateur', status: 'pending', lastLogin: '2024-08-18', actions: 'Modifier' },
@@ -28,7 +28,7 @@ const DataTablePage: React.FC = () => {
     { id: 6, name: 'Emma Roux', email: 'emma.roux@equitech.fr', role: 'Modérateur', status: 'active', lastLogin: '2024-08-16', actions: 'Modifier' },
     { id: 7, name: 'Thomas Moreau', email: 'thomas.moreau@equitech.fr', role: 'Utilisateur', status: 'pending', lastLogin: '2024-08-14', actions: 'Modifier' },
     { id: 8, name: 'Julie Simon', email: 'julie.simon@equitech.fr', role: 'Admin', status: 'active', lastLogin: '2024-08-21', actions: 'Modifier' }
-  ];
+  ], []);
 
   // Filtrage et tri des données
   const filteredAndSortedUsers = useMemo(() => {
