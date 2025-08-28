@@ -1,6 +1,6 @@
 {
   "name": "@equitech-dev/ui-library",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Librairie de composants UI génériques pour Equitech",
   "main": "index.js",
   "style": "index.css",
