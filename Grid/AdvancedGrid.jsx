@@ -1,8 +1,182 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useReducer, useCallback, useMemo } from "react";
+
+// Types d'actions pour useReducer
+const GRID_ACTIONS = {
+  SET_GRID_METRICS: 'SET_GRID_METRICS',
+  START_DRAG: 'START_DRAG',
+  START_RESIZE: 'START_RESIZE',
+  UPDATE_DRAG: 'UPDATE_DRAG',
+  UPDATE_RESIZE: 'UPDATE_RESIZE',
+  END_DRAG: 'END_DRAG',
+  END_RESIZE: 'END_RESIZE',
+  TOGGLE_LOCK: 'TOGGLE_LOCK',
+  RESET: 'RESET'
+};
+
+// État initial optimisé
+const initialState = {
+  gridMetrics: null,
+  isDragging: false,
+  isResizing: false,
+  active: null,
+  startMouse: { x: 0, y: 0 },
+  startState: { col: 1, row: 1, w: 1, h: 1 },
+  grabOffset: { dc: 0, dr: 0 },
+  lockedItems: new Set()
+};
+
+// Reducer optimisé
+const gridReducer = (state, action) => {
+  switch (action.type) {
+    case GRID_ACTIONS.SET_GRID_METRICS:
+      return {
+        ...state,
+        gridMetrics: action.payload
+      };
+    
+    case GRID_ACTIONS.START_DRAG:
+      return {
+        ...state,
+        isDragging: true,
+        active: action.payload.element,
+        startMouse: action.payload.mouse,
+        startState: action.payload.state,
+        grabOffset: action.payload.offset
+      };
+    
+    case GRID_ACTIONS.START_RESIZE:
+      return {
+        ...state,
+        isResizing: true,
+        active: action.payload.element,
+        startMouse: action.payload.mouse,
+        startState: action.payload.state
+      };
+    
+    case GRID_ACTIONS.UPDATE_DRAG:
+      return {
+        ...state,
+        startMouse: action.payload.mouse
+      };
+    
+    case GRID_ACTIONS.UPDATE_RESIZE:
+      return {
+        ...state,
+        startMouse: action.payload.mouse
+      };
+    
+    case GRID_ACTIONS.END_DRAG:
+    case GRID_ACTIONS.END_RESIZE:
+      return {
+        ...state,
+        isDragging: false,
+        isResizing: false,
+        active: null,
+        startMouse: { x: 0, y: 0 },
+        startState: { col: 1, row: 1, w: 1, h: 1 },
+        grabOffset: { dc: 0, dr: 0 }
+      };
+    
+    case GRID_ACTIONS.TOGGLE_LOCK:
+      const newLockedItems = new Set(state.lockedItems);
+      if (newLockedItems.has(action.payload)) {
+        newLockedItems.delete(action.payload);
+      } else {
+        newLockedItems.add(action.payload);
+      }
+      return {
+        ...state,
+        lockedItems: newLockedItems
+      };
+    
+    case GRID_ACTIONS.RESET:
+      return initialState;
+    
+    default:
+      return state;
+  }
+};
+
+// Utilitaires mémorisés
+const createGridUtils = (gridMetrics) => {
+  if (!gridMetrics) return null;
+  
+  return {
+    applyStyles: (element, newState) => {
+      element.style.gridColumn = `${newState.col} / span ${newState.w}`;
+      element.style.gridRow = `${newState.row} / span ${newState.h}`;
+    },
+
+    mouseToCell: (clientX, clientY) => {
+      const { colWidth, rowHeight, gapX, gapY, rect } = gridMetrics;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const strideX = colWidth + gapX;
+      const strideY = rowHeight + gapY;
+      
+      const col = Math.max(1, Math.min(gridMetrics.cols, Math.floor(x / strideX) + 1));
+      const row = Math.max(1, Math.floor(y / strideY) + 1);
+      
+      return { col, row };
+    },
+
+    getElementState: (element) => ({
+      col: +element.dataset.col,
+      row: +element.dataset.row,
+      w: +element.dataset.w || 1,
+      h: +element.dataset.h || 1
+    }),
+
+    setElementState: (element, newState) => {
+      element.dataset.col = newState.col;
+      element.dataset.row = newState.row;
+      element.dataset.w = newState.w;
+      element.dataset.h = newState.h;
+      return newState;
+    }
+  };
+};
+
+// Détection de collision optimisée
+const createCollisionDetector = (gridRef, gridUtils) => {
+  if (!gridRef.current || !gridUtils) return null;
+  
+  return {
+    hasOverlap: (element, state) => {
+      const otherItems = gridRef.current.querySelectorAll(".ui-grid-item");
+      
+      for (const other of otherItems) {
+        if (other === element) continue;
+        
+        const otherState = gridUtils.getElementState(other);
+        if (isOverlapping(state, otherState)) {
+          return true;
+        }
+      }
+      
+      return false;
+    },
+
+    isOverlapping: (state1, state2) => {
+      return !(state1.col + state1.w <= state2.col ||
+              state2.col + state2.w <= state1.col ||
+              state1.row + state1.h <= state2.row ||
+              state2.row + state2.h <= state1.row);
+    }
+  };
+};
+
+// Fonction utilitaire pour vérifier les chevauchements
+const isOverlapping = (state1, state2) => {
+  return !(state1.col + state1.w <= state2.col ||
+          state2.col + state2.w <= state1.col ||
+          state1.row + state1.h <= state2.row ||
+          state2.row + state2.h <= state1.row);
+};
 
 /**
- * AdvancedGrid - Grid component with drag & drop, resize, and intelligent repositioning
+ * AdvancedGrid Optimized - Grid component with optimized drag & drop, resize, and intelligent repositioning
  * 
  * Props :
  * - children: Grid items to display
@@ -21,7 +195,7 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from "react"
  * - style: Additional inline styles
  * - ...props: Native props (aria-*, tabIndex, ref, etc.)
  */
-const AdvancedGrid = ({
+const AdvancedGridOptimized = ({
   children,
   columns = 12,
   gap = "10px",
@@ -40,515 +214,194 @@ const AdvancedGrid = ({
   ...props
 }) => {
   const gridRef = useRef(null);
-  const [gridMetrics, setGridMetrics] = useState(null);
+  const [state, dispatch] = useReducer(gridReducer, initialState);
   
-  // State management
-  const [state, setState] = useState({
-    isDragging: false,
-    isResizing: false,
-    active: null,
-    startMouse: { x: 0, y: 0 },
-    startState: { col: 1, row: 1, w: 1, h: 1 },
-    grabOffset: { dc: 0, dr: 0 }
-  });
-
-  // Constants
-  const CONSTANTS = {
+  // Constantes mémorisées
+  const CONSTANTS = useMemo(() => ({
     MAX_ROW: 50,
     MAX_ITERATIONS: 3,
     MAX_ATTEMPTS: 5,
     SEARCH_RANGE: 8,
     SIDE_SEARCH_RANGE: 3
-  };
+  }), []);
 
-  // Grid utilities - using useRef to prevent recreation on every render
-  const GridUtils = useRef({
-    getMetrics: () => {
-      if (!gridRef.current) return null;
-      
-      const grid = gridRef.current;
-      const styles = getComputedStyle(grid);
-      const cols = styles.gridTemplateColumns.split(" ").length;
-      const gapX = parseFloat((styles.columnGap || styles.gap || "0").toString());
-      const gapY = parseFloat((styles.rowGap || styles.gap || "0").toString());
-      const totalGapWidth = (cols - 1) * gapX;
-      const colWidth = (grid.clientWidth - totalGapWidth) / cols;
-      const computedRowHeight = parseFloat(styles.gridAutoRows);
-      const rect = grid.getBoundingClientRect();
-      
-      return { cols, colWidth, rowHeight: computedRowHeight, gapX, gapY, rect };
-    },
+  // Utilitaires de grille mémorisés
+  const gridUtils = useMemo(() => 
+    createGridUtils(state.gridMetrics), [state.gridMetrics]
+  );
 
-    applyStyles: (element, newState) => {
-      element.style.gridColumn = `${newState.col} / span ${newState.w}`;
-      element.style.gridRow = `${newState.row} / span ${newState.h}`;
-    },
+  // Détecteur de collision mémorisé
+  const collisionDetector = useMemo(() => 
+    createCollisionDetector(gridRef, gridUtils), [gridRef, gridUtils]
+  );
 
-    mouseToCell: (clientX, clientY) => {
-      if (!gridMetrics) return { col: 1, row: 1 };
-      
-      const { colWidth, rowHeight, gapX, gapY, rect } = gridMetrics;
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-      const strideX = colWidth + gapX;
-      const strideY = rowHeight + gapY;
-      
-      const col = Math.max(1, Math.min(gridMetrics.cols, Math.floor(x / strideX) + 1));
-      const row = Math.max(1, Math.floor(y / strideY) + 1);
-      
-      return { col, row };
-    }
-  }).current;
+  // Calcul des métriques de grille optimisé
+  const calculateGridMetrics = useCallback(() => {
+    if (!gridRef.current) return null;
+    
+    const grid = gridRef.current;
+    const styles = getComputedStyle(grid);
+    const cols = styles.gridTemplateColumns.split(" ").length;
+    const gapX = parseFloat((styles.columnGap || styles.gap || "0").toString());
+    const gapY = parseFloat((styles.rowGap || styles.gap || "0").toString());
+    const totalGapWidth = (cols - 1) * gapX;
+    const colWidth = (grid.clientWidth - totalGapWidth) / cols;
+    const computedRowHeight = parseFloat(styles.gridAutoRows);
+    const rect = grid.getBoundingClientRect();
+    
+    return { cols, colWidth, rowHeight: computedRowHeight, gapX, gapY, rect };
+  }, []);
 
-  // Element state management - using useRef to prevent recreation on every render
-  const ElementState = useRef({
-    get: (element) => {
-      return {
-        col: +element.dataset.col,
-        row: +element.dataset.row,
-        w: +element.dataset.w || 1,
-        h: +element.dataset.h || 1
+  // Gestionnaires d'événements optimisés
+  const handleMouseDown = useCallback((event) => {
+    if (!draggable && !resizable) return;
+    
+    const item = event.target.closest(".ui-grid-item");
+    if (!item || state.lockedItems.has(item.dataset.id)) return;
+    
+    const isResizeHandle = event.target.classList.contains("ui-resize-handle");
+    if (isResizeHandle && !resizable) return;
+    if (!isResizeHandle && !draggable) return;
+    
+    const mouse = { x: event.clientX, y: event.clientY };
+    const elementState = gridUtils.getElementState(item);
+    
+    if (isResizeHandle) {
+      dispatch({
+        type: GRID_ACTIONS.START_RESIZE,
+        payload: { element: item, mouse, state: elementState }
+      });
+    } else {
+      const rect = item.getBoundingClientRect();
+      const gridRect = gridRef.current.getBoundingClientRect();
+      const offset = {
+        dc: event.clientX - rect.left,
+        dr: event.clientY - rect.top
       };
-    },
-
-    set: (element, newState) => {
-      element.dataset.col = newState.col;
-      element.dataset.row = newState.row;
-      element.dataset.w = newState.w;
-      element.dataset.h = newState.h;
-      GridUtils.applyStyles(element, newState);
+      
+      dispatch({
+        type: GRID_ACTIONS.START_DRAG,
+        payload: { element: item, mouse, state: elementState, offset }
+      });
     }
-  }).current;
+    
+    event.preventDefault();
+  }, [draggable, resizable, state.lockedItems, gridUtils]);
 
-  // Collision detection - using useRef to prevent recreation on every render
-  const CollisionDetector = useRef({
-    hasOverlap: (element, state) => {
-      if (!gridRef.current) return false;
-      
-      const otherItems = gridRef.current.querySelectorAll(".ui-grid-item");
-      
-      for (const other of otherItems) {
-        if (other === element) continue;
-        
-        const otherState = ElementState.get(other);
-        if (CollisionDetector._isOverlapping(state, otherState)) {
-          return true;
-        }
-      }
-      
-      return false;
-    },
-
-    _isOverlapping: (state1, state2) => {
-      return !(state1.col + state1.w <= state2.col ||
-              state2.col + state2.w <= state1.col ||
-              state1.row + state1.h <= state2.row ||
-              state2.row + state2.h <= state1.row);
+  const handleMouseMove = useCallback((event) => {
+    if (!state.active) return;
+    
+    const mouse = { x: event.clientX, y: event.clientY };
+    
+    if (state.isDragging) {
+      dispatch({ type: GRID_ACTIONS.UPDATE_DRAG, payload: { mouse } });
+      handleDrag(event);
     }
-  }).current;
-
-  // Position finding algorithms (only if advanced collision detection is enabled)
-  const PositionFinder = useMemo(() => {
-    if (collisionDetection !== "advanced") return null;
     
-    return {
-      findNearestFree: (element, desiredState) => {
-        if (!gridMetrics) return desiredState;
-        
-        const { cols } = gridMetrics;
-        
-        // Try exact position first
-        if (!CollisionDetector.hasOverlap(element, desiredState)) {
-          return desiredState;
-        }
-        
-        // Search for nearest available position
-        for (let row = Math.max(1, desiredState.row); row <= CONSTANTS.MAX_ROW; row++) {
-          for (let col = 1; col <= cols - desiredState.w + 1; col++) {
-            const trialState = { ...desiredState, col, row };
-            if (!CollisionDetector.hasOverlap(element, trialState)) {
-              return trialState;
-            }
-          }
-        }
-        
-        // Fallback: push to bottom
-        return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
-      },
-
-      findBestPosition: (item, desiredState) => {
-        if (!CollisionDetector.hasOverlap(item, desiredState)) {
-          return desiredState;
-        }
-        
-        const { cols } = gridMetrics;
-        const strategies = [
-          // Priority 1: Try going up
-          { 
-            start: Math.max(1, desiredState.row - CONSTANTS.SEARCH_RANGE), 
-            end: desiredState.row - 1, 
-            direction: 'up' 
-          },
-          // Priority 2: Try sideways
-          { 
-            start: desiredState.row, 
-            end: desiredState.row, 
-            direction: 'side' 
-          },
-          // Priority 3: Try going down
-          { 
-            start: desiredState.row + 1, 
-            end: Math.min(CONSTANTS.MAX_ROW, desiredState.row + CONSTANTS.SEARCH_RANGE), 
-            direction: 'down' 
-          }
-        ];
-        
-        for (const strategy of strategies) {
-          for (let row = strategy.start; row <= strategy.end; row++) {
-            if (row < 1 || row > CONSTANTS.MAX_ROW) continue;
-            
-            if (strategy.direction === 'side') {
-              // Try left first
-              for (let col = Math.max(1, desiredState.col - CONSTANTS.SIDE_SEARCH_RANGE); col <= desiredState.col; col++) {
-                if (col + desiredState.w - 1 > cols) continue;
-                const trial = { ...desiredState, col, row };
-                if (!CollisionDetector.hasOverlap(item, trial)) {
-                  return trial;
-                }
-              }
-              // Try right
-              for (let col = desiredState.col + 1; col <= Math.min(cols - desiredState.w + 1, desiredState.col + CONSTANTS.SIDE_SEARCH_RANGE); col++) {
-                const trial = { ...desiredState, col, row };
-                if (!CollisionDetector.hasOverlap(item, trial)) {
-                  return trial;
-                }
-              }
-            } else {
-              // Try all columns for up/down
-              for (let col = 1; col <= cols - desiredState.w + 1; col++) {
-                const trial = { ...desiredState, col, row };
-                if (!CollisionDetector.hasOverlap(item, trial)) {
-                  return trial;
-                }
-              }
-            }
-          }
-        }
-        
-        // Last resort: push down
-        return { ...desiredState, row: CONSTANTS.MAX_ROW + 1 };
-      }
-    };
-  }, [collisionDetection, gridMetrics, CollisionDetector]);
-
-  // Repositioning strategies (only if autoReposition is enabled)
-  const RepositioningStrategy = useMemo(() => {
-    if (!autoReposition) return null;
-    
-    return {
-    forResize: (element, targetState) => {
-      if (!gridRef.current || collisionDetection !== "advanced") return;
-      
-      const items = Array.from(gridRef.current.querySelectorAll(".ui-grid-item"));
-      const repositionedItems = new Set();
-      
-      // First pass: reposition directly blocking items
-      RepositioningStrategy._repositionBlockingItems(element, targetState, items, repositionedItems);
-      
-      // Second pass: resolve overlaps between repositioned items
-      RepositioningStrategy._resolveOverlaps(element, items, repositionedItems);
-    },
-
-    forDrop: (element, targetState) => {
-      if (!gridRef.current || collisionDetection !== "advanced") return;
-      
-      const items = Array.from(gridRef.current.querySelectorAll(".ui-grid-item"));
-      const repositionedItems = new Set();
-      
-      // Reposition blocking items
-      RepositioningStrategy._repositionBlockingItems(element, targetState, items, repositionedItems);
-      
-      // Resolve overlaps
-      RepositioningStrategy._resolveOverlaps(element, items, repositionedItems);
-    },
-
-    _repositionBlockingItems: (element, targetState, items, repositionedItems) => {
-      if (!PositionFinder) return;
-      
-      for (const item of items) {
-        if (item === element || repositionedItems.has(item) || item.dataset.locked === "true") {
-          continue;
-        }
-        
-        const currentState = ElementState.get(item);
-        if (CollisionDetector._isOverlapping(targetState, currentState)) {
-          const newState = PositionFinder.findBestPosition(item, { ...currentState });
-          ElementState.set(item, newState);
-          repositionedItems.add(item);
-        }
-      }
-    },
-
-    _resolveOverlaps: (element, items, repositionedItems) => {
-      if (!PositionFinder) return;
-      
-      let hasOverlaps = true;
-      let iterations = 0;
-      
-      while (hasOverlaps && iterations < CONSTANTS.MAX_ITERATIONS) {
-        hasOverlaps = false;
-        iterations++;
-        
-        for (const item1 of items) {
-          if (item1 === element || item1.dataset.locked === "true") continue;
-          
-          for (const item2 of items) {
-            if (item2 === element || item1 === item2 || item2.dataset.locked === "true") continue;
-            
-            const state1 = ElementState.get(item1);
-            const state2 = ElementState.get(item2);
-            
-            if (CollisionDetector._isOverlapping(state1, state2)) {
-              const newState = PositionFinder.findBestPosition(item2, { ...state2 });
-              ElementState.set(item2, newState);
-              hasOverlaps = true;
-            }
-          }
-        }
-      }
+    if (state.isResizing) {
+      dispatch({ type: GRID_ACTIONS.UPDATE_RESIZE, payload: { mouse } });
+      handleResize(event);
     }
-  };
-}, [autoReposition, collisionDetection, PositionFinder, CollisionDetector, ElementState]);
+  }, [state.active, state.isDragging, state.isResizing]);
 
-  // Lock system - using useRef to prevent recreation on every render
-  const LockSystem = useMemo(() => {
-    if (!lockSystem) return null;
+  const handleMouseUp = useCallback(() => {
+    if (!state.active) return;
     
-    return {
-      toggle: (element) => {
-        const isLocked = element.dataset.locked === "true";
-        element.dataset.locked = !isLocked;
-        
-        if (!isLocked) {
-          element.classList.add("ui-locked");
-          element.style.opacity = "0.7";
-          element.style.filter = "grayscale(20%)";
-        } else {
-          element.classList.remove("ui-locked");
-          element.style.opacity = "1";
-          element.style.filter = "none";
-        }
-        
-        // Call callback
-        if (onItemLock) {
-          onItemLock(element.dataset.id, !isLocked);
-        }
-      }
+    if (state.isDragging) {
+      dispatch({ type: GRID_ACTIONS.END_DRAG });
+      handleDrop();
+    }
+    
+    if (state.isResizing) {
+      dispatch({ type: GRID_ACTIONS.END_RESIZE });
+      handleResizeEnd();
+    }
+    
+    state.active.classList.remove("ui-dragging", "ui-resizing");
+  }, [state.active, state.isDragging, state.isResizing]);
+
+  // Logique de drag optimisée
+  const handleDrag = useCallback((event) => {
+    if (!state.active || !gridUtils || !collisionDetector) return;
+    
+    const { col, row } = gridUtils.mouseToCell(event.clientX, event.clientY);
+    const newState = {
+      col: Math.max(1, col - state.grabOffset.dc),
+      row: Math.max(1, row - state.grabOffset.dr),
+      w: state.startState.w,
+      h: state.startState.h
     };
-  }, [lockSystem, onItemLock]);
+    
+    // Vérification des limites
+    newState.col = Math.min(columns - newState.w + 1, newState.col);
+    
+    // Vérification des collisions si activée
+    if (collisionDetection === "basic" && collisionDetector.hasOverlap(state.active, newState)) {
+      return;
+    }
+    
+    gridUtils.setElementState(state.active, newState);
+  }, [state.active, state.grabOffset, state.startState, columns, gridUtils, collisionDetector, collisionDetection]);
 
-  // Event handlers - restructured to avoid circular references
-  const EventHandlers = useMemo(() => {
-    // Define handlers first to avoid circular references
-    const handleDrag = (event) => {
-      if (!state.active || !gridMetrics) return;
-      
-      const { col, row } = GridUtils.mouseToCell(event.clientX, event.clientY);
-      const newState = { ...ElementState.get(state.active) };
-      
-      newState.col = col - state.grabOffset.dc;
-      newState.row = row - state.grabOffset.dr;
-      
-      // Apply column limits only, not row limits
-      if (newState.col < 1) newState.col = 1;
-      if (newState.col + newState.w - 1 > gridMetrics.cols) {
-        newState.col = Math.max(1, gridMetrics.cols - newState.w + 1);
-      }
-      
-      // Allow free movement during drag, repositioning only on drop
-      ElementState.set(state.active, newState);
+  // Logique de resize optimisée
+  const handleResize = useCallback((event) => {
+    if (!state.active || !gridUtils) return;
+    
+    const { col, row } = gridUtils.mouseToCell(event.clientX, event.clientY);
+    const newState = {
+      col: state.startState.col,
+      row: state.startState.row,
+      w: Math.max(1, col - state.startState.col + 1),
+      h: Math.max(1, row - state.startState.row + 1)
     };
+    
+    // Vérification des limites
+    newState.w = Math.min(columns - newState.col + 1, newState.w);
+    newState.h = Math.min(CONSTANTS.MAX_ROW - newState.row + 1, newState.h);
+    
+    gridUtils.setElementState(state.active, newState);
+  }, [state.active, state.startState, columns, CONSTANTS.MAX_ROW, gridUtils]);
 
-    const handleResize = (event) => {
-      if (!state.active || !gridMetrics) return;
-      
-      const { colWidth, rowHeight } = gridMetrics;
-      const dx = event.clientX - state.startMouse.x;
-      const dy = event.clientY - state.startMouse.y;
-      
-      const newW = Math.max(1, Math.round(state.startState.w + dx / colWidth));
-      const newH = Math.max(1, Math.round(state.startState.h + dy / rowHeight));
-      const newState = { ...state.startState, w: newW, h: newH };
-      
-      // Always try to keep element in place by moving blocking elements dynamically
-      if (!CollisionDetector.hasOverlap(state.active, newState)) {
-        // No conflict, direct resize
-        ElementState.set(state.active, newState);
-      } else if (autoReposition && RepositioningStrategy) {
-        // Conflict detected, dynamically move blocking elements and apply resize
-        RepositioningStrategy.forResize(state.active, newState);
-        ElementState.set(state.active, newState);
-      }
-      
-      // Call callback
-      if (onItemResize) {
-        onItemResize(state.active.dataset.id, { w: newW, h: newH });
-      }
-    };
+  // Gestion de fin de drag
+  const handleDrop = useCallback(() => {
+    if (!state.active || !onItemMove) return;
+    
+    const newState = gridUtils.getElementState(state.active);
+    onItemMove(state.active.dataset.id, newState);
+  }, [state.active, onItemMove, gridUtils]);
 
-    const handleDrop = () => {
-      if (!state.active) return;
-      
-      const currentState = ElementState.get(state.active);
-      
-      // If element overlaps others and autoReposition is enabled, reposition them intelligently
-      if (CollisionDetector.hasOverlap(state.active, currentState) && autoReposition && RepositioningStrategy) {
-        RepositioningStrategy.forDrop(state.active, currentState);
-        
-        // Check if final position is now free
-        if (!CollisionDetector.hasOverlap(state.active, currentState)) {
-          ElementState.set(state.active, currentState);
-        } else if (PositionFinder) {
-          // If still not free, find best position
-          const finalState = PositionFinder.findNearestFree(state.active, currentState);
-          ElementState.set(state.active, currentState);
-        }
-      }
-      
-      // Call callback
-      if (onItemMove) {
-        onItemMove(state.active.dataset.id, currentState);
-      }
-    };
+  // Gestion de fin de resize
+  const handleResizeEnd = useCallback(() => {
+    if (!state.active || !onItemResize) return;
+    
+    const newState = gridUtils.getElementState(state.active);
+    onItemResize(state.active.dataset.id, { w: newState.w, h: newState.h });
+  }, [state.active, onItemResize, gridUtils]);
 
-    return {
-      onMouseDown: (event) => {
-        if (!draggable && !resizable) return;
-        
-        const item = event.target.closest(".ui-grid-item");
-        if (!item) return;
-        
-        const metrics = GridUtils.getMetrics();
-        if (!metrics) return;
-        
-        setGridMetrics(metrics);
-        
-        const onHandle = event.target.classList.contains("ui-resize-handle");
-        
-        setState(prev => ({
-          ...prev,
-          active: item,
-          startMouse: { x: event.clientX, y: event.clientY },
-          startState: ElementState.get(item)
-        }));
-        
-        const startPointerCell = GridUtils.mouseToCell(event.clientX, event.clientY);
-        const startState = ElementState.get(item);
-        
-        setState(prev => ({
-          ...prev,
-          grabOffset: {
-            dc: startPointerCell.col - startState.col,
-            dr: startPointerCell.row - startState.row
-          }
-        }));
-        
-        if (onHandle && resizable) {
-          setState(prev => ({ ...prev, isResizing: true, isDragging: false }));
-        } else if (draggable) {
-          setState(prev => ({ ...prev, isDragging: true, isResizing: false }));
-          item.classList.add("ui-dragging");
-        }
-        
-        // Add global event listeners
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
-        event.preventDefault();
-      },
+  // Gestion du double-clic pour le lock
+  const handleDoubleClick = useCallback((event) => {
+    if (!lockSystem) return;
+    
+    const item = event.target.closest(".ui-grid-item");
+    if (!item || event.target.classList.contains("ui-resize-handle")) return;
+    
+    const itemId = item.dataset.id;
+    dispatch({ type: GRID_ACTIONS.TOGGLE_LOCK, payload: itemId });
+    
+    if (onItemLock) {
+      const isLocked = !state.lockedItems.has(itemId);
+      onItemLock(itemId, isLocked);
+    }
+    
+    event.preventDefault();
+  }, [lockSystem, onItemLock, state.lockedItems]);
 
-      onMouseMove: (event) => {
-        if (!state.active) return;
-        
-        if (state.isDragging) {
-          handleDrag(event);
-        }
-        
-        if (state.isResizing) {
-          handleResize(event);
-        }
-      },
-
-      onMouseUp: (event) => {
-        if (!state.active) return;
-        
-        if (state.isDragging) {
-          handleDrop();
-        }
-        
-        state.active.classList.remove("ui-dragging");
-        setState(prev => ({
-          ...prev,
-          isDragging: false,
-          isResizing: false,
-          active: null
-        }));
-        
-        // Remove global event listeners
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-      },
-
-      onDoubleClick: (event) => {
-        if (!lockSystem) return;
-        
-        const item = event.target.closest(".ui-grid-item");
-        if (!item || event.target.classList.contains("ui-resize-handle")) return;
-        
-        LockSystem.toggle(item);
-        event.preventDefault();
-      }
-    };
-
-    // Define global handlers that reference the local handlers
-    const handleMouseMove = (event) => {
-      if (!state.active) return;
-      
-      if (state.isDragging) {
-        handleDrag(event);
-      }
-      
-      if (state.isResizing) {
-        handleResize(event);
-      }
-    };
-
-    const handleMouseUp = (event) => {
-      if (!state.active) return;
-      
-      if (state.isDragging) {
-        handleDrop();
-      }
-      
-      state.active.classList.remove("ui-dragging");
-      setState(prev => ({
-        ...prev,
-        isDragging: false,
-        isResizing: false,
-        active: null
-      }));
-      
-      // Remove global event listeners
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [draggable, resizable, lockSystem, GridUtils, ElementState, CollisionDetector, autoReposition, RepositioningStrategy, PositionFinder, onItemResize, onItemMove, state.active, state.isDragging, state.isResizing, state.grabOffset, state.startMouse, state.startState, gridMetrics]);
-
-  // Initialize grid metrics on mount and resize
+  // Initialisation des métriques de grille
   useEffect(() => {
     const updateMetrics = () => {
-      const metrics = GridUtils.getMetrics();
+      const metrics = calculateGridMetrics();
       if (metrics) {
-        setGridMetrics(metrics);
+        dispatch({ type: GRID_ACTIONS.SET_GRID_METRICS, payload: metrics });
       }
     };
 
@@ -558,26 +411,33 @@ const AdvancedGrid = ({
     return () => {
       window.removeEventListener("resize", updateMetrics);
     };
-  }, [GridUtils]);
+  }, [calculateGridMetrics]);
 
-  // Initialize grid items
+  // Gestionnaires d'événements globaux
   useEffect(() => {
-    if (!gridRef.current || !gridMetrics) return;
+    if (state.isDragging || state.isResizing) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [state.isDragging, state.isResizing, handleMouseMove, handleMouseUp]);
+
+  // Initialisation des éléments de grille
+  useEffect(() => {
+    if (!gridRef.current || !state.gridMetrics) return;
     
     const items = Array.from(gridRef.current.querySelectorAll(".ui-grid-item"));
     
     items.forEach((element, index) => {
-      // Only initialize if not already set
       if (!element.dataset.col) {
-        const col = (index % gridMetrics.cols) + 1;
-        const row = Math.floor(index / gridMetrics.cols) + 1;
+        const col = (index % state.gridMetrics.cols) + 1;
+        const row = Math.floor(index / state.gridMetrics.cols) + 1;
         
-        element.dataset.col = col;
-        element.dataset.row = row;
-        element.dataset.w = element.dataset.w || 1;
-        element.dataset.h = element.dataset.h || 1;
-        
-        GridUtils.applyStyles(element, {
+        gridUtils.setElementState(element, {
           col,
           row,
           w: element.dataset.w || 1,
@@ -585,55 +445,26 @@ const AdvancedGrid = ({
         });
       }
     });
-  }, [gridMetrics, GridUtils]);
+  }, [state.gridMetrics, gridUtils]);
 
-  // Bind event listeners
-  useEffect(() => {
-    if (!gridRef.current) return;
-    
-    const grid = gridRef.current;
-    
-    if (draggable || resizable) {
-      grid.addEventListener("mousedown", EventHandlers.onMouseDown);
-    }
-    
-    if (lockSystem) {
-      grid.addEventListener("dblclick", EventHandlers.onDoubleClick);
-    }
-    
-    return () => {
-      if (draggable || resizable) {
-        grid.removeEventListener("mousedown", EventHandlers.onMouseDown);
-      }
-      
-      if (lockSystem) {
-        grid.removeEventListener("dblclick", EventHandlers.onDoubleClick);
-      }
-    };
-  }, [draggable, resizable, lockSystem, EventHandlers]);
-
-  // Cleanup global event listeners
-  useEffect(() => {
-    return () => {
-      window.removeEventListener("mousemove", EventHandlers.onMouseMove);
-      window.removeEventListener("mouseup", EventHandlers.onMouseUp);
-    };
-  }, [EventHandlers]);
-
-  // Generate CSS variables for grid configuration
-  const gridStyle = {
-    ...style,
-    '--ui-grid-columns': columns,
-    '--ui-grid-gap': gap,
-    '--ui-grid-row-height': rowHeight
-  };
+  // Styles de grille optimisés
+  const gridStyle = useMemo(() => ({
+    display: 'grid',
+    gridTemplateColumns: `repeat(${columns}, 1fr)`,
+    gap,
+    gridAutoRows: rowHeight,
+    ...style
+  }), [columns, gap, rowHeight, style]);
 
   return (
-    <div 
+    <div
       ref={gridRef}
       className={`ui-advanced-grid ${className}`}
       style={gridStyle}
+      onMouseDown={handleMouseDown}
+      onDoubleClick={handleDoubleClick}
       aria-label={ariaLabel}
+      role="grid"
       {...props}
     >
       {children}
@@ -641,6 +472,4 @@ const AdvancedGrid = ({
   );
 };
 
-export { AdvancedGrid };
-
-
+export default AdvancedGridOptimized;

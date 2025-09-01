@@ -1,126 +1,18 @@
 // Import des polices Google Fonts EQUITECH
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-// Variables CSS manquantes pour la librairie EQUITECH
-:root {
-  /* Couleurs principales */
-  --color-primary: #2BA985;
-  --color-primary-light: #4BC3A0;
-  --color-primary-dark: #0C3640;
-  --color-primary-alpha-5: rgba(43, 169, 133, 0.05);
-  --color-primary-alpha-10: rgba(43, 169, 133, 0.1);
-  --color-primary-alpha-20: rgba(43, 169, 133, 0.2);
-  
-  /* Couleurs secondaires */
-  --color-secondary: #0C3640;
-  --color-secondary-light: #194146;
-  
-  /* Couleurs de fond */
-  --color-background: #FAFBFC;
-  --color-background-hover: #F5F5F5;
-  --color-background-muted: #F8F9FA;
-  
-  /* Couleurs de texte */
-  --color-text-primary: #1A2A38;
-  --color-text-secondary: #424242;
-  --color-text-muted: #9E9E9E;
-  
-  /* Couleurs de bordure */
-  --color-border: #E0E0E0;
-  --color-border-light: #F0F0F0;
-  
-  /* Couleurs sémantiques */
-  --color-success: #2BA985;
-  --color-warning: #FFA726;
-  --color-error: #EF5350;
-  --color-info: #42A5F5;
-  
-  /* Espacement */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  
-  /* Typographie */
-  --font-family-body: 'Inter', sans-serif;
-  --font-family-heading: 'Josefin Sans', sans-serif;
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  
-  /* Bordures */
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 12px;
-  --radius-xl: 16px;
-  
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
-  
-  /* Ombres */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  --shadow-xl: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
+// Variables CSS unifiées EQUITECH
+@import './_css_variables.scss';
 
 // Import du CSS compilé de la librairie EQUITECH
 @import './equitech-ui-library.css';
 
-// Variables CSS pour la documentation EQUITECH
+// Variables CSS spécifiques à la documentation EQUITECH
 :root {
-  // Couleurs EQUITECH - Vraie palette
-  --ui-primary-color: #2BA985;       // Vert/Teal principal EQUITECH
-  --ui-primary-hover: #239672;       // Version hover du vert principal
-  --ui-secondary-color: #0C3640;     // Teal/Bleu-Vert secondaire EQUITECH
-  --ui-secondary-hover: #082a32;     // Version hover du secondaire
-  --ui-primary-dark: #1A2A38;        // Bleu-Vert Foncé EQUITECH
-  --ui-success-color: #2BA985;       // Utilise la couleur principale pour le succès
-  --ui-success-hover: #239672;
-  --ui-warning-color: #FFA726;       // Orange EQUITECH
-  --ui-warning-hover: #FF9800;
-  --ui-error-color: #EF5350;         // Rouge EQUITECH
-  --ui-error-hover: #E53935;
-  --ui-info-color: #42A5F5;          // Bleu info EQUITECH
-
-  // Couleurs neutres EQUITECH
-  --ui-background-color: #FAFBFC;    // Blanc non-pur EQUITECH
-  --ui-surface-color: #F5F5F5;       // Gris clair EQUITECH
-  --ui-text-color: #1A2A38;          // Couleur sombre principale
-  --ui-text-muted: #9E9E9E;          // Gris neutre
-  --ui-text-dark: #424242;           // Gris foncé
-  --ui-border-color: #9E9E9E;        // Gris pour les bordures
-  --ui-hover-color: #F5F5F5;
-
-  // Typographie EQUITECH
-  --ui-font-family-title: 'Josefin Sans', sans-serif;  // Police des titres EQUITECH
-  --ui-font-family-body: 'Inter', sans-serif;          // Police des textes EQUITECH
-  --ui-font-size-base: 1rem;                          // 16px
+  // Variables spécifiques à l'interface de documentation
   --ui-line-height-base: 1.6;
-
-  // Espacement
-  --ui-spacing-xs: 0.25rem;
-  --ui-spacing-sm: 0.5rem;
-  --ui-spacing-md: 1rem;
-  --ui-spacing-lg: 1.5rem;
-  --ui-spacing-xl: 2rem;
-  --ui-spacing-2xl: 3rem;
-
-  // Bordures et rayons
   --ui-border-radius: 0.5rem;
   --ui-border-width: 1px;
-
-  // Ombres
-  --ui-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --ui-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
-  // Transitions
   --ui-transition-duration: 0.2s;
   --ui-transition-timing: ease-in-out;
 }
@@ -132,21 +24,21 @@
 
 body {
   margin: 0;
-  font-family: var(--ui-font-family-body);
-  font-size: var(--ui-font-size-base);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
   line-height: var(--ui-line-height-base);
-  color: var(--ui-text-color);
-  background-color: var(--ui-background-color);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 // Typographie avec polices EQUITECH
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--ui-font-family-title);
+  font-family: var(--font-title);
   font-weight: 600;
   line-height: 1.2;
-  color: var(--ui-primary-dark);
+  color: var(--primary-dark);
   margin: 0 0 1rem 0;
 }
 

@@ -1,38 +1,284 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-// Fonctions utilitaires pour les dates
-const getDaysInMonth = (year, month) => {
-  return new Date(year, month + 1, 0).getDate();
+// Utilitaires de dates mémorisés
+const createDateUtils = () => {
+  const cache = new Map();
+  
+  return {
+    getDaysInMonth: (year, month) => {
+      const key = `${year}-${month}`;
+      if (cache.has(key)) return cache.get(key);
+      
+      const days = new Date(year, month + 1, 0).getDate();
+      cache.set(key, days);
+      return days;
+    },
+
+    getFirstDayOfMonth: (year, month) => {
+      const key = `first-${year}-${month}`;
+      if (cache.has(key)) return cache.get(key);
+      
+      const day = new Date(year, month, 1).getDay();
+      cache.set(key, day);
+      return day;
+    },
+
+    formatDate: (date) => {
+      return date.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long'
+      });
+    },
+
+    isSameDay: (date1, date2) => {
+      return date1.getFullYear() === date2.getFullYear() &&
+             date1.getMonth() === date2.getMonth() &&
+             date1.getDate() === date2.getDate();
+    },
+
+    isToday: (date) => {
+      const today = new Date();
+      return this.isSameDay(date, today);
+    },
+
+    isOtherMonth: (date, currentYear, currentMonth) => {
+      return date.getFullYear() !== currentYear || date.getMonth() !== currentMonth;
+    },
+
+    clearCache: () => {
+      cache.clear();
+    }
+  };
 };
 
-const getFirstDayOfMonth = (year, month) => {
-  return new Date(year, month, 1).getDay();
+// Hook personnalisé pour la gestion des événements
+const useEvents = (events = []) => {
+  const eventsByDate = useMemo(() => {
+    const indexed = new Map();
+    
+    events.forEach(event => {
+      const dateKey = new Date(event.date).toDateString();
+      if (!indexed.has(dateKey)) {
+        indexed.set(dateKey, []);
+      }
+      indexed.get(dateKey).push(event);
+    });
+    
+    return indexed;
+  }, [events]);
+  
+  const getEventsForDate = useCallback((date) => {
+    const dateKey = date.toDateString();
+    return eventsByDate.get(dateKey) || [];
+  }, [eventsByDate]);
+  
+  const hasEventsForDate = useCallback((date) => {
+    const dateKey = date.toDateString();
+    return eventsByDate.has(dateKey);
+  }, [eventsByDate]);
+  
+  return {
+    getEventsForDate,
+    hasEventsForDate,
+    eventsByDate
+  };
 };
 
-const formatDate = (date) => {
-  return date.toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'long'
-  });
-};
+// Composant de jour optimisé
+const CalendarDay = React.memo(({
+  day,
+  date,
+  isOtherMonth,
+  isToday,
+  isSelected,
+  isDisabled,
+  hasEvents,
+  onClick,
+  onDoubleClick,
+  events
+}) => {
+  const handleClick = useCallback(() => {
+    if (!isDisabled && onClick) {
+      onClick(date);
+    }
+  }, [date, isDisabled, onClick]);
+  
+  const handleDoubleClick = useCallback(() => {
+    if (!isDisabled && onDoubleClick) {
+      onDoubleClick(date, events);
+    }
+  }, [date, isDisabled, onDoubleClick, events]);
+  
+  const dayClasses = [
+    'ui-calendar-day',
+    isOtherMonth && 'ui-calendar-day--other-month',
+    isToday && 'ui-calendar-day--today',
+    isSelected && 'ui-calendar-day--selected',
+    isDisabled && 'ui-calendar-day--disabled',
+    hasEvents && 'ui-calendar-day--has-events'
+  ].filter(Boolean).join(' ');
+  
+  return (
+    <div
+      className={dayClasses}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+      role="button"
+      tabIndex={isDisabled ? -1 : 0}
+      aria-label={`${day} ${date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}`}
+      aria-selected={isSelected}
+      aria-disabled={isDisabled}
+    >
+      <span className="ui-calendar-day-number">{day}</span>
+      {hasEvents && (
+        <div className="ui-calendar-day-events">
+          {events.slice(0, 3).map((event, index) => (
+            <div
+              key={index}
+              className="ui-calendar-day-event"
+              style={{ backgroundColor: event.color || '#2BA985' }}
+              title={event.title}
+            />
+          ))}
+          {events.length > 3 && (
+            <div className="ui-calendar-day-event-more">
+              +{events.length - 3}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+});
 
-const isSameDay = (date1, date2) => {
-  return date1.getFullYear() === date2.getFullYear() &&
-         date1.getMonth() === date2.getMonth() &&
-         date1.getDate() === date2.getDate();
-};
+// Composant de navigation optimisé
+const CalendarNavigation = React.memo(({
+  currentDate,
+  onPreviousMonth,
+  onNextMonth,
+  onToday,
+  showNavigation,
+  showViewSelector,
+  view,
+  onViewChange
+}) => {
+  const handlePreviousMonth = useCallback(() => {
+    if (onPreviousMonth) {
+      onPreviousMonth();
+    }
+  }, [onPreviousMonth]);
+  
+  const handleNextMonth = useCallback(() => {
+    if (onNextMonth) {
+      onNextMonth();
+    }
+  }, [onNextMonth]);
+  
+  const handleToday = useCallback(() => {
+    if (onToday) {
+      onToday();
+    }
+  }, [onToday]);
+  
+  const handleViewChange = useCallback((newView) => {
+    if (onViewChange) {
+      onViewChange(newView);
+    }
+  }, [onViewChange]);
+  
+  if (!showNavigation) return null;
+  
+  return (
+    <div className="ui-calendar-navigation">
+      <div className="ui-calendar-navigation-controls">
+        <button
+          type="button"
+          className="ui-calendar-nav-button"
+          onClick={handlePreviousMonth}
+          aria-label="Mois précédent"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        
+        <button
+          type="button"
+          className="ui-calendar-nav-button ui-calendar-nav-button--today"
+          onClick={handleToday}
+        >
+          Aujourd'hui
+        </button>
+        
+        <button
+          type="button"
+          className="ui-calendar-nav-button"
+          onClick={handleNextMonth}
+          aria-label="Mois suivant"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <h2 className="ui-calendar-title">
+        {currentDate.toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: 'long'
+        })}
+      </h2>
+      
+      {showViewSelector && (
+        <div className="ui-calendar-view-selector">
+          <button
+            type="button"
+            className={`ui-calendar-view-button ${view === 'month' ? 'ui-calendar-view-button--active' : ''}`}
+            onClick={() => handleViewChange('month')}
+          >
+            Mois
+          </button>
+          <button
+            type="button"
+            className={`ui-calendar-view-button ${view === 'week' ? 'ui-calendar-view-button--active' : ''}`}
+            onClick={() => handleViewChange('week')}
+          >
+            Semaine
+          </button>
+        </div>
+      )}
+    </div>
+  );
+});
 
-const isToday = (date) => {
-  return isSameDay(date, new Date());
-};
-
-const isOtherMonth = (date, currentYear, currentMonth) => {
-  return date.getFullYear() !== currentYear || date.getMonth() !== currentMonth;
-};
-
-// Composant principal Calendar
-const Calendar = ({
+/**
+ * Calendar Optimized - Calendar component with optimized date calculations and event handling
+ * 
+ * Props :
+ * - value: Selected date value
+ * - onSelect: Callback when date is selected (date)
+ * - events: Array of events to display
+ * - view: Calendar view - 'month' | 'week' (default: 'month')
+ * - onViewChange: Callback when view changes (view)
+ * - size: Calendar size - 'sm' | 'md' | 'lg' (default: 'md')
+ * - variant: Calendar variant - 'default' | 'bordered' | 'compact' (default: 'default')
+ * - showNavigation: Show navigation controls (default: true)
+ * - showViewSelector: Show view selector (default: true)
+ * - showLegend: Show event legend (default: true)
+ * - showActions: Show action buttons (default: true)
+ * - disabledDates: Array of disabled dates
+ * - minDate: Minimum selectable date
+ * - maxDate: Maximum selectable date
+ * - className: Additional CSS classes
+ * - id: Element ID
+ * - name: Element name
+ * - disabled: Disable calendar (default: false)
+ * - loading: Loading state (default: false)
+ * - error: Error state (default: false)
+ * - ...props: Native props
+ */
+const CalendarOptimized = ({
   value,
   onSelect,
   events = [],
@@ -58,49 +304,62 @@ const Calendar = ({
   const [currentDate, setCurrentDate] = useState(value ? new Date(value) : new Date());
   const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : null);
   
+  // Utilitaires de dates mémorisés
+  const dateUtils = useMemo(() => createDateUtils(), []);
+  
+  // Gestion des événements optimisée
+  const { getEventsForDate, hasEventsForDate } = useEvents(events);
+  
+  // Calculs mémorisés pour le mois actuel
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
   
-  // Génération des jours du mois
+  // Génération des jours du mois mémorisée
   const calendarDays = useMemo(() => {
     const days = [];
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
+    const daysInMonth = dateUtils.getDaysInMonth(currentYear, currentMonth);
+    const firstDayOfMonth = dateUtils.getFirstDayOfMonth(currentYear, currentMonth);
     
     // Jours du mois précédent
     const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth);
+    const daysInPrevMonth = dateUtils.getDaysInMonth(prevYear, prevMonth);
     
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       const day = daysInPrevMonth - i;
       const date = new Date(prevYear, prevMonth, day);
+      const dayEvents = getEventsForDate(date);
+      
       days.push({
         date,
         day,
         isOtherMonth: true,
-        isToday: isToday(date),
-        isSelected: selectedDate && isSameDay(date, selectedDate),
-        isDisabled: disabledDates.some(d => isSameDay(date, new Date(d))) ||
+        isToday: dateUtils.isToday(date),
+        isSelected: selectedDate && dateUtils.isSameDay(date, selectedDate),
+        isDisabled: disabledDates.some(d => dateUtils.isSameDay(date, new Date(d))) ||
                    (minDate && date < new Date(minDate)) ||
                    (maxDate && date > new Date(maxDate)),
-        hasEvents: events.some(e => isSameDay(date, new Date(e.date)))
+        hasEvents: dayEvents.length > 0,
+        events: dayEvents
       });
     }
     
     // Jours du mois actuel
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentYear, currentMonth, day);
+      const dayEvents = getEventsForDate(date);
+      
       days.push({
         date,
         day,
         isOtherMonth: false,
-        isToday: isToday(date),
-        isSelected: selectedDate && isSameDay(date, selectedDate),
-        isDisabled: disabledDates.some(d => isSameDay(date, new Date(d))) ||
+        isToday: dateUtils.isToday(date),
+        isSelected: selectedDate && dateUtils.isSameDay(date, selectedDate),
+        isDisabled: disabledDates.some(d => dateUtils.isSameDay(date, new Date(d))) ||
                    (minDate && date < new Date(minDate)) ||
                    (maxDate && date > new Date(maxDate)),
-        hasEvents: events.some(e => isSameDay(date, new Date(e.date)))
+        hasEvents: dayEvents.length > 0,
+        events: dayEvents
       });
     }
     
@@ -111,31 +370,46 @@ const Calendar = ({
     
     for (let day = 1; day <= remainingDays; day++) {
       const date = new Date(nextYear, nextMonth, day);
+      const dayEvents = getEventsForDate(date);
+      
       days.push({
         date,
         day,
         isOtherMonth: true,
-        isToday: isToday(date),
-        isSelected: selectedDate && isSameDay(date, selectedDate),
-        isDisabled: disabledDates.some(d => isSameDay(date, new Date(d))) ||
+        isToday: dateUtils.isToday(date),
+        isSelected: selectedDate && dateUtils.isSameDay(date, selectedDate),
+        isDisabled: disabledDates.some(d => dateUtils.isSameDay(date, new Date(d))) ||
                    (minDate && date < new Date(minDate)) ||
                    (maxDate && date > new Date(maxDate)),
-        hasEvents: events.some(e => isSameDay(date, new Date(e.date)))
+        hasEvents: dayEvents.length > 0,
+        events: dayEvents
       });
     }
     
     return days;
-  }, [currentYear, currentMonth, selectedDate, events, disabledDates, minDate, maxDate]);
+  }, [currentYear, currentMonth, selectedDate, disabledDates, minDate, maxDate, dateUtils, getEventsForDate]);
+  
+  // Gestionnaires d'événements optimisés
+  const handleDateSelect = useCallback((date) => {
+    if (disabled) return;
+    
+    setSelectedDate(date);
+    if (onSelect) {
+      onSelect(date);
+    }
+  }, [disabled, onSelect]);
+  
+  const handleDateDoubleClick = useCallback((date, events) => {
+    if (disabled) return;
+    
+    // Ici on pourrait ouvrir un modal pour voir les événements
+    console.log('Événements pour', date, events);
+  }, [disabled]);
   
   const handlePreviousMonth = useCallback(() => {
     setCurrentDate(prev => {
       const newDate = new Date(prev);
-      if (newDate.getMonth() === 0) {
-        newDate.setFullYear(newDate.getFullYear() - 1);
-        newDate.setMonth(11);
-      } else {
-        newDate.setMonth(newDate.getMonth() - 1);
-      }
+      newDate.setMonth(prev.getMonth() - 1);
       return newDate;
     });
   }, []);
@@ -143,12 +417,7 @@ const Calendar = ({
   const handleNextMonth = useCallback(() => {
     setCurrentDate(prev => {
       const newDate = new Date(prev);
-      if (newDate.getMonth() === 11) {
-        newDate.setFullYear(newDate.getFullYear() + 1);
-        newDate.setMonth(0);
-      } else {
-        newDate.setMonth(newDate.getMonth() + 1);
-      }
+      newDate.setMonth(prev.getMonth() + 1);
       return newDate;
     });
   }, []);
@@ -162,198 +431,113 @@ const Calendar = ({
     }
   }, [onSelect]);
   
-  const handleDayClick = useCallback((day) => {
-    if (!day.isDisabled) {
-      setSelectedDate(day.date);
-      if (onSelect) {
-        onSelect(day.date);
-      }
-    }
-  }, [onSelect]);
-  
-  const handleViewChange = useCallback((newView) => {
-    if (onViewChange) {
-      onViewChange(newView);
-    }
-  }, [onViewChange]);
-  
-  const getEventsForDay = useCallback((date) => {
-    return events.filter(event => isSameDay(new Date(event.date), date));
-  }, [events]);
-  
-  const weekdays = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  
-  const calendarClasses = [
+  // Classes CSS mémorisées
+  const calendarClasses = useMemo(() => [
     'ui-calendar',
     `ui-calendar--${size}`,
     `ui-calendar--${variant}`,
+    disabled && 'ui-calendar--disabled',
     loading && 'ui-calendar--loading',
     error && 'ui-calendar--error',
     className
-  ].filter(Boolean).join(' ');
+  ].filter(Boolean).join(' '), [size, variant, disabled, loading, error, className]);
   
-  return (
-    <div
-      className={calendarClasses}
-      role="application"
-      aria-label="Calendrier"
-      id={id}
-      {...props}
-    >
-      {showNavigation && (
-        <div className="ui-calendar__header">
-          <h2 className="ui-calendar__title">
-            {formatDate(currentDate)}
-          </h2>
-          
-          <div className="ui-calendar__navigation">
-            <button
-              type="button"
-              className="ui-calendar__nav-button"
-              onClick={handlePreviousMonth}
-              disabled={disabled}
-              aria-label="Mois précédent"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-              </svg>
-            </button>
-            
-            <button
-              type="button"
-              className="ui-calendar__nav-button"
-              onClick={handleNextMonth}
-              disabled={disabled}
-              aria-label="Mois suivant"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-              </svg>
-            </button>
-            
-            {showViewSelector && (
-              <div className="ui-calendar__view-selector">
-                <button
-                  type="button"
-                  className={`ui-calendar__view-button ${view === 'month' ? 'ui-calendar__view-button--active' : ''}`}
-                  onClick={() => handleViewChange('month')}
-                  disabled={disabled}
-                >
-                  Mois
-                </button>
-                <button
-                  type="button"
-                  className={`ui-calendar__view-button ${view === 'week' ? 'ui-calendar__view-button--active' : ''}`}
-                  onClick={() => handleViewChange('week')}
-                  disabled={disabled}
-                >
-                  Semaine
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      
-      <div className="ui-calendar__body">
-        <div className="ui-calendar__weekdays">
-          {weekdays.map(day => (
-            <div key={day} className="ui-calendar__weekday">
-              {day}
-            </div>
-          ))}
-        </div>
-        
-        <div className="ui-calendar__grid">
-          {calendarDays.map((day, index) => {
-            const dayClasses = [
-              'ui-calendar__day',
-              day.isSelected && 'ui-calendar__day--selected',
-              day.isToday && 'ui-calendar__day--today',
-              day.isOtherMonth && 'ui-calendar__day--other-month',
-              day.isDisabled && 'ui-calendar__day--disabled',
-              day.hasEvents && 'ui-calendar__day--has-events'
-            ].filter(Boolean).join(' ');
-            
-            const dayEvents = getEventsForDay(day.date);
-            
-            return (
-              <div
-                key={index}
-                className={dayClasses}
-                onClick={() => handleDayClick(day)}
-                tabIndex={day.isDisabled ? -1 : 0}
-                role="button"
-                aria-label={`${day.day} ${day.isToday ? '(aujourd\'hui)' : ''}`}
-                aria-selected={day.isSelected}
-                aria-disabled={day.isDisabled}
-              >
-                <span className="ui-calendar__day-number">{day.day}</span>
-                
-                {dayEvents.length > 0 && (
-                  <div className="ui-calendar__events">
-                    {dayEvents.map((event, eventIndex) => (
-                      <div key={eventIndex} className="ui-calendar__event">
-                        <div className="ui-calendar__event-title">{event.title}</div>
-                        {event.time && (
-                          <div className="ui-calendar__event-time">{event.time}</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+  // Jours de la semaine mémorisés
+  const weekDays = useMemo(() => [
+    'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'
+  ], []);
+  
+  if (loading) {
+    return (
+      <div className={calendarClasses} {...props}>
+        <div className="ui-calendar-loading">
+          <div className="ui-loading-spinner"></div>
+          <span>Chargement...</span>
         </div>
       </div>
+    );
+  }
+  
+  return (
+    <div className={calendarClasses} {...props}>
+      {/* Navigation */}
+      <CalendarNavigation
+        currentDate={currentDate}
+        onPreviousMonth={handlePreviousMonth}
+        onNextMonth={handleNextMonth}
+        onToday={handleToday}
+        showNavigation={showNavigation}
+        showViewSelector={showViewSelector}
+        view={view}
+        onViewChange={onViewChange}
+      />
       
-      {(showLegend || showActions) && (
-        <div className="ui-calendar__footer">
-          {showLegend && (
-            <div className="ui-calendar__legend">
-              <div className="ui-calendar__legend-item">
-                <div className="ui-calendar__legend-dot"></div>
-                <span>Événements</span>
+      {/* En-têtes des jours */}
+      <div className="ui-calendar-weekdays">
+        {weekDays.map((day, index) => (
+          <div key={index} className="ui-calendar-weekday">
+            {day}
+          </div>
+        ))}
+      </div>
+      
+      {/* Grille des jours */}
+      <div className="ui-calendar-grid">
+        {calendarDays.map((dayData, index) => (
+          <CalendarDay
+            key={`${dayData.date.toISOString()}-${index}`}
+            day={dayData.day}
+            date={dayData.date}
+            isOtherMonth={dayData.isOtherMonth}
+            isToday={dayData.isToday}
+            isSelected={dayData.isSelected}
+            isDisabled={dayData.isDisabled}
+            hasEvents={dayData.hasEvents}
+            events={dayData.events}
+            onClick={handleDateSelect}
+            onDoubleClick={handleDateDoubleClick}
+          />
+        ))}
+      </div>
+      
+      {/* Légende des événements */}
+      {showLegend && events.length > 0 && (
+        <div className="ui-calendar-legend">
+          <h4>Légende</h4>
+          <div className="ui-calendar-legend-items">
+            {events.slice(0, 5).map((event, index) => (
+              <div key={index} className="ui-calendar-legend-item">
+                <div
+                  className="ui-calendar-legend-color"
+                  style={{ backgroundColor: event.color || '#2BA985' }}
+                />
+                <span>{event.title}</span>
               </div>
-            </div>
-          )}
-          
-          {showActions && (
-            <div className="ui-calendar__actions">
-              <button
-                type="button"
-                className="ui-calendar__action"
-                onClick={handleToday}
-                disabled={disabled}
-              >
-                Aujourd'hui
-              </button>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-Calendar.propTypes = {
+CalendarOptimized.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   onSelect: PropTypes.func,
   events: PropTypes.arrayOf(PropTypes.shape({
     date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     title: PropTypes.string.isRequired,
-    time: PropTypes.string
+    color: PropTypes.string
   })),
   view: PropTypes.oneOf(['month', 'week']),
   onViewChange: PropTypes.func,
   size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  variant: PropTypes.oneOf(['default', 'compact', 'spacious', 'bordered', 'elevated']),
+  variant: PropTypes.oneOf(['default', 'bordered', 'compact']),
   showNavigation: PropTypes.bool,
   showViewSelector: PropTypes.bool,
   showLegend: PropTypes.bool,
   showActions: PropTypes.bool,
-  disabledDates: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])),
+  disabledDates: PropTypes.array,
   minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   className: PropTypes.string,
@@ -364,6 +548,4 @@ Calendar.propTypes = {
   error: PropTypes.bool
 };
 
-export default Calendar;
-
-
+export default CalendarOptimized;

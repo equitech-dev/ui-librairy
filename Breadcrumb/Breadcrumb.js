@@ -1,0 +1,88 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Breadcrumb.scss';
+
+/**
+ * BreadcrumbItem - Élément individuel du fil d'Ariane
+ */
+const BreadcrumbItem = ({
+  label,
+  href,
+  isActive = false,
+  onClick
+}) => {
+  const handleClick = e => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(href);
+    }
+  };
+  return /*#__PURE__*/React.createElement("li", {
+    className: "ui-breadcrumb-item"
+  }, isActive ? /*#__PURE__*/React.createElement("span", {
+    className: "ui-breadcrumb-link active",
+    "aria-current": "page"
+  }, label) : /*#__PURE__*/React.createElement("a", {
+    href: href,
+    className: "ui-breadcrumb-link",
+    onClick: handleClick
+  }, label));
+};
+BreadcrumbItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  href: PropTypes.string,
+  isActive: PropTypes.bool,
+  onClick: PropTypes.func
+};
+
+/**
+ * Breadcrumb - Composant fil d'Ariane pour la navigation
+ * 
+ * @param {Object} props - Propriétés du composant
+ * @param {Array} props.items - Liste des éléments du fil d'Ariane
+ * @param {string} props.variant - Variante d'affichage (default, compact, large)
+ * @param {Function} props.onItemClick - Callback lors du clic sur un élément
+ * @param {string} props.className - Classes CSS additionnelles
+ * @param {Object} props.style - Styles inline additionnels
+ */
+const Breadcrumb = ({
+  items = [],
+  variant = 'default',
+  onItemClick,
+  className = '',
+  style = {}
+}) => {
+  if (!items || items.length === 0) {
+    return null;
+  }
+  const breadcrumbClasses = ['ui-breadcrumb', variant !== 'default' ? variant : '', className].filter(Boolean).join(' ');
+  return /*#__PURE__*/React.createElement("nav", {
+    className: breadcrumbClasses,
+    style: style,
+    "aria-label": "Fil d'Ariane"
+  }, /*#__PURE__*/React.createElement("ol", {
+    className: "ui-breadcrumb-list"
+  }, items.map((item, index) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: `breadcrumb-${index}`
+  }, /*#__PURE__*/React.createElement(BreadcrumbItem, {
+    label: item.label,
+    href: item.href,
+    isActive: item.isActive || index === items.length - 1,
+    onClick: onItemClick
+  }), index < items.length - 1 && /*#__PURE__*/React.createElement("li", {
+    className: "ui-breadcrumb-separator",
+    "aria-hidden": "true"
+  })))));
+};
+Breadcrumb.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    href: PropTypes.string,
+    isActive: PropTypes.bool
+  })).isRequired,
+  variant: PropTypes.oneOf(['default', 'compact', 'large']),
+  onItemClick: PropTypes.func,
+  className: PropTypes.string,
+  style: PropTypes.object
+};
+export default Breadcrumb;

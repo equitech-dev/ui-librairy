@@ -1,0 +1,216 @@
+// ===================================
+// CSS VARIABLES UNIFIÉES - EQUITECH UI
+// ===================================
+// Ce fichier définit toutes les variables CSS utilisées par les composants
+// Basé sur les variables SCSS de _sass_variables.scss
+
+:root {
+  // ===================================
+  // COULEURS EQUITECH
+  // ===================================
+  
+  // Couleurs principales
+  --primary-green: #2BA985;
+  --secondary-teal: #0C3640;
+  --primary-dark: #1A2A38;
+  --light-grey: #F5F5F5;
+  --off-white: #FAFBFC;
+  
+  // Couleurs sémantiques
+  --success-color: #2BA985;
+  --warning-color: #FFA726;
+  --error-color: #EF5350;
+  --info-color: #42A5F5;
+  
+  // Couleurs neutres
+  --white: #FAFBFC;
+  --grey: #9E9E9E;
+  --dark-grey: #424242;
+  --black: #1A2A38;
+  
+  // Variations d'opacité
+  --primary-green-80: rgba(43, 169, 133, 0.8);
+  --primary-green-60: rgba(43, 169, 133, 0.6);
+  --primary-green-40: rgba(43, 169, 133, 0.4);
+  --primary-green-20: rgba(43, 169, 133, 0.2);
+  
+  --secondary-teal-80: rgba(12, 54, 64, 0.8);
+  --secondary-teal-60: rgba(12, 54, 64, 0.6);
+  --secondary-teal-40: rgba(12, 54, 64, 0.4);
+  --secondary-teal-20: rgba(12, 54, 64, 0.2);
+  
+  // ===================================
+  // TYPOGRAPHIE
+  // ===================================
+  
+  // Polices
+  --font-title: 'Josefin Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  // Tailles de texte
+  --text-xs: 0.75rem;      // 12px
+  --text-sm: 0.875rem;     // 14px
+  --text-base: 1rem;       // 16px
+  --text-lg: 1.125rem;     // 18px
+  --text-xl: 1.25rem;      // 20px
+  --text-2xl: 1.5rem;      // 24px
+  --text-3xl: 2rem;        // 32px
+  --text-4xl: 2.5rem;      // 40px
+  
+  // Poids de police
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  // ===================================
+  // ESPACEMENT
+  // ===================================
+  
+  --spacing-xs: 0.25rem;   // 4px
+  --spacing-sm: 0.5rem;    // 8px
+  --spacing-md: 1rem;      // 16px
+  --spacing-lg: 1.5rem;    // 24px
+  --spacing-xl: 2rem;      // 32px
+  --spacing-2xl: 3rem;     // 48px
+  
+  // ===================================
+  // BORDURES ET RAYONS
+  // ===================================
+  
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 9999px;
+  
+  --border-color: #E5E7EB;
+  --border-color-light: #F3F4F6;
+  
+  // ===================================
+  // OMBRES
+  // ===================================
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  --shadow-xl: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  
+  // ===================================
+  // TRANSITIONS
+  // ===================================
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  // ===================================
+  // Z-INDEX
+  // ===================================
+  
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-drawer: 1080;
+  --z-overlay: 1090;
+  
+  // ===================================
+  // BREAKPOINTS
+  // ===================================
+  
+  --breakpoint-mobile: 576px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-large: 1200px;
+  --breakpoint-xl: 1400px;
+  
+  // ===================================
+  // VARIABLES DE COMPATIBILITÉ
+  // ===================================
+  // Pour maintenir la compatibilité avec les anciens composants
+  
+  --color-primary: var(--primary-green);
+  --color-secondary: var(--secondary-teal);
+  --color-success: var(--success-color);
+  --color-warning: var(--warning-color);
+  --color-error: var(--error-color);
+  --color-info: var(--info-color);
+  
+  --color-text-primary: var(--black);
+  --color-text-secondary: var(--dark-grey);
+  --color-text-muted: var(--grey);
+  
+  --color-background: var(--white);
+  --color-background-muted: var(--light-grey);
+  --color-background-hover: rgba(43, 169, 133, 0.05);
+  
+  --color-border: var(--border-color);
+  --color-border-light: var(--border-color-light);
+  
+  --font-family-title: var(--font-title);
+  --font-family-body: var(--font-body);
+  
+  --font-size-xs: var(--text-xs);
+  --font-size-sm: var(--text-sm);
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  
+  --font-weight-light: var(--font-light);
+  --font-weight-normal: var(--font-normal);
+  --font-weight-medium: var(--font-medium);
+  --font-weight-semibold: var(--font-semibold);
+  --font-weight-bold: var(--font-bold);
+  
+  --spacing-1: var(--spacing-xs);
+  --spacing-2: var(--spacing-sm);
+  --spacing-3: var(--spacing-md);
+  --spacing-4: var(--spacing-lg);
+  --spacing-5: var(--spacing-xl);
+  
+  --border-radius-sm: var(--border-radius-sm);
+  --border-radius-md: var(--border-radius-md);
+  --border-radius-lg: var(--border-radius-lg);
+  --border-radius-xl: var(--border-radius-xl);
+  
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  
+  --transition-fast: var(--transition-fast);
+  --transition-normal: var(--transition-normal);
+  --transition-slow: var(--transition-slow);
+  
+  --z-index-dropdown: var(--z-dropdown);
+  --z-index-modal: var(--z-modal);
+  --z-index-popover: var(--z-popover);
+  --z-index-tooltip: var(--z-tooltip);
+}
+
+// ===================================
+// MODE SOMBRE (OPTIONNEL)
+// ===================================
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #1A2A38;
+    --black: #FAFBFC;
+    --light-grey: #2A3A48;
+    --grey: #6B7280;
+    --dark-grey: #9CA3AF;
+    --border-color: #374151;
+    --border-color-light: #4B5563;
+    --color-background: #1A2A38;
+    --color-background-muted: #2A3A48;
+    --color-background-hover: rgba(43, 169, 133, 0.1);
+    --color-text-primary: #FAFBFC;
+    --color-text-secondary: #D1D5DB;
+    --color-text-muted: #9CA3AF;
+  }
+} 

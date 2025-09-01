@@ -506,7 +506,7 @@ const [steps, setSteps] = useState(stepsData);
           <h3 className="demo-title">Props et API</h3>
           <div className="demo-content">
             <p>Propriétés disponibles pour le composant Stepper :</p>
-            <div style={{ background: 'var(--ui-background-color)', padding: '1rem', borderRadius: '8px', marginTop: '1rem' }}>
+            <div style={{ background: 'var(--color-background)', padding: '1rem', borderRadius: '8px', marginTop: '1rem' }}>
               <h4>Props principales :</h4>
               <ul>
                 <li><strong>steps</strong> : Array&lt;Step&gt; (étapes du processus)</li>

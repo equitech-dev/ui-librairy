@@ -1,52 +1,47 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import './ColorPicker.scss';
 
-const ColorPicker = ({
-  value,
-  onChange,
-  placeholder = 'Sélectionner une couleur',
-  disabled = false,
-  size = 'md',
-  variant = 'default',
-  presets = [],
-  showAlpha = false,
-  format = 'hex',
-  className = '',
-  id,
-  name,
-  required = false,
-  error = false,
-  success = false,
-  onFocus,
-  onBlur,
-  ...props
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [tempColor, setTempColor] = useState(value || '');
-  const [hue, setHue] = useState(0);
-  const [saturation, setSaturation] = useState(100);
-  const [lightness, setLightness] = useState(50);
-  const [alpha, setAlpha] = useState(1);
-  const containerRef = useRef(null);
-  const triggerRef = useRef(null);
+// Cache pour les conversions de couleurs
+const colorCache = new Map();
 
-  // Default color presets
-  const defaultPresets = useMemo(() => [
-    '#ff0000', '#ff8000', '#ffff00', '#80ff00',
-    '#00ff00', '#00ff80', '#00ffff', '#0080ff',
-    '#0000ff', '#8000ff', '#ff00ff', '#ff0080',
-    '#ffffff', '#cccccc', '#999999', '#666666',
-    '#333333', '#000000'
-  ], []);
+// Fonctions de conversion optimisées avec cache
+const createColorUtils = () => {
+  const hexToRgb = (hex) => {
+    if (colorCache.has(`hex2rgb-${hex}`)) {
+      return colorCache.get(`hex2rgb-${hex}`);
+    }
+    
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const rgb = result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 0, g: 0, b: 0 };
+    
+    colorCache.set(`hex2rgb-${hex}`, rgb);
+    return rgb;
+  };
 
-  const colorPresets = presets.length > 0 ? presets : defaultPresets;
+  const rgbToHex = (r, g, b) => {
+    const key = `rgb2hex-${r}-${g}-${b}`;
+    if (colorCache.has(key)) {
+      return colorCache.get(key);
+    }
+    
+    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    colorCache.set(key, hex);
+    return hex;
+  };
 
-  // Convert color formats
-  const hexToHsl = useCallback((hex) => {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const rgbToHsl = (r, g, b) => {
+    const key = `rgb2hsl-${r}-${g}-${b}`;
+    if (colorCache.has(key)) {
+      return colorCache.get(key);
+    }
+    
+    r /= 255;
+    g /= 255;
+    b /= 255;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
@@ -65,31 +60,40 @@ const ColorPicker = ({
       h /= 6;
     }
 
-    return {
+    const hsl = {
       h: Math.round(h * 360),
       s: Math.round(s * 100),
       l: Math.round(l * 100)
     };
-  }, []);
+    
+    colorCache.set(key, hsl);
+    return hsl;
+  };
 
-  const hslToHex = useCallback((h, s, l) => {
+  const hslToRgb = (h, s, l) => {
+    const key = `hsl2rgb-${h}-${s}-${l}`;
+    if (colorCache.has(key)) {
+      return colorCache.get(key);
+    }
+    
     h /= 360;
     s /= 100;
     l /= 100;
 
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    };
-
     let r, g, b;
+
     if (s === 0) {
       r = g = b = l;
     } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
       r = hue2rgb(p, q, h + 1/3);
@@ -97,109 +101,218 @@ const ColorPicker = ({
       b = hue2rgb(p, q, h - 1/3);
     }
 
-    const toHex = (c) => {
-      const hex = Math.round(c * 255).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    };
-
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-  }, []);
-
-  const hslToRgb = useCallback((h, s, l) => {
-    h /= 360;
-    s /= 100;
-    l /= 100;
-
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    };
-
-    let r, g, b;
-    if (s === 0) {
-      r = g = b = l;
-    } else {
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-      const p = 2 * l - q;
-      r = hue2rgb(p, q, h + 1/3);
-      g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
-    }
-
-    return {
+    const rgb = {
       r: Math.round(r * 255),
       g: Math.round(g * 255),
       b: Math.round(b * 255)
     };
-  }, []);
+    
+    colorCache.set(key, rgb);
+    return rgb;
+  };
 
-  // Initialize color from value
+  const hexToHsl = (hex) => {
+    const rgb = hexToRgb(hex);
+    return rgbToHsl(rgb.r, rgb.g, rgb.b);
+  };
+
+  const hslToHex = (h, s, l) => {
+    const rgb = hslToRgb(h, s, l);
+    return rgbToHex(rgb.r, rgb.g, rgb.b);
+  };
+
+  return {
+    hexToRgb,
+    rgbToHex,
+    rgbToHsl,
+    hslToRgb,
+    hexToHsl,
+    hslToHex,
+    clearCache: () => colorCache.clear()
+  };
+};
+
+// Hook pour le debouncing
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+// Composant de slider optimisé
+const ColorSlider = React.memo(({
+  type,
+  value,
+  onChange,
+  min = 0,
+  max = 100,
+  step = 1,
+  className = '',
+  style = {},
+  ...props
+}) => {
+  const handleChange = useCallback((e) => {
+    const newValue = parseFloat(e.target.value);
+    if (!isNaN(newValue)) {
+      onChange(newValue);
+    }
+  }, [onChange]);
+
+  return (
+    <input
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={handleChange}
+      className={`ui-color-slider ui-color-slider--${type} ${className}`}
+      style={style}
+      {...props}
+    />
+  );
+});
+
+// Composant de picker optimisé
+const ColorPicker = React.memo(({
+  hue,
+  saturation,
+  lightness,
+  onChange,
+  className = '',
+  ...props
+}) => {
+  const handleClick = useCallback((e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const s = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    const l = Math.max(0, Math.min(100, (1 - y / rect.height) * 100));
+    onChange(s, l);
+  }, [onChange]);
+
+  const backgroundStyle = useMemo(() => ({
+    background: `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${hue}, 100%, 50%))`
+  }), [hue]);
+
+  return (
+    <div
+      className={`ui-color-picker ${className}`}
+      style={backgroundStyle}
+      onClick={handleClick}
+      {...props}
+    />
+  );
+});
+
+/**
+ * ColorPicker Optimized - Color picker component with optimized conversions and debouncing
+ * 
+ * Props :
+ * - value: Current color value (hex)
+ * - onChange: Callback when color changes (hex)
+ * - presets: Array of preset colors
+ * - showAlpha: Show alpha slider (default: false)
+ * - disabled: Disable color picker (default: false)
+ * - className: Additional CSS classes
+ * - ...props: Native props
+ */
+const ColorPickerOptimized = ({
+  value = '#000000',
+  onChange,
+  presets = [],
+  showAlpha = false,
+  disabled = false,
+  className = '',
+  ...props
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [hue, setHue] = useState(0);
+  const [saturation, setSaturation] = useState(0);
+  const [lightness, setLightness] = useState(0);
+  const [alpha, setAlpha] = useState(1);
+  const [tempColor, setTempColor] = useState(value);
+  
+  const containerRef = useRef(null);
+  const colorUtils = useMemo(() => createColorUtils(), []);
+  
+  // Debounced color changes
+  const debouncedTempColor = useDebounce(tempColor, 100);
+  
+  // Mémoriser les conversions de couleurs
+  const colorConversions = useMemo(() => {
+    const hsl = colorUtils.hexToHsl(value);
+    const rgb = colorUtils.hexToRgb(value);
+    return { hsl, rgb };
+  }, [value, colorUtils]);
+  
+  // Initialiser les valeurs depuis la couleur
   useEffect(() => {
     if (value) {
-      const hsl = hexToHsl(value);
+      const hsl = colorUtils.hexToHsl(value);
       setHue(hsl.h);
       setSaturation(hsl.s);
       setLightness(hsl.l);
       setTempColor(value);
     }
-  }, [value, hexToHsl]);
-
-  // Update temp color when HSL changes
+  }, [value, colorUtils]);
+  
+  // Mettre à jour la couleur temporaire quand HSL change
   useEffect(() => {
-    const hex = hslToHex(hue, saturation, lightness);
+    const hex = colorUtils.hslToHex(hue, saturation, lightness);
     setTempColor(hex);
-  }, [hue, saturation, lightness, hslToHex]);
-
-  // Handle trigger click
+  }, [hue, saturation, lightness, colorUtils]);
+  
+  // Appliquer la couleur debouncée
+  useEffect(() => {
+    if (debouncedTempColor && onChange && debouncedTempColor !== value) {
+      const finalColor = showAlpha && alpha < 1 
+        ? `${debouncedTempColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
+        : debouncedTempColor;
+      onChange(finalColor);
+    }
+  }, [debouncedTempColor, alpha, showAlpha, onChange, value]);
+  
+  // Gestionnaires optimisés
   const handleTriggerClick = useCallback(() => {
     if (!disabled) {
       setIsOpen(true);
     }
   }, [disabled]);
-
-  // Handle preset selection
+  
   const handlePresetSelect = useCallback((presetColor) => {
-    const hsl = hexToHsl(presetColor);
+    const hsl = colorUtils.hexToHsl(presetColor);
     setHue(hsl.h);
     setSaturation(hsl.s);
     setLightness(hsl.l);
     setTempColor(presetColor);
-  }, [hexToHsl]);
-
-  // Handle hue slider
-  const handleHueChange = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    setHue(Math.round(percentage * 360));
+  }, [colorUtils]);
+  
+  const handleHueChange = useCallback((newHue) => {
+    setHue(newHue);
   }, []);
-
-  // Handle saturation/lightness picker
-  const handlePickerChange = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const saturation = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    const lightness = Math.max(0, Math.min(100, (1 - y / rect.height) * 100));
-    setSaturation(Math.round(saturation));
-    setLightness(Math.round(lightness));
+  
+  const handlePickerChange = useCallback((newSaturation, newLightness) => {
+    setSaturation(newSaturation);
+    setLightness(newLightness);
   }, []);
-
-  // Handle alpha slider
-  const handleAlphaChange = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    setAlpha(percentage);
+  
+  const handleAlphaChange = useCallback((newAlpha) => {
+    setAlpha(newAlpha);
   }, []);
-
-  // Handle input changes
-  const handleInputChange = useCallback((type, value) => {
-    const numValue = parseInt(value, 10);
+  
+  const handleInputChange = useCallback((type, inputValue) => {
+    const numValue = parseInt(inputValue, 10);
     if (isNaN(numValue)) return;
 
     switch (type) {
@@ -219,8 +332,7 @@ const ColorPicker = ({
         break;
     }
   }, []);
-
-  // Handle confirm
+  
   const handleConfirm = useCallback(() => {
     if (tempColor && onChange) {
       const finalColor = showAlpha && alpha < 1 
@@ -230,295 +342,175 @@ const ColorPicker = ({
     }
     setIsOpen(false);
   }, [tempColor, onChange, showAlpha, alpha]);
-
-  // Handle cancel
+  
   const handleCancel = useCallback(() => {
-    if (value) {
-      const hsl = hexToHsl(value);
-      setHue(hsl.h);
-      setSaturation(hsl.s);
-      setLightness(hsl.l);
-      setTempColor(value);
-    }
+    setTempColor(value);
     setIsOpen(false);
-  }, [value, hexToHsl]);
-
-  // Handle clear
-  const handleClear = useCallback(() => {
-    if (onChange) {
-      onChange('');
-    }
-    setTempColor('');
-    setIsOpen(false);
-  }, [onChange]);
-
-  // Handle escape key
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') {
-      handleCancel();
-    } else if (e.key === 'Enter' && isOpen) {
-      handleConfirm();
-    }
-  }, [isOpen, handleCancel, handleConfirm]);
-
-  // Close dropdown when clicking outside
+  }, [value]);
+  
+  // Fermer au clic extérieur
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
-        handleCancel();
+        setIsOpen(false);
       }
     };
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, handleCancel, handleKeyDown]);
-
-  // Generate CSS classes
-  const containerClasses = [
+  }, [isOpen]);
+  
+  // Classes CSS mémorisées
+  const pickerClasses = useMemo(() => [
     'ui-colorpicker',
-    size !== 'md' && `ui-colorpicker--${size}`,
-    variant !== 'default' && `ui-colorpicker--${variant}`,
     disabled && 'ui-colorpicker--disabled',
-    error && 'ui-colorpicker--error',
-    success && 'ui-colorpicker--success',
+    isOpen && 'ui-colorpicker--open',
     className
-  ].filter(Boolean).join(' ');
-
-  const dropdownClasses = [
-    'ui-colorpicker__dropdown',
-    isOpen && 'ui-colorpicker__dropdown--open'
-  ].filter(Boolean).join(' ');
-
-  const previewClasses = [
-    'ui-colorpicker__preview',
-    !tempColor && 'ui-colorpicker__preview--empty'
-  ].filter(Boolean).join(' ');
-
-  // Generate picker background
-  const pickerBackground = useMemo(() => {
-    const rgb = hslToRgb(hue, 100, 50);
-    return `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${hue}, 100%, 50%))`;
-  }, [hue, hslToRgb]);
-
-  // Generate current color for alpha slider
-  const currentColor = useMemo(() => {
-    return hslToHex(hue, saturation, lightness);
-  }, [hue, saturation, lightness, hslToHex]);
-
+  ].filter(Boolean).join(' '), [disabled, isOpen, className]);
+  
   return (
-    <div ref={containerRef} className={containerClasses} {...props}>
+    <div className={pickerClasses} ref={containerRef} {...props}>
+      {/* Trigger */}
       <button
-        ref={triggerRef}
         type="button"
-        className="ui-colorpicker__trigger"
+        className="ui-colorpicker-trigger"
         onClick={handleTriggerClick}
         disabled={disabled}
-        id={id}
-        name={name}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        role="combobox"
+        aria-label="Sélectionner une couleur"
       >
-        <div 
-          className={previewClasses}
-          style={{ 
-            '--color-preview': tempColor || 'transparent'
-          }}
+        <div
+          className="ui-colorpicker-preview"
+          style={{ backgroundColor: tempColor }}
         />
-        <span className="ui-colorpicker__value">
-          {tempColor || placeholder}
-        </span>
-        <svg className="ui-colorpicker__icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
       </button>
-
+      
+      {/* Dropdown */}
       {isOpen && (
-        <div className={dropdownClasses}>
-          <div className="ui-colorpicker__header">
-            <span className="ui-colorpicker__title">
-              Sélectionner une couleur
-            </span>
-            <button
-              type="button"
-              className="ui-colorpicker__close"
-              onClick={handleCancel}
-              aria-label="Fermer"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-              </svg>
-            </button>
-          </div>
-
-          <div className="ui-colorpicker__content">
-            <div className="ui-colorpicker__section">
-              <label className="ui-colorpicker__label">Couleurs prédéfinies</label>
-              <div className="ui-colorpicker__presets">
-                {colorPresets.map((presetColor) => (
-                  <button
-                    key={presetColor}
-                    type="button"
-                    className={`ui-colorpicker__preset ${
-                      tempColor === presetColor ? 'ui-colorpicker__preset--selected' : ''
-                    }`}
-                    style={{ backgroundColor: presetColor }}
-                    onClick={() => handlePresetSelect(presetColor)}
-                    aria-label={`Sélectionner ${presetColor}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="ui-colorpicker__section">
-              <label className="ui-colorpicker__label">Sélecteur de couleur</label>
-              <div 
-                className="ui-colorpicker__picker"
-                style={{ background: pickerBackground }}
-                onClick={handlePickerChange}
-                onMouseDown={(e) => {
-                  const handleMouseMove = (moveEvent) => {
-                    handlePickerChange(moveEvent);
-                  };
-                  const handleMouseUp = () => {
-                    document.removeEventListener('mousemove', handleMouseMove);
-                    document.removeEventListener('mouseup', handleMouseUp);
-                  };
-                  document.addEventListener('mousemove', handleMouseMove);
-                  document.addEventListener('mouseup', handleMouseUp);
-                }}
-              />
-              
-              <div 
-                className="ui-colorpicker__hue-slider"
-                style={{ '--hue-position': `${(hue / 360) * 100}%` }}
-                onClick={handleHueChange}
-                onMouseDown={(e) => {
-                  const handleMouseMove = (moveEvent) => {
-                    handleHueChange(moveEvent);
-                  };
-                  const handleMouseUp = () => {
-                    document.removeEventListener('mousemove', handleMouseMove);
-                    document.removeEventListener('mouseup', handleMouseUp);
-                  };
-                  document.addEventListener('mousemove', handleMouseMove);
-                  document.addEventListener('mouseup', handleMouseUp);
-                }}
-              />
-
-              {showAlpha && (
-                <div 
-                  className="ui-colorpicker__alpha-slider"
-                  style={{ 
-                    '--alpha-position': `${alpha * 100}%`,
-                    '--current-color': currentColor
-                  }}
-                  onClick={handleAlphaChange}
-                  onMouseDown={(e) => {
-                    const handleMouseMove = (moveEvent) => {
-                      handleAlphaChange(moveEvent);
-                    };
-                    const handleMouseUp = () => {
-                      document.removeEventListener('mousemove', handleMouseMove);
-                      document.removeEventListener('mouseup', handleMouseUp);
-                    };
-                    document.addEventListener('mousemove', handleMouseMove);
-                    document.addEventListener('mouseup', handleMouseUp);
-                  }}
+        <div className="ui-colorpicker-dropdown">
+          {/* Presets */}
+          {presets.length > 0 && (
+            <div className="ui-colorpicker-presets">
+              {presets.map((preset, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="ui-colorpicker-preset"
+                  style={{ backgroundColor: preset }}
+                  onClick={() => handlePresetSelect(preset)}
+                  aria-label={`Couleur prédéfinie ${preset}`}
                 />
+              ))}
+            </div>
+          )}
+          
+          {/* Color Picker */}
+          <div className="ui-colorpicker-main">
+            <ColorPicker
+              hue={hue}
+              saturation={saturation}
+              lightness={lightness}
+              onChange={handlePickerChange}
+              className="ui-colorpicker-canvas"
+            />
+            
+            {/* Hue Slider */}
+            <div className="ui-colorpicker-hue">
+              <ColorSlider
+                type="hue"
+                value={hue}
+                onChange={handleHueChange}
+                min={0}
+                max={360}
+                className="ui-colorpicker-hue-slider"
+              />
+            </div>
+            
+            {/* Alpha Slider */}
+            {showAlpha && (
+              <div className="ui-colorpicker-alpha">
+                <ColorSlider
+                  type="alpha"
+                  value={alpha}
+                  onChange={handleAlphaChange}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  className="ui-colorpicker-alpha-slider"
+                />
+              </div>
+            )}
+            
+            {/* Inputs */}
+            <div className="ui-colorpicker-inputs">
+              <div className="ui-colorpicker-input-group">
+                <label>H</label>
+                <input
+                  type="number"
+                  value={hue}
+                  onChange={(e) => handleInputChange('hue', e.target.value)}
+                  min={0}
+                  max={360}
+                  className="ui-colorpicker-input"
+                />
+              </div>
+              
+              <div className="ui-colorpicker-input-group">
+                <label>S</label>
+                <input
+                  type="number"
+                  value={saturation}
+                  onChange={(e) => handleInputChange('saturation', e.target.value)}
+                  min={0}
+                  max={100}
+                  className="ui-colorpicker-input"
+                />
+              </div>
+              
+              <div className="ui-colorpicker-input-group">
+                <label>L</label>
+                <input
+                  type="number"
+                  value={lightness}
+                  onChange={(e) => handleInputChange('lightness', e.target.value)}
+                  min={0}
+                  max={100}
+                  className="ui-colorpicker-input"
+                />
+              </div>
+              
+              {showAlpha && (
+                <div className="ui-colorpicker-input-group">
+                  <label>A</label>
+                  <input
+                    type="number"
+                    value={Math.round(alpha * 100)}
+                    onChange={(e) => handleInputChange('alpha', e.target.value)}
+                    min={0}
+                    max={100}
+                    className="ui-colorpicker-input"
+                  />
+                </div>
               )}
             </div>
-
-            <div className="ui-colorpicker__section">
-              <label className="ui-colorpicker__label">Valeurs</label>
-              <div className="ui-colorpicker__inputs">
-                <div className="ui-colorpicker__input-group">
-                  <label className="ui-colorpicker__input-label">H</label>
-                  <input
-                    type="number"
-                    className="ui-colorpicker__input"
-                    value={hue}
-                    onChange={(e) => handleInputChange('hue', e.target.value)}
-                    min="0"
-                    max="360"
-                  />
-                </div>
-                <div className="ui-colorpicker__input-group">
-                  <label className="ui-colorpicker__input-label">S</label>
-                  <input
-                    type="number"
-                    className="ui-colorpicker__input"
-                    value={saturation}
-                    onChange={(e) => handleInputChange('saturation', e.target.value)}
-                    min="0"
-                    max="100"
-                  />
-                </div>
-                <div className="ui-colorpicker__input-group">
-                  <label className="ui-colorpicker__input-label">L</label>
-                  <input
-                    type="number"
-                    className="ui-colorpicker__input"
-                    value={lightness}
-                    onChange={(e) => handleInputChange('lightness', e.target.value)}
-                    min="0"
-                    max="100"
-                  />
-                </div>
-                {showAlpha && (
-                  <div className="ui-colorpicker__input-group">
-                    <label className="ui-colorpicker__input-label">A</label>
-                    <input
-                      type="number"
-                      className="ui-colorpicker__input"
-                      value={Math.round(alpha * 100)}
-                      onChange={(e) => handleInputChange('alpha', e.target.value)}
-                      min="0"
-                      max="100"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="ui-colorpicker__footer">
-            <div className="ui-colorpicker__current">
-              <div 
-                className="ui-colorpicker__current-preview"
-                style={{ '--current-color': currentColor }}
-              />
-              <span>{tempColor || 'Aucune couleur sélectionnée'}</span>
-            </div>
-            <div className="ui-colorpicker__actions">
+            
+            {/* Actions */}
+            <div className="ui-colorpicker-actions">
               <button
                 type="button"
-                className="ui-colorpicker__button"
-                onClick={handleClear}
-              >
-                Effacer
-              </button>
-              <button
-                type="button"
-                className="ui-colorpicker__button"
+                className="ui-button ui-button--secondary"
                 onClick={handleCancel}
               >
                 Annuler
               </button>
               <button
                 type="button"
-                className="ui-colorpicker__button ui-colorpicker__button--primary"
+                className="ui-button ui-button--primary"
                 onClick={handleConfirm}
-                disabled={!tempColor}
               >
                 Confirmer
               </button>
@@ -530,26 +522,13 @@ const ColorPicker = ({
   );
 };
 
-ColorPicker.propTypes = {
+ColorPickerOptimized.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  variant: PropTypes.oneOf(['default', 'error', 'success']),
   presets: PropTypes.arrayOf(PropTypes.string),
   showAlpha: PropTypes.bool,
-  format: PropTypes.oneOf(['hex', 'rgb', 'hsl']),
-  className: PropTypes.string,
-  id: PropTypes.string,
-  name: PropTypes.string,
-  required: PropTypes.bool,
-  error: PropTypes.bool,
-  success: PropTypes.bool,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func
+  disabled: PropTypes.bool,
+  className: PropTypes.string
 };
 
-export default ColorPicker;
-
-
+export default ColorPickerOptimized;

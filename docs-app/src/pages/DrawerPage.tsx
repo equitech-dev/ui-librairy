@@ -28,16 +28,14 @@ const DrawerPage: React.FC = () => {
               </button>
               
               {isLeftDrawerOpen && (
-                <div className="ui-drawer-overlay" onClick={() => setIsLeftDrawerOpen(false)}>
-                  <div className="ui-drawer ui-drawer--left" onClick={(e) => e.stopPropagation()}>
+                <div className="ui-drawer-overlay ui-drawer-overlay--visible" onClick={() => setIsLeftDrawerOpen(false)}>
+                  <div className="ui-drawer ui-drawer--left ui-drawer--open" onClick={(e) => e.stopPropagation()}>
                     <div className="ui-drawer-header">
                       <h3>Navigation</h3>
                       <button 
                         className="ui-drawer-close"
                         onClick={() => setIsLeftDrawerOpen(false)}
-                      >
-                        ×
-                      </button>
+                      />
                     </div>
                     <div className="ui-drawer-body">
                       <nav className="ui-drawer-nav">
@@ -109,16 +107,14 @@ const [isOpen, setIsOpen] = useState(false);
               </button>
               
               {isRightDrawerOpen && (
-                <div className="ui-drawer-overlay" onClick={() => setIsRightDrawerOpen(false)}>
-                  <div className="ui-drawer ui-drawer--right" onClick={(e) => e.stopPropagation()}>
+                <div className="ui-drawer-overlay ui-drawer-overlay--visible" onClick={() => setIsRightDrawerOpen(false)}>
+                  <div className="ui-drawer ui-drawer--right ui-drawer--open" onClick={(e) => e.stopPropagation()}>
                     <div className="ui-drawer-header">
                       <h3>Détails du projet</h3>
                       <button 
                         className="ui-drawer-close"
                         onClick={() => setIsRightDrawerOpen(false)}
-                      >
-                        ×
-                      </button>
+                      />
                     </div>
                     <div className="ui-drawer-body">
                       <div className="ui-drawer-section">
@@ -173,16 +169,14 @@ const [isOpen, setIsOpen] = useState(false);
             </div>
             
             {isTopDrawerOpen && (
-              <div className="ui-drawer-overlay" onClick={() => setIsTopDrawerOpen(false)}>
-                <div className="ui-drawer ui-drawer--top" onClick={(e) => e.stopPropagation()}>
+              <div className="ui-drawer-overlay ui-drawer-overlay--visible" onClick={() => setIsTopDrawerOpen(false)}>
+                <div className="ui-drawer ui-drawer--top ui-drawer--open" onClick={(e) => e.stopPropagation()}>
                   <div className="ui-drawer-header">
                     <h3>Notifications</h3>
                     <button 
-                      className="ui-drawer-close"
-                      onClick={() => setIsTopDrawerOpen(false)}
-                    >
-                      ×
-                    </button>
+                        className="ui-drawer-close"
+                        onClick={() => setIsTopDrawerOpen(false)}
+                      />
                   </div>
                   <div className="ui-drawer-body">
                     <div className="ui-notification">
@@ -197,16 +191,14 @@ const [isOpen, setIsOpen] = useState(false);
             )}
             
             {isBottomDrawerOpen && (
-              <div className="ui-drawer-overlay" onClick={() => setIsBottomDrawerOpen(false)}>
-                <div className="ui-drawer ui-drawer--bottom" onClick={(e) => e.stopPropagation()}>
+              <div className="ui-drawer-overlay ui-drawer-overlay--visible" onClick={() => setIsBottomDrawerOpen(false)}>
+                <div className="ui-drawer ui-drawer--bottom ui-drawer--open" onClick={(e) => e.stopPropagation()}>
                   <div className="ui-drawer-header">
                     <h3>Actions rapides</h3>
                     <button 
-                      className="ui-drawer-close"
-                      onClick={() => setIsBottomDrawerOpen(false)}
-                    >
-                      ×
-                    </button>
+                        className="ui-drawer-close"
+                        onClick={() => setIsBottomDrawerOpen(false)}
+                      />
                   </div>
                   <div className="ui-drawer-body">
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>

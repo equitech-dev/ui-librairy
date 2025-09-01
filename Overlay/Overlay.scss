@@ -1,5 +1,6 @@
-// Overlay Component Styles
-@use '../tools/sass_variables' as *;
+// ===================================
+// OVERLAY COMPONENT - EQUITECH UI
+// ===================================
 
 .ui-overlay {
   position: fixed;
@@ -7,7 +8,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: var(--z-overlay, 1000);
+  z-index: var(--z-overlay);
   pointer-events: none;
   transition: all var(--transition-normal);
 
@@ -18,16 +19,15 @@
 
   // Overlay variants
   &.ui-overlay--backdrop {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(26, 42, 56, 0.6);
   }
 
   &.ui-overlay--backdrop-light {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(26, 42, 56, 0.3);
   }
 
   &.ui-overlay--backdrop-dark {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(26, 42, 56, 0.8);
   }
 
   &.ui-overlay--backdrop-blur {
@@ -39,7 +39,7 @@
   }
 
   &.ui-overlay--backdrop-blur-heavy {
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
   }
 
   // Overlay states
@@ -114,38 +114,42 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: var(--spacing-xl);
+    padding-top: var(--spacing-2xl);
   }
 
   &.ui-overlay--content-bottom {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-2xl);
   }
 
   &.ui-overlay--content-left {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-left: var(--spacing-xl);
+    padding-left: var(--spacing-2xl);
   }
 
   &.ui-overlay--content-right {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-right: var(--spacing-xl);
+    padding-right: var(--spacing-2xl);
   }
 
   // Overlay content wrapper
   .ui-overlay-content {
     position: relative;
-    z-index: calc(var(--z-overlay, 1000) + 1);
+    z-index: calc(var(--z-overlay) + 1);
     pointer-events: auto;
     max-width: 90vw;
     max-height: 90vh;
     overflow: auto;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
 
     // Content animations
     &.ui-overlay-content--fade-in {
@@ -173,6 +177,7 @@
     &.ui-overlay-content--full {
       width: 100vw;
       height: 100vh;
+      border-radius: 0;
     }
 
     &.ui-overlay-content--auto {
@@ -188,7 +193,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: var(--z-overlay, 1000);
+    z-index: var(--z-overlay);
     pointer-events: auto;
   }
 
@@ -197,33 +202,40 @@
     position: absolute;
     top: var(--spacing-lg);
     right: var(--spacing-lg);
-    z-index: calc(var(--z-overlay, 1000) + 2);
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
+    z-index: calc(var(--z-overlay) + 2);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--border-color);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all var(--transition-fast);
-    backdrop-filter: blur(4px);
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-md);
 
     &:hover {
-      background: rgba(255, 255, 255, 1);
+      background: var(--white);
       transform: scale(1.1);
+      border-color: var(--primary-green);
+      box-shadow: var(--shadow-lg);
     }
 
     &:focus {
-      outline: 2px solid var(--primary);
+      outline: 2px solid var(--primary-green);
       outline-offset: 2px;
     }
 
-    svg {
+    &::before {
+      content: '';
       width: 20px;
       height: 20px;
-      color: var(--text-primary);
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 5L5 15M5 5L15 15' stroke='%231A2A38' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
   }
 
@@ -296,48 +308,52 @@
 // Overlay theme variants
 .ui-overlay--glass {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 
   .ui-overlay-content {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: var(--radius-lg);
+    backdrop-filter: blur(16px);
+    border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 }
 
 .ui-overlay--dark {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(26, 42, 56, 0.9);
 
   .ui-overlay-content {
-    background: var(--dark-blue-green);
+    background: var(--primary-dark);
     color: var(--white);
-    border-radius: var(--radius-lg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--secondary-teal);
   }
 
   .ui-overlay-close {
     background: rgba(255, 255, 255, 0.1);
     color: var(--white);
+    border-color: rgba(255, 255, 255, 0.2);
 
     &:hover {
       background: rgba(255, 255, 255, 0.2);
+      border-color: var(--primary-green);
     }
 
-    svg {
-      color: var(--white);
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 5L5 15M5 5L15 15' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
   }
 }
 
 // Overlay responsive
-@media (max-width: $breakpoint-tablet) {
+@media (max-width: 768px) {
   .ui-overlay {
     &.ui-overlay--content-top,
     &.ui-overlay--content-bottom,
     &.ui-overlay--content-left,
     &.ui-overlay--content-right {
-      padding: var(--spacing-md);
+      padding: var(--spacing-lg);
     }
 
     .ui-overlay-content {
@@ -353,17 +369,24 @@
     .ui-overlay-close {
       top: var(--spacing-md);
       right: var(--spacing-md);
+      width: 40px;
+      height: 40px;
+
+      &::before {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 }
 
-@media (max-width: $breakpoint-mobile) {
+@media (max-width: 576px) {
   .ui-overlay {
     &.ui-overlay--content-top,
     &.ui-overlay--content-bottom,
     &.ui-overlay--content-left,
     &.ui-overlay--content-right {
-      padding: var(--spacing-sm);
+      padding: var(--spacing-md);
     }
 
     .ui-overlay-content {
@@ -387,9 +410,9 @@
       width: 36px;
       height: 36px;
 
-      svg {
-        width: 18px;
-        height: 18px;
+      &::before {
+        width: 16px;
+        height: 16px;
       }
     }
   }

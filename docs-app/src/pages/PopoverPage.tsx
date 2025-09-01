@@ -69,7 +69,7 @@ const PopoverPage: React.FC = () => {
                 
                 {showPopover === 'basic' && (
                   <div className="ui-popover ui-popover--basic" style={{ position: 'absolute', top: '100%', left: '0', marginTop: '0.5rem' }}>
-                    <div className="ui-popover-content">
+                    <div className="ui-popover-content visible">
                       <h4 className="ui-popover-header">Informations</h4>
                       <p className="ui-popover-body">
                         Ceci est un exemple de popover basique avec du contenu simple.

@@ -1,6 +1,9 @@
 // EQUITECH UI Library - Entry Point
 // Import de tous les outils et composants
 
+// Variables CSS unifiées (doit être importé en premier)
+@use 'tools/_css_variables.scss';
+
 // Outils SCSS
 @use 'tools/_sass_variables.scss';
 @use 'tools/_mixins.scss';
