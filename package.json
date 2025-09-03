@@ -11,7 +11,8 @@
     "**/*.js",
     "**/*.jsx",
     "**/*.scss",
-    "**/README.md"
+    "**/README.md",
+    "icons/**/*.svg"
   ],
   "scripts": {
     "compile-sass": "sass index.scss:index.css",

@@ -60,3 +60,6 @@ export { default as TimePicker } from './TimePicker';
 export { default as ColorPicker } from './ColorPicker';
 export { default as Form, FormSection, FormRow, FormField } from './Form';
 export { default as Fieldset, FieldsetRow, FieldsetField, FieldsetButton } from './Fieldset';
+
+// Export des icônes
+export * from './icons';
