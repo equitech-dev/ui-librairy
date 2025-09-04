@@ -1,6 +1,6 @@
 # Icônes
 
-Ce dossier contient toutes les icônes SVG de la librairie UI Equitech.
+Ce dossier contient tous les composants React d'icônes de la librairie UI Equitech.
 
 ## Utilisation
 
@@ -12,9 +12,9 @@ import { BoxIcon, CartIcon, SearchIcon } from '@equitech-dev/ui-library';
 function MyComponent() {
   return (
     <div>
-      <BoxIcon />
-      <CartIcon />
-      <SearchIcon />
+      <BoxIcon width={24} height={24} color="#007bff" />
+      <CartIcon width={32} height={32} color="#28a745" />
+      <SearchIcon width={20} height={20} color="#6c757d" />
     </div>
   );
 }
@@ -34,7 +34,7 @@ function MyComponent() {
     });
   }, []);
 
-  return IconComponent ? <IconComponent /> : <div>Chargement...</div>;
+  return IconComponent ? <IconComponent width={24} height={24} color="#007bff" /> : <div>Chargement...</div>;
 }
 ```
 
@@ -55,9 +55,19 @@ function MyComponent() {
 - `UploadImgIcon` - Icône d'upload d'image
 - `UsersIcon` - Icône d'utilisateurs
 
+## Props disponibles
+
+Tous les composants d'icônes acceptent les props suivantes :
+
+- `width` (number, default: 24) - Largeur de l'icône
+- `height` (number, default: 24) - Hauteur de l'icône  
+- `color` (string, default: "currentColor") - Couleur de l'icône
+- `className` (string) - Classe CSS personnalisée
+- `...props` - Toutes les autres props SVG
+
 ## Personnalisation
 
-Les icônes SVG peuvent être stylisées avec CSS :
+Les icônes peuvent être stylisées avec CSS ou via les props :
 
 ```css
 .my-icon {
@@ -66,4 +76,14 @@ Les icônes SVG peuvent être stylisées avec CSS :
   fill: #007bff;
   stroke: none;
 }
+```
+
+```javascript
+<BoxIcon 
+  width={32} 
+  height={32} 
+  color="#007bff" 
+  className="my-custom-icon"
+  style={{ marginRight: '8px' }}
+/>
 ```

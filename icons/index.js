@@ -1,33 +1,33 @@
-// Export des icônes SVG
-export { default as BoxIcon } from './box_icon.svg';
-export { default as CartIcon } from './cart_icon.svg';
-export { default as ChevronIcon } from './chevron_icon.svg';
-export { default as EditIcon } from './edit_icon.svg';
-export { default as ExclamationIcon } from './exclamation_icon.svg';
-export { default as OrderIcon } from './order_icon.svg';
-export { default as SearchIcon } from './search_icon.svg';
-export { default as SettingsIcon } from './settings_icon.svg';
-export { default as ShopBagIcon } from './shop-bag_icon.svg';
-export { default as SquaresIcon } from './squares_icon.svg';
-export { default as StatsIcon } from './stats_icon.svg';
-export { default as TrashIcon } from './trash_icon.svg';
-export { default as UploadImgIcon } from './upload-img_icon.svg';
-export { default as UsersIcon } from './users_icon.svg';
+// Export des icônes React
+export { default as BoxIcon } from './BoxIcon.jsx';
+export { default as CartIcon } from './CartIcon.jsx';
+export { default as ChevronIcon } from './ChevronIcon.jsx';
+export { default as EditIcon } from './EditIcon.jsx';
+export { default as ExclamationIcon } from './ExclamationIcon.jsx';
+export { default as OrderIcon } from './OrderIcon.jsx';
+export { default as SearchIcon } from './SearchIcon.jsx';
+export { default as SettingsIcon } from './SettingsIcon.jsx';
+export { default as ShopBagIcon } from './ShopBagIcon.jsx';
+export { default as SquaresIcon } from './SquaresIcon.jsx';
+export { default as StatsIcon } from './StatsIcon.jsx';
+export { default as TrashIcon } from './TrashIcon.jsx';
+export { default as UploadImgIcon } from './UploadImgIcon.jsx';
+export { default as UsersIcon } from './UsersIcon.jsx';
 
 // Export par défaut de toutes les icônes
 export const icons = {
-  box: () => import('./box_icon.svg'),
-  cart: () => import('./cart_icon.svg'),
-  chevron: () => import('./chevron_icon.svg'),
-  edit: () => import('./edit_icon.svg'),
-  exclamation: () => import('./exclamation_icon.svg'),
-  order: () => import('./order_icon.svg'),
-  search: () => import('./search_icon.svg'),
-  settings: () => import('./settings_icon.svg'),
-  shopBag: () => import('./shop-bag_icon.svg'),
-  squares: () => import('./squares_icon.svg'),
-  stats: () => import('./stats_icon.svg'),
-  trash: () => import('./trash_icon.svg'),
-  uploadImg: () => import('./upload-img_icon.svg'),
-  users: () => import('./users_icon.svg'),
+  box: () => import('./BoxIcon.jsx'),
+  cart: () => import('./CartIcon.jsx'),
+  chevron: () => import('./ChevronIcon.jsx'),
+  edit: () => import('./EditIcon.jsx'),
+  exclamation: () => import('./ExclamationIcon.jsx'),
+  order: () => import('./OrderIcon.jsx'),
+  search: () => import('./SearchIcon.jsx'),
+  settings: () => import('./SettingsIcon.jsx'),
+  shopBag: () => import('./ShopBagIcon.jsx'),
+  squares: () => import('./SquaresIcon.jsx'),
+  stats: () => import('./StatsIcon.jsx'),
+  trash: () => import('./TrashIcon.jsx'),
+  uploadImg: () => import('./UploadImgIcon.jsx'),
+  users: () => import('./UsersIcon.jsx'),
 };
