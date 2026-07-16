@@ -1,3 +1,9 @@
-# Fichiers build
+# Dépendances
+node_modules/
+
+# Sortie de build (générée par `npm run build`)
+dist/
+
+# Anciens artefacts de build in-place (legacy, à supprimer une fois la migration terminée)
 index.css
 index.css.map

@@ -1,12 +1,12 @@
-// EQUITECH Brand Colors - Palette Simplifiée
-$primary-green: #2BA985;      // Vert/Teal Moyen - Couleur principale
-$secondary-teal: #0C3640;     // Teal/Bleu-Vert - Couleur secondaire
-$primary-dark: #1A2A38;       // Bleu-Vert Foncé - Couleur sombre
+// EQUITECH Brand Colors — aligné ManageMates DESIGN_SYSTEM_V1 (vert sapin)
+$primary-green: #3EA484;      // primary-500
+$secondary-teal: #2F7B66;     // primary-600
+$primary-dark: #1E5A4D;       // primary-700
 $light-grey: #F5F5F5;         // Gris Clair
 $off-white: #FAFBFC;          // Blanc non-pur (meilleure pratique)
 
 // EQUITECH Brand Colors - Semantic Colors
-$success-color: #2BA985;      // Utilise la couleur principale pour le succès
+$success-color: #4CAF88;      // success ManageMates
 $warning-color: #FFA726;      // Orange pour avertissements
 $error-color: #EF5350;        // Rouge pour erreurs
 $info-color: #42A5F5;         // Bleu pour informations
@@ -18,15 +18,15 @@ $dark-grey: #424242;          // Gris foncé
 $black: $primary-dark;        // Utilise la couleur sombre comme noir
 
 // EQUITECH Brand Colors - Opacity Variations (20%, 40%, 60%, 80%)
-$primary-green-80: rgba(43, 169, 133, 0.8);
-$primary-green-60: rgba(43, 169, 133, 0.6);
-$primary-green-40: rgba(43, 169, 133, 0.4);
-$primary-green-20: rgba(43, 169, 133, 0.2);
+$primary-green-80: rgba(62, 164, 132, 0.8);
+$primary-green-60: rgba(62, 164, 132, 0.6);
+$primary-green-40: rgba(62, 164, 132, 0.4);
+$primary-green-20: rgba(62, 164, 132, 0.2);
 
-$secondary-teal-80: rgba(12, 54, 64, 0.8);
-$secondary-teal-60: rgba(12, 54, 64, 0.6);
-$secondary-teal-40: rgba(12, 54, 64, 0.4);
-$secondary-teal-20: rgba(12, 54, 64, 0.2);
+$secondary-teal-80: rgba(47, 123, 102, 0.8);
+$secondary-teal-60: rgba(47, 123, 102, 0.6);
+$secondary-teal-40: rgba(47, 123, 102, 0.4);
+$secondary-teal-20: rgba(47, 123, 102, 0.2);
 
 // EQUITECH Typography
 $font-title: 'Josefin Sans', sans-serif;    // Police des titres

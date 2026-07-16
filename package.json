@@ -1,27 +1,80 @@
 {
   "name": "@equitech-dev/ui-library",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "description": "Librairie de composants UI génériques pour Equitech",
-  "main": "index.js",
-  "style": "index.css",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/index.css",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./index.css": "./dist/index.css",
+    "./Button": {
+      "types": "./dist/Button/index.d.ts",
+      "import": "./dist/Button/index.js",
+      "default": "./dist/Button/index.js"
+    },
+    "./Badge": {
+      "types": "./dist/Badge/index.d.ts",
+      "import": "./dist/Badge/index.js",
+      "default": "./dist/Badge/index.js"
+    },
+    "./Card": {
+      "types": "./dist/Card/index.d.ts",
+      "import": "./dist/Card/index.js",
+      "default": "./dist/Card/index.js"
+    },
+    "./Alert": {
+      "types": "./dist/Alert/index.d.ts",
+      "import": "./dist/Alert/index.js",
+      "default": "./dist/Alert/index.js"
+    },
+    "./Input": {
+      "types": "./dist/Input/index.d.ts",
+      "import": "./dist/Input/index.js",
+      "default": "./dist/Input/index.js"
+    },
+    "./Textarea": {
+      "types": "./dist/Textarea/index.d.ts",
+      "import": "./dist/Textarea/index.js",
+      "default": "./dist/Textarea/index.js"
+    },
+    "./Checkbox": {
+      "types": "./dist/Checkbox/index.d.ts",
+      "import": "./dist/Checkbox/index.js",
+      "default": "./dist/Checkbox/index.js"
+    },
+    "./RadioButton": {
+      "types": "./dist/RadioButton/index.d.ts",
+      "import": "./dist/RadioButton/index.js",
+      "default": "./dist/RadioButton/index.js"
+    },
+    "./Switch": {
+      "types": "./dist/Switch/index.d.ts",
+      "import": "./dist/Switch/index.js",
+      "default": "./dist/Switch/index.js"
+    }
+  },
   "files": [
-    "index.js",
-    "index.css",
-    "index.css.map",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.scss",
-    "**/README.md",
-    "icons/**/*.svg",
-    "icons/**/*.jsx"
+    "dist"
   ],
   "scripts": {
-    "compile-sass": "sass index.scss:index.css",
-    "build": "npm run compile-sass && npm run compile-jsx",
-    "compile-jsx": "babel . --out-dir . --extensions .jsx,.js --ignore node_modules,docs-app",
-    "prepublishOnly": "npm run build",
-    "docs:dev": "npm run compile-sass && npx serve . -p 3000",
-    "docs:build": "npm run compile-sass && mkdir -p docs && cp demo.html docs/index.html && cp index.css docs/ && cp -r tools docs/ && touch docs/.nojekyll"
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build:js": "tsup && node scripts/add-use-client.mjs",
+    "build:css": "sass index.scss:dist/index.css --style=compressed",
+    "build": "npm run build:js && npm run build:css",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -38,16 +91,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/equitech-dev/ui-library.git"
+    "url": "git+https://github.com/equitech-dev/ui-librairy.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.3",
-    "@babel/preset-react": "^7.27.1",
-    "sass": "^1.90.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "sass": "^1.90.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.9.3"
   }
 }
