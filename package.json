@@ -17,7 +17,11 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./index.css": "./dist/index.css",
+    "./index.css": {
+      "style": "./dist/index.css",
+      "default": "./dist/index.css"
+    },
+    "./dist/index.css": "./dist/index.css",
     "./Button": {
       "types": "./dist/Button/index.d.ts",
       "import": "./dist/Button/index.js",
