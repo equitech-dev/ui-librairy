@@ -1,50 +1,25 @@
 # @equitech-dev/ui-library
 
-Librairie UI propriétaire Equitech — composants React + SCSS.
+Composants React typés + SCSS. Paquet GitHub Packages `@equitech-dev/ui-library`.
 
-**Stratégie produit & intégration ManageMates :**  
-`../docs/design/README.md` · `../docs/design/AUDIT_PHASE_LIB.md` · ADR-0012
+Doc consommation ManageMates : [UI_LIBRARY_INSTALLATION.md](../docs/implementation/UI_LIBRARY_INSTALLATION.md) · [UI_INTEGRATION.md](../docs/design/UI_INTEGRATION.md) · [ADR-0012](../docs/adr/0012-strategie-ui-design-system.md)
 
----
-
-## Développement local (avec ManageMates V1)
+## Build
 
 ```bash
-npm install          # déclenche prepare → compile-sass
-npm run build        # SCSS + JSX (babel)
+npm ci
+npm run build    # tsup (JS/types) + sass → dist/
 ```
 
-Le dashboard consomme ce dossier via :
-
-```json
-"@equitech-dev/ui-library": "file:../ui-librairy"
-```
-
-### Import recommandé (éviter le barrel)
+v2 publie **9 composants** (Button, Badge, Card, Alert, Input, Textarea, Checkbox, RadioButton, Switch). Le reste du repo (JSX legacy) alimente encore le CSS global, il n’est pas exporté.
 
 ```tsx
-import { Button } from '@equitech-dev/ui-library/Button';
-import '@equitech-dev/ui-library/index.css';
+import { Button } from '@equitech-dev/ui-library/Button'
+import '@equitech-dev/ui-library/dist/index.css'
 ```
 
-Ne pas importer depuis `@equitech-dev/ui-library` seul — le barrel charge tous les composants (deps manquantes type `prop-types`).
-
----
-
-## Structure
-
-- `Button/`, `Modal/`, … — composant + SCSS + JSX/JS
-- `tools/` — tokens SCSS (`_sass_variables.scss`, `_css_variables.scss`)
-- `index.scss` → `index.css` (généré, ne pas committer sans build)
-- `docs-app/` — app doc React (Storybook futur)
-
----
+Le dashboard **ne** pointe **plus** `file:../ui-librairy`. Mode local : `npm run dev:local-ui` côté dashboard.
 
 ## Publication
 
-```bash
-npm run build
-npm publish   # GitHub Packages @equitech-dev/ui-library
-```
-
-Repo git : `equitech-dev/ui-librairy` (nom historique — package npm `ui-library`).
+Bumper `package.json`, merger `main`. Le workflow GitHub publie si la version n’existe pas déjà. Relance : Actions → `workflow_dispatch`.
