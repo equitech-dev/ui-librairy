@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  # Permet de rejouer une publication sans pousser un commit vide
+  # (ex. après rotation du secret NPM_TOKEN).
+  workflow_dispatch:
 
 jobs:
   build-and-publish:
@@ -29,7 +32,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Le registre refuse d'écraser une version existante : sans cette vérification,
+      # tout push sur main qui ne bump pas package.json faisait échouer le job.
+      - name: Check whether the version is already published
+        id: published
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "@equitech-dev/ui-library@$VERSION" version > /dev/null 2>&1; then
+            echo "La version $VERSION est déjà publiée, publication ignorée."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "La version $VERSION n'existe pas encore, publication à faire."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Publish package
+        if: steps.published.outputs.skip == 'false'
         # Version = package.json (pas de bump auto : évite les surprises sur un major volontaire).
         run: npm publish
         env:
