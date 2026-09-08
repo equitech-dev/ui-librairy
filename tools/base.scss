@@ -1,7 +1,9 @@
 @use './_sass_variables.scss' as v;
 
-// Import des polices Google Fonts pour EQUITECH
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+// Les polices Josefin Sans / Inter sont chargées par l'app consommatrice
+// (<link> ou next/font). Un @import Google Fonts dans ce CSS fait échouer
+// LightningCSS (Next 16 / Tailwind v4) : le `&` de l'URL est lu comme
+// sélecteur imbriqué (« Invalid dangling combinator »).
 
 // Reset et styles de base
 * {
