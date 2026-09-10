@@ -15,6 +15,7 @@ export default defineConfig({
     "Checkbox/index": "src/components/Checkbox/index.ts",
     "RadioButton/index": "src/components/RadioButton/index.ts",
     "Switch/index": "src/components/Switch/index.ts",
+    "Modal/index": "src/components/Modal/index.ts",
   },
   format: ["esm"],
   dts: true,

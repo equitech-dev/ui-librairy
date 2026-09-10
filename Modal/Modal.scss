@@ -1,37 +1,124 @@
 @use '../tools/_sass_variables.scss' as v;
 
-.ui-overlay {
+.ui-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  z-index: 11000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  padding: v.$spacing-l;
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .ui-modal {
-  background: v.$white;
-  border-radius: v.$radius_m;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.15);
-  padding: 2rem;
-  min-width: 320px;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow: auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  max-height: min(90vh, 720px);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: v.$radius-l;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
 }
 
-.ui-closeBtn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
+.ui-modal--sm {
+  max-width: 400px;
+}
+
+.ui-modal--wide {
+  max-width: 760px;
+}
+
+.ui-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.ui-modal-title {
+  margin: 0;
+  font-family: v.$font-title;
+  font-size: 1.125rem;
+  font-weight: 650;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.ui-modal-close {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
   border: none;
-  font-size: 2rem;
-  color: v.$grey;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  font-size: 1.5rem;
+  line-height: 1;
   cursor: pointer;
-  &:hover {
-    color: v.$primary_color;
+
+  &:hover:not(:disabled) {
+    background: #f1f5f9;
+    color: #0f172a;
   }
-} 
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.ui-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px 24px;
+  overflow-y: auto;
+}
+
+.ui-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ui-modal-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.ui-modal-control {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid v.$primary-green;
+    outline-offset: 1px;
+    border-color: v.$primary-green;
+  }
+}
+
+.ui-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 8px;
+}

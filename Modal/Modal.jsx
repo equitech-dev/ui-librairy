@@ -13,7 +13,7 @@ const Modal = ({ open, onClose, children, className = '', style = {}, 'aria-labe
 
   if (!open) return null;
   return (
-    <div className="ui-overlay" onClick={onClose}>
+    <div className="ui-modal-overlay" onClick={onClose}>
       <div
         className={`ui-modal ${className}`}
         style={style}
@@ -24,10 +24,10 @@ const Modal = ({ open, onClose, children, className = '', style = {}, 'aria-labe
         {...props}
       >
         {children}
-        <button className="ui-closeBtn" onClick={onClose} aria-label="Fermer">×</button>
+        <button className="ui-modal-close" onClick={onClose} aria-label="Fermer">×</button>
       </div>
     </div>
   );
 };
 
-export default Modal; 
+export default Modal;

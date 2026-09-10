@@ -2,6 +2,13 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [2.1.0] - 2026-09-09
+
+### T1 — Modal
+- Composant React `Modal` publié (`@equitech-dev/ui-library/Modal`) : overlay, panneau, titre, fermeture, Escape.
+- Tailles `sm` / `md` / `wide`. Classes de contenu : `ui-modal-form`, `ui-modal-field`, `ui-modal-label`, `ui-modal-control`, `ui-modal-actions`.
+- Coquille alignée sur les fiches produit ManageMates (pas de Radix exposé au consommateur).
+
 ## [1.1.0] - 2025-01-29
 
 ### 🎨 Améliorations de Style
