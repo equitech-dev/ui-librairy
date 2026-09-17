@@ -2,6 +2,11 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [2.3.0] - 2026-09-17
+
+### T1 — Select
+- Composant React `Select` publié (`@equitech-dev/ui-library/Select`) : `<select>` natif, `options` ou `children`, placeholder. Pas de Radix, pas de métier ERP.
+
 ## [2.2.0] - 2026-09-16
 
 ### T1 — Table

@@ -25,6 +25,7 @@ Le dashboard consomme ce dossier via :
 ```tsx
 import { Button } from '@equitech-dev/ui-library/Button';
 import { Table, TableSkeleton } from '@equitech-dev/ui-library/Table';
+import { Select } from '@equitech-dev/ui-library/Select';
 import '@equitech-dev/ui-library/index.css';
 ```
 

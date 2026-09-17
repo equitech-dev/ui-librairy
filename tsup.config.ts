@@ -17,6 +17,7 @@ export default defineConfig({
     "Switch/index": "src/components/Switch/index.ts",
     "Modal/index": "src/components/Modal/index.ts",
     "Table/index": "src/components/Table/index.ts",
+    "Select/index": "src/components/Select/index.ts",
   },
   format: ["esm"],
   dts: true,
