@@ -10,3 +10,4 @@ export * from "./components/Checkbox";
 export * from "./components/RadioButton";
 export * from "./components/Switch";
 export * from "./components/Modal";
+export * from "./components/Table";

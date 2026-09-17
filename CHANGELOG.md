@@ -2,6 +2,12 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [2.2.0] - 2026-09-16
+
+### T1 — Table
+- Composant React `Table` publié (`@equitech-dev/ui-library/Table`) : scroller, thead sticky, cellules alignables.
+- `TableSkeleton` : mêmes colonnes, barres shimmer. Pas de DataTable legacy, pas de métier stocks.
+
 ## [2.1.0] - 2026-09-09
 
 ### T1 — Modal

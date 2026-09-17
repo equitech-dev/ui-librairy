@@ -16,6 +16,7 @@ export default defineConfig({
     "RadioButton/index": "src/components/RadioButton/index.ts",
     "Switch/index": "src/components/Switch/index.ts",
     "Modal/index": "src/components/Modal/index.ts",
+    "Table/index": "src/components/Table/index.ts",
   },
   format: ["esm"],
   dts: true,

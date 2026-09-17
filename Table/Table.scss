@@ -1,0 +1,69 @@
+@use '../tools/_sass_variables.scss' as v;
+
+.ui-table-scroll {
+  overflow-x: auto;
+}
+
+.ui-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  font-family: v.$font-body;
+  font-size: 0.8125rem;
+  color: #0f172a;
+}
+
+.ui-table-head {
+  padding: 10px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.ui-table-head--end {
+  text-align: right;
+}
+
+.ui-table-cell {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.ui-table-cell--end,
+.ui-table-head--end {
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.ui-table-skel-row td {
+  height: 44px;
+}
+
+.ui-table-skel-bar {
+  display: block;
+  height: 10px;
+  max-width: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-size: 200% 100%;
+  animation: ui-table-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes ui-table-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
