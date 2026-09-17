@@ -2,6 +2,11 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [2.5.0] - 2026-09-17
+
+### T1 — Loader
+- Composant React `Loader` publié (`@equitech-dev/ui-library/Loader`) : spinner, tailles `s` / `m`, label optionnel, `prefers-reduced-motion`. Pas d’overlay, pas de skeleton.
+
 ## [2.4.0] - 2026-09-17
 
 ### T1 — Tabs

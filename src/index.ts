@@ -13,3 +13,4 @@ export * from "./components/Modal";
 export * from "./components/Table";
 export * from "./components/Select";
 export * from "./components/Tabs";
+export * from "./components/Loader";

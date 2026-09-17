@@ -19,6 +19,7 @@ export default defineConfig({
     "Table/index": "src/components/Table/index.ts",
     "Select/index": "src/components/Select/index.ts",
     "Tabs/index": "src/components/Tabs/index.ts",
+    "Loader/index": "src/components/Loader/index.ts",
   },
   format: ["esm"],
   dts: true,

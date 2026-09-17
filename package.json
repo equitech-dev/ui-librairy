@@ -1,6 +1,6 @@
 {
   "name": "@equitech-dev/ui-library",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Librairie de composants UI génériques pour Equitech",
   "type": "module",
   "sideEffects": [
@@ -86,6 +86,11 @@
       "types": "./dist/Tabs/index.d.ts",
       "import": "./dist/Tabs/index.js",
       "default": "./dist/Tabs/index.js"
+    },
+    "./Loader": {
+      "types": "./dist/Loader/index.d.ts",
+      "import": "./dist/Loader/index.js",
+      "default": "./dist/Loader/index.js"
     }
   },
   "files": [
