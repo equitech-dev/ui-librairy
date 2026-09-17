@@ -40,9 +40,18 @@
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
-  &:hover:not(:disabled):not([data-disabled]) {
-    background: #f8fafc;
-    color: #0f172a;
+  &:visited,
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+
+  /* Fond à peine marqué, pas de bordure : l’actif reste le seul chip. */
+  &:hover:not(:disabled):not([data-disabled]):not([data-state="active"]):not(.active):not([aria-current="page"]) {
+    background: #f6f7f7;
+    border-color: transparent;
+    color: #475569;
   }
 
   &:focus-visible {
@@ -51,7 +60,8 @@
   }
 
   &[data-state="active"],
-  &.active {
+  &.active,
+  &[aria-current="page"] {
     background: #f0f9f6;
     border-color: #a8d5c4;
     color: #1e5a4d;
