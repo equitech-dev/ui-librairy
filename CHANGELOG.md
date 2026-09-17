@@ -2,6 +2,14 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [2.4.0] - 2026-09-17
+
+### T1 — Tabs
+- Composant React `Tabs` publié (`@equitech-dev/ui-library/Tabs`) : chips / segmented, panneaux toujours montés, `useOptionalTabsActiveTab`. Pas de routing, pas de TaskBar.
+
+### T1 — Select
+- Listbox (Radix interne) : trigger aligné `.ui-modal-control`, panneau type popover. `multiple` reste un `<select>` natif.
+
 ## [2.3.0] - 2026-09-17
 
 ### T1 — Select

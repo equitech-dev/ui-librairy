@@ -18,6 +18,7 @@ export default defineConfig({
     "Modal/index": "src/components/Modal/index.ts",
     "Table/index": "src/components/Table/index.ts",
     "Select/index": "src/components/Select/index.ts",
+    "Tabs/index": "src/components/Tabs/index.ts",
   },
   format: ["esm"],
   dts: true,
@@ -30,7 +31,10 @@ export default defineConfig({
   splitting: false,
   target: "es2020",
   // React est fourni par l'application consommatrice (peerDependency).
+  // Radix est une dépendance interne : on l’embarque pour que le dashboard
+  // n’ait pas à installer @radix-ui/* (ADR-0012).
   external: ["react", "react-dom", "react/jsx-runtime"],
+  noExternal: [/^@radix-ui\//],
   esbuildOptions(options) {
     options.jsx = "automatic";
   },
